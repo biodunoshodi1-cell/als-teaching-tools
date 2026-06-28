@@ -925,11 +925,56 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);}
             </div>
           </div>
           <div id="g-li-error" style="display:none;font-size:12px;color:var(--wrong);background:var(--wrong-bg);border-radius:7px;padding:8px 11px;line-height:1.4"></div>
+          <div style="text-align:right;margin-top:-4px">
+            <button onclick="gateSwitch('forgot')" style="background:none;border:none;color:var(--indigo);font-size:12px;font-weight:600;cursor:pointer;font-family:var(--font)">Forgot password?</button>
+          </div>
           <button onclick="doGateLogin()"
             style="width:100%;padding:11px;border-radius:9px;border:none;background:linear-gradient(135deg,var(--indigo),var(--indigo-m));color:#fff;font-family:var(--head);font-size:15px;font-weight:700;cursor:pointer;margin-top:2px;transition:opacity .2s"
             onmouseover="this.style.opacity='.88'" onmouseout="this.style.opacity='1'">Log In</button>
           <div style="text-align:center;margin-top:4px">
             <button onclick="gateSwitch('signup')" style="background:none;border:none;color:var(--teal);font-size:13px;font-weight:600;cursor:pointer;font-family:var(--font)">No account yet? Sign up →</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── FORGOT PASSWORD ── -->
+      <div id="gate-forgot" style="display:none">
+        <div style="margin-bottom:1.2rem">
+          <div style="font-family:var(--head);font-size:18px;font-weight:700;color:var(--text)">Reset Password</div>
+          <div style="font-size:12px;color:var(--muted);margin-top:2px">Enter your email and choose a new password</div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:11px">
+          <div>
+            <label style="font-size:11px;font-weight:700;color:var(--muted);display:block;margin-bottom:4px;letter-spacing:.05em">EMAIL ADDRESS</label>
+            <input id="g-fp-email" type="email" placeholder="you@example.com" autocomplete="email"
+              style="width:100%;border:1.5px solid var(--border);border-radius:9px;padding:10px 13px;font-size:14px;font-family:var(--font);background:var(--bg);color:var(--text);outline:none;transition:border-color .2s"
+              onfocus="this.style.borderColor='var(--indigo-m)'" onblur="this.style.borderColor='var(--border)'">
+          </div>
+          <div>
+            <label style="font-size:11px;font-weight:700;color:var(--muted);display:block;margin-bottom:4px;letter-spacing:.05em">NEW PASSWORD</label>
+            <div style="position:relative">
+              <input id="g-fp-pass" type="password" placeholder="At least 6 characters" autocomplete="new-password"
+                style="width:100%;border:1.5px solid var(--border);border-radius:9px;padding:10px 42px 10px 13px;font-size:14px;font-family:var(--font);background:var(--bg);color:var(--text);outline:none;transition:border-color .2s"
+                onfocus="this.style.borderColor='var(--indigo-m)'" onblur="this.style.borderColor='var(--border)'">
+              <button type="button" onclick="togglePw('g-fp-pass',this)" style="position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;font-size:15px;color:var(--muted)">👁</button>
+            </div>
+          </div>
+          <div>
+            <label style="font-size:11px;font-weight:700;color:var(--muted);display:block;margin-bottom:4px;letter-spacing:.05em">CONFIRM NEW PASSWORD</label>
+            <div style="position:relative">
+              <input id="g-fp-pass2" type="password" placeholder="Repeat new password" autocomplete="new-password"
+                style="width:100%;border:1.5px solid var(--border);border-radius:9px;padding:10px 42px 10px 13px;font-size:14px;font-family:var(--font);background:var(--bg);color:var(--text);outline:none;transition:border-color .2s"
+                onfocus="this.style.borderColor='var(--indigo-m)'" onblur="this.style.borderColor='var(--border)'">
+              <button type="button" onclick="togglePw('g-fp-pass2',this)" style="position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;font-size:15px;color:var(--muted)">👁</button>
+            </div>
+          </div>
+          <div id="g-fp-error" style="display:none;font-size:12px;color:var(--wrong);background:var(--wrong-bg);border-radius:7px;padding:8px 11px;line-height:1.4"></div>
+          <div id="g-fp-success" style="display:none;font-size:12px;color:var(--correct);background:var(--correct-bg);border-radius:7px;padding:8px 11px;line-height:1.4">✅ Password updated! You can now log in.</div>
+          <button onclick="doForgotPassword()"
+            style="width:100%;padding:11px;border-radius:9px;border:none;background:linear-gradient(135deg,var(--indigo),var(--indigo-m));color:#fff;font-family:var(--head);font-size:15px;font-weight:700;cursor:pointer;margin-top:2px;transition:opacity .2s"
+            onmouseover="this.style.opacity='.88'" onmouseout="this.style.opacity='1'">Reset Password</button>
+          <div style="text-align:center;margin-top:4px">
+            <button onclick="gateSwitch('login')" style="background:none;border:none;color:var(--indigo);font-size:13px;font-weight:600;cursor:pointer;font-family:var(--font)">← Back to Log In</button>
           </div>
         </div>
       </div>
@@ -2931,17 +2976,60 @@ function gateSwitch(mode) {
   const liTab  = document.getElementById('gate-tab-login');
   const suForm = document.getElementById('gate-signup');
   const liForm = document.getElementById('gate-login');
+  const fpForm = document.getElementById('gate-forgot');
+  // Hide all panels
+  suForm.style.display = 'none';
+  liForm.style.display = 'none';
+  fpForm.style.display = 'none';
+  // Reset tab styles to inactive
+  const inactiveStyle = 'flex:1;padding:9px 0;border-radius:7px;border:none;background:transparent;color:var(--muted);font-family:var(--head);font-size:14px;font-weight:700;cursor:pointer;transition:all .2s';
+  suTab.style.cssText = inactiveStyle;
+  liTab.style.cssText = inactiveStyle;
   if (mode === 'signup') {
-    suForm.style.display = 'block'; liForm.style.display = 'none';
+    suForm.style.display = 'block';
     suTab.style.cssText = 'flex:1;padding:9px 0;border-radius:7px;border:none;background:var(--teal);color:#fff;font-family:var(--head);font-size:14px;font-weight:700;cursor:pointer;transition:all .2s';
-    liTab.style.cssText = 'flex:1;padding:9px 0;border-radius:7px;border:none;background:transparent;color:var(--muted);font-family:var(--head);font-size:14px;font-weight:700;cursor:pointer;transition:all .2s';
-  } else {
-    suForm.style.display = 'none'; liForm.style.display = 'block';
+  } else if (mode === 'login') {
+    liForm.style.display = 'block';
     liTab.style.cssText = 'flex:1;padding:9px 0;border-radius:7px;border:none;background:var(--indigo);color:#fff;font-family:var(--head);font-size:14px;font-weight:700;cursor:pointer;transition:all .2s';
-    suTab.style.cssText = 'flex:1;padding:9px 0;border-radius:7px;border:none;background:transparent;color:var(--muted);font-family:var(--head);font-size:14px;font-weight:700;cursor:pointer;transition:all .2s';
+  } else if (mode === 'forgot') {
+    fpForm.style.display = 'block';
+    liTab.style.cssText = 'flex:1;padding:9px 0;border-radius:7px;border:none;background:var(--indigo);color:#fff;font-family:var(--head);font-size:14px;font-weight:700;cursor:pointer;transition:all .2s';
+    // Clear forgot fields and messages
+    document.getElementById('g-fp-email').value = '';
+    document.getElementById('g-fp-pass').value = '';
+    document.getElementById('g-fp-pass2').value = '';
+    document.getElementById('g-fp-error').style.display = 'none';
+    document.getElementById('g-fp-success').style.display = 'none';
   }
   document.getElementById('g-su-error').style.display = 'none';
   document.getElementById('g-li-error').style.display = 'none';
+}
+
+function doForgotPassword() {
+  const errEl = document.getElementById('g-fp-error');
+  const sucEl = document.getElementById('g-fp-success');
+  errEl.style.display = 'none';
+  sucEl.style.display = 'none';
+  const email = document.getElementById('g-fp-email').value.trim();
+  const pass  = document.getElementById('g-fp-pass').value;
+  const pass2 = document.getElementById('g-fp-pass2').value;
+  if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    errEl.textContent = 'Please enter a valid email address.'; errEl.style.display = 'block'; return;
+  }
+  const userIdx = _users.findIndex(u => u.email.toLowerCase() === email.toLowerCase());
+  if (userIdx === -1) {
+    errEl.textContent = 'No account found with that email address.'; errEl.style.display = 'block'; return;
+  }
+  if (!pass || pass.length < 6) {
+    errEl.textContent = 'New password must be at least 6 characters.'; errEl.style.display = 'block'; return;
+  }
+  if (pass !== pass2) {
+    errEl.textContent = 'Passwords do not match.'; errEl.style.display = 'block'; return;
+  }
+  _users[userIdx].pass = pass;
+  saveUsers();
+  sucEl.style.display = 'block';
+  setTimeout(() => gateSwitch('login'), 2000);
 }
 
 function gateShowErr(id, msg) {
@@ -4133,4 +4221,3 @@ buildChecklist();
 </script>
 </body>
 </html>
-
