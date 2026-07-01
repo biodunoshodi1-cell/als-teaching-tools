@@ -936,17 +936,28 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);}
 #aac-speaking-bar.active { display: block; }
 
 /* ── QUICK PHRASES PANEL ── */
+#aac-phrases-heading {
+  background: #fff;
+  padding: 12px 12px 0 12px;
+  font-family: 'Baloo 2', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 900;
+  color: #7C3AED;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
 #aac-phrases-panel {
   background: #fff;
   border-bottom: 2px solid #E8D5FF;
-  padding: 10px 12px;
+  padding: 10px 12px 14px 12px;
   display: flex;
+  flex-wrap: wrap;
   gap: 8px;
-  overflow-x: auto;
   flex-shrink: 0;
-  -webkit-overflow-scrolling: touch;
 }
 #aac-phrases-panel.hidden { display: none; }
+#aac-phrases-heading.hidden { display: none; }
 
 .aac-phrase-btn {
   background: linear-gradient(160deg, #7C3AED, #A855F7);
@@ -1080,6 +1091,93 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);}
 }
 #aac-toast.aac-show { opacity: 1; animation: aacFadeUp 0.3s ease forwards; }
 #aac-toast.aac-hide { opacity: 0; transform: translateX(-50%) translateY(6px); }
+
+/* ── CERTIFICATE ── */
+.worksheet-name-block {
+  display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+  background: #FFF9EC; border: 1.5px dashed #E8B93B; border-radius: 14px;
+  padding: 10px 16px; margin-bottom: 1.2rem;
+}
+.worksheet-name-block label {
+  font-family: 'Baloo 2', sans-serif; font-weight: 800; font-size: 0.95rem;
+  color: #8a5a00; white-space: nowrap;
+}
+.student-name-input {
+  flex: 1; min-width: 160px; border: 1.5px solid #E8B93B; border-radius: 10px;
+  padding: 8px 12px; font-size: 0.95rem; font-family: 'Nunito', sans-serif;
+  background: #fff; color: #3a2f00;
+}
+.student-name-input:focus { outline: none; border-color: #B8860B; }
+.cert-btn {
+  padding: 7px 16px; font-size: 12px; font-weight: 700; border-radius: 20px;
+  border: 1.5px solid #F6B93B; background: linear-gradient(135deg,#FFF3D6,#FFE8B0);
+  color: #8a5a00; cursor: pointer; font-family: var(--font, 'Nunito', sans-serif);
+  display: inline-flex; align-items: center; gap: 5px; transition: transform .15s;
+}
+.cert-btn:hover { transform: translateY(-1px); }
+.cert-btn:active { transform: scale(0.96); }
+#cert-overlay {
+  position: fixed; inset: 0; z-index: 99999; background: rgba(20,15,40,0.72);
+  display: flex; align-items: center; justify-content: center; padding: 16px;
+  backdrop-filter: blur(3px);
+}
+#cert-overlay.hidden { display: none; }
+#cert-card {
+  background: #FFFDF6; width: 100%; max-width: 620px; border-radius: 18px;
+  padding: 34px 30px; position: relative; text-align: center;
+  border: 6px double #D4A017;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.35);
+  font-family: 'Nunito', sans-serif;
+  max-height: 92vh; overflow-y: auto;
+}
+#cert-close {
+  position: absolute; top: 10px; right: 14px; background: none; border: none;
+  font-size: 22px; cursor: pointer; color: #999; line-height: 1;
+}
+.cert-seal { font-size: 3rem; margin-bottom: 4px; }
+.cert-heading {
+  font-family: 'Baloo 2', sans-serif; font-size: 1.6rem; font-weight: 900;
+  color: #B8860B; letter-spacing: .03em; margin: 4px 0 2px;
+}
+.cert-sub { color: #8a7a55; font-size: .85rem; margin-bottom: 18px; }
+.cert-name-input {
+  font-family: 'Baloo 2', sans-serif; font-size: 1.3rem; font-weight: 800;
+  text-align: center; color: #2d2350; border: none; border-bottom: 2px dashed #D4A017;
+  background: transparent; padding: 4px 8px; width: 90%; max-width: 340px; margin: 6px 0 16px;
+}
+.cert-line { font-size: .95rem; color: #4a4460; margin: 4px 0; }
+.cert-task { font-weight: 800; color: #7C3AED; font-size: 1.05rem; margin: 10px 0 4px; }
+.cert-score { font-weight: 900; color: #059669; font-size: 1.4rem; margin: 6px 0 2px; }
+.cert-stars { font-size: 1.3rem; margin-bottom: 12px; }
+.cert-date { font-size: .8rem; color: #9a9080; margin-top: 10px; }
+.cert-actions { display: flex; gap: 10px; justify-content: center; margin-top: 20px; flex-wrap: wrap; }
+.cert-actions button {
+  padding: 9px 20px; border-radius: 22px; font-weight: 700; font-size: .9rem;
+  cursor: pointer; font-family: var(--font, 'Nunito', sans-serif); border: none;
+}
+#cert-print-btn { background: #7C3AED; color: #fff; }
+#cert-close-btn { background: #eee; color: #444; }
+
+#cert-toast {
+  position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
+  background: rgba(124,58,237,0.95); color: #fff; padding: 11px 22px; border-radius: 24px;
+  font-size: .88rem; font-weight: 700; z-index: 99998; max-width: 90vw; text-align: center;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.25); opacity: 0; pointer-events: none;
+  transition: opacity .3s, transform .3s; transform: translateX(-50%) translateY(8px);
+  font-family: 'Nunito', sans-serif;
+}
+#cert-toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+@media print {
+  body * { visibility: hidden !important; }
+  #cert-overlay, #cert-overlay * { visibility: visible !important; }
+  #cert-overlay {
+    position: fixed; inset: 0; background: #fff !important; backdrop-filter: none;
+    display: flex !important; align-items: flex-start; padding-top: 40px;
+  }
+  #cert-close, .cert-actions { display: none !important; }
+  #cert-card { box-shadow: none; border: 6px double #D4A017; }
+}
 
 /* ── WhatsApp AAC button ── */
 #aac-wa-btn {
@@ -1498,6 +1596,11 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);}
     </div>
   </div>
 
+  <div class="worksheet-name-block">
+    <label for="name-phonics">✏️ Name:</label>
+    <input type="text" id="name-phonics" class="student-name-input" placeholder="Type your name here…" oninput="syncStudentName(this.value)">
+  </div>
+
   <!-- Sound selector tabs -->
   <div class="sound-tabs" id="soundTabs">
     <button class="stab active" onclick="showSound('ee',this)">ee</button>
@@ -1539,6 +1642,10 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);}
       <span style="background:#fff;padding:5px 12px;border-radius:20px;font-size:0.8rem;font-weight:700;color:#185FA5;border:2px solid #4B8FD0">🏙️ City</span>
       <span style="background:#fff;padding:5px 12px;border-radius:20px;font-size:0.8rem;font-weight:700;color:#B5780A;border:2px solid #E8A81C">🐾 Animals</span>
     </div>
+  </div>
+  <div class="worksheet-name-block">
+    <label for="name-comprehension">✏️ Name:</label>
+    <input type="text" id="name-comprehension" class="student-name-input" placeholder="Type your name here…" oninput="syncStudentName(this.value)">
   </div>
   <div class="card teal-l">
     <div class="card-head">
@@ -1661,6 +1768,11 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);}
       <div class="maths-fun-num" style="background:#74B9FF;color:#003380">9</div>
       <div class="maths-fun-num" style="background:#A29BFE;color:#1a0060">10</div>
     </div>
+  </div>
+
+  <div class="worksheet-name-block">
+    <label for="name-maths">✏️ Name:</label>
+    <input type="text" id="name-maths" class="student-name-input" placeholder="Type your name here…" oninput="syncStudentName(this.value)">
   </div>
 
   <!-- Category selector -->
@@ -1889,6 +2001,10 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);}
     <button class="mtab english-tab" onclick="showWSMain('english',this)">📝 English</button>
   </nav>
   <div id="ws-container">
+    <div class="worksheet-name-block" style="margin:1rem 1rem 0">
+      <label for="name-worksheets">✏️ Name:</label>
+      <input type="text" id="name-worksheets" class="student-name-input" placeholder="Type your name here…" oninput="syncStudentName(this.value)">
+    </div>
 <!-- ══════════════ MATHS ══════════════ -->
 <section class="ws-main-section active" id="ws-sec-maths">
   <div class="ws-hero gold-hero">
@@ -1928,6 +2044,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);}
         <button class="chk-btn" onclick="checkSection('shapes')">✓ Check Answers</button>
         <button class="reset-btn" onclick="resetSection('shapes')">↺ Reset</button>
         <span class="score-out" id="sc-shapes"></span>
+        <button class="cert-btn" onclick="submitTaskForCertificate('shapes','Shapes')">Submit</button>
       </div>
     </div>
   </div>
@@ -2034,6 +2151,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);}
         <button class="chk-btn" onclick="checkSection('angles')">✓ Check Answers</button>
         <button class="reset-btn" onclick="resetSection('angles')">↺ Reset</button>
         <span class="score-out" id="sc-angles"></span>
+        <button class="cert-btn" onclick="submitTaskForCertificate('angles','Angles')">Submit</button>
       </div>
     </div>
   </div>
@@ -2100,6 +2218,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);}
         <button class="chk-btn" onclick="checkSection('fractions')">✓ Check Answers</button>
         <button class="reset-btn" onclick="resetSection('fractions')">↺ Reset</button>
         <span class="score-out" id="sc-fractions"></span>
+        <button class="cert-btn" onclick="submitTaskForCertificate('fractions','Fractions')">Submit</button>
       </div>
     </div>
   </div>
@@ -2155,6 +2274,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);}
         <button class="chk-btn" onclick="checkSection('symmetry')">✓ Check Answers</button>
         <button class="reset-btn" onclick="resetSection('symmetry')">↺ Reset</button>
         <span class="score-out" id="sc-symmetry"></span>
+        <button class="cert-btn" onclick="submitTaskForCertificate('symmetry','Symmetry')">Submit</button>
       </div>
     </div>
   </div>
@@ -2221,6 +2341,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);}
         <button class="chk-btn" onclick="checkSection('lines')">✓ Check Answers</button>
         <button class="reset-btn" onclick="resetSection('lines')">↺ Reset</button>
         <span class="score-out" id="sc-lines"></span>
+        <button class="cert-btn" onclick="submitTaskForCertificate('lines','Lines')">Submit</button>
       </div>
     </div>
   </div>
@@ -2288,6 +2409,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);}
         <button class="chk-btn" onclick="checkSection('tally')">✓ Check Answers</button>
         <button class="reset-btn" onclick="resetSection('tally')">↺ Reset</button>
         <span class="score-out" id="sc-tally"></span>
+        <button class="cert-btn" onclick="submitTaskForCertificate('tally','Tally Charts')">Submit</button>
       </div>
     </div>
   </div>
@@ -2390,6 +2512,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);}
         <button class="chk-btn" onclick="checkSection('wordclass')">✓ Check Answers</button>
         <button class="reset-btn" onclick="resetSection('wordclass')">↺ Reset</button>
         <span class="score-out" id="sc-wordclass"></span>
+        <button class="cert-btn" onclick="submitTaskForCertificate('wordclass','Word Classes')">Submit</button>
       </div>
     </div>
   </div>
@@ -2449,6 +2572,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);}
         <button class="chk-btn" onclick="checkSection('tenses')">✓ Check Answers</button>
         <button class="reset-btn" onclick="resetSection('tenses')">↺ Reset</button>
         <span class="score-out" id="sc-tenses"></span>
+        <button class="cert-btn" onclick="submitTaskForCertificate('tenses','Tenses')">Submit</button>
       </div>
     </div>
   </div>
@@ -2499,6 +2623,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);}
         <button class="chk-btn" onclick="checkSection('activepas')">✓ Check Answers</button>
         <button class="reset-btn" onclick="resetSection('activepas')">↺ Reset</button>
         <span class="score-out" id="sc-activepas"></span>
+        <button class="cert-btn" onclick="submitTaskForCertificate('activepas','Active & Passive Voice')">Submit</button>
       </div>
     </div>
   </div>
@@ -2547,6 +2672,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);}
         <button class="chk-btn" onclick="checkSection('svo')">✓ Check Answers</button>
         <button class="reset-btn" onclick="resetSection('svo')">↺ Reset</button>
         <span class="score-out" id="sc-svo"></span>
+        <button class="cert-btn" onclick="submitTaskForCertificate('svo','Subject, Verb & Object')">Submit</button>
       </div>
     </div>
   </div>
@@ -2597,6 +2723,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);}
         <button class="chk-btn" onclick="checkSection('phrases')">✓ Check Answers</button>
         <button class="reset-btn" onclick="resetSection('phrases')">↺ Reset</button>
         <span class="score-out" id="sc-phrases"></span>
+        <button class="cert-btn" onclick="submitTaskForCertificate('phrases','Phrases')">Submit</button>
       </div>
     </div>
   </div>
@@ -2641,6 +2768,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);}
         <button class="chk-btn" onclick="checkSection('clauses')">✓ Check Answers</button>
         <button class="reset-btn" onclick="resetSection('clauses')">↺ Reset</button>
         <span class="score-out" id="sc-clauses"></span>
+        <button class="cert-btn" onclick="submitTaskForCertificate('clauses','Clauses')">Submit</button>
       </div>
     </div>
   </div>
@@ -2695,6 +2823,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);}
         <button class="chk-btn" onclick="checkSection('sentences')">✓ Check Answers</button>
         <button class="reset-btn" onclick="resetSection('sentences')">↺ Reset</button>
         <span class="score-out" id="sc-sentences"></span>
+        <button class="cert-btn" onclick="submitTaskForCertificate('sentences','Sentence Types')">Submit</button>
       </div>
     </div>
   </div>
@@ -2808,6 +2937,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);}
         <div class="cl-label" id="cl-label">0 / 20 ticked</div>
       </div>
       <div class="checklist" id="story-checklist"></div>
+      <button class="cert-btn" style="margin-top:12px" onclick="submitTaskForCertificate('story-checklist','Story Writing Checklist')">Submit</button>
     </div>
   </div>
 
@@ -3536,7 +3666,13 @@ function buildCircle(key, data) {
       </div>
       <div class="score-bar"><span class="score-label">Score</span><div class="score-track"><div class="score-fill" id="${key}-c-bar" style="width:0%"></div></div><span class="score-num" id="${key}-c-score">0 / ${scores.total}</span></div>
       <div class="q-list" id="${key}-c-qs"></div>
+      <button class="cert-btn" id="${key}-c-cert" style="margin-top:10px">Submit</button>
     </div>`;
+
+  el.querySelector(`#${key}-c-cert`).onclick = () => {
+    recordTaskScore(`phonics-circle-${key}`, scores.val, scores.total);
+    submitTaskForCertificate(`phonics-circle-${key}`, `Phonics /${key}/ — Circle the Sound`);
+  };
 
   const qList = el.querySelector(`#${key}-c-qs`);
   data.circleQ.forEach((q, i) => {
@@ -3583,7 +3719,13 @@ function buildFill(key, data) {
       </div>
       <div class="score-bar"><span class="score-label">Score</span><div class="score-track"><div class="score-fill" id="${key}-f-bar" style="width:0%"></div></div><span class="score-num" id="${key}-f-score">0 / ${scores.total}</span></div>
       <div class="q-list" id="${key}-f-qs"></div>
+      <button class="cert-btn" id="${key}-f-cert" style="margin-top:10px">Submit</button>
     </div>`;
+
+  el.querySelector(`#${key}-f-cert`).onclick = () => {
+    recordTaskScore(`phonics-fill-${key}`, scores.val, scores.total);
+    submitTaskForCertificate(`phonics-fill-${key}`, `Phonics /${key}/ — Fill in the Missing Word`);
+  };
 
   const qList = el.querySelector(`#${key}-f-qs`);
   data.fillQ.forEach((q, i) => {
@@ -3633,6 +3775,7 @@ function buildSort(key, data) {
         <div class="sort-col" style="background:var(--indigo-l);border:1.5px dashed var(--indigo-m)" id="${key}-colB"><div class="sort-col-label" style="color:var(--indigo)">${data.sortLabelB}</div></div>
       </div>
       <div class="celebrate" id="${key}-cel">🎉 Brilliant! You sorted them all correctly!</div>
+      <button class="cert-btn" id="${key}-s-cert" style="margin-top:10px">Submit</button>
     </div>`;
 
   const pool = el.querySelector(`#${key}-pool`);
@@ -3640,6 +3783,11 @@ function buildSort(key, data) {
   const colB = el.querySelector(`#${key}-colB`);
   let selected = null;
   let correct = 0;
+
+  el.querySelector(`#${key}-s-cert`).onclick = () => {
+    recordTaskScore(`phonics-sort-${key}`, correct, data.sortWords.length);
+    submitTaskForCertificate(`phonics-sort-${key}`, `Phonics /${key}/ — Sort the Words`);
+  };
 
   data.sortWords.forEach(item => {
     const w = document.createElement('span');
@@ -3798,6 +3946,7 @@ function buildStory(key, data) {
       <div style="display:flex;gap:8px;align-items:center;margin-top:10px">
         <button style="padding:7px 18px;font-size:13px;font-weight:700;border-radius:20px;border:1.5px solid var(--teal-m);background:var(--teal-l);color:var(--teal);cursor:pointer;font-family:var(--font)" onclick="checkStorySort('${key}')">Check answers ✓</button>
         <button style="padding:7px 14px;font-size:12px;font-weight:600;border-radius:20px;border:1.5px solid var(--border);background:var(--card);color:var(--muted);cursor:pointer;font-family:var(--font)" onclick="resetStorySort('${key}')">Reset</button>
+        <button class="cert-btn" onclick="submitTaskForCertificate('phonics-story-${key}','Phonics /${key}/ — Story Sort')">Submit</button>
         <span id="${key}-sort-score" style="font-size:13px;font-weight:700;color:var(--teal);display:none"></span>
       </div>
     </div>`;
@@ -3835,6 +3984,7 @@ function checkStorySort(key) {
   const stars = pct >= 80 ? '⭐⭐⭐' : pct >= 50 ? '⭐⭐' : '⭐';
   sc.style.display = 'inline';
   sc.textContent   = `${correct}/${total} correct! ${stars}`;
+  recordTaskScore(`phonics-story-${key}`, correct, total);
 }
 
 function resetStorySort(key) {
@@ -3989,6 +4139,7 @@ function buildSortTable(num) {
     const pct = total ? Math.round(correct/total*100) : 0;
     const stars = pct >= 80 ? '⭐⭐⭐' : pct >= 50 ? '⭐⭐' : '⭐';
     scoreSpan.textContent = `${correct}/${total} correct! ${stars}`;
+    recordTaskScore(`comp-sort-${num}`, correct, total);
   };
 
   const resetBtn = document.createElement('button');
@@ -4004,8 +4155,14 @@ function buildSortTable(num) {
     scoreSpan.style.display = 'none';
   };
 
+  const certBtn = document.createElement('button');
+  certBtn.className = 'cert-btn';
+  certBtn.textContent = 'Submit';
+  certBtn.onclick = () => submitTaskForCertificate(`comp-sort-${num}`, `Comprehension: Sound Sort ${num}`);
+
   btnWrap.appendChild(btn);
   btnWrap.appendChild(resetBtn);
+  btnWrap.appendChild(certBtn);
   btnWrap.appendChild(scoreSpan);
   tableEl.after(btnWrap);
 }
@@ -4095,7 +4252,9 @@ const MQ = {
     const lvlDiv = document.createElement('div');
     lvlDiv.className = lv;
     const lblText = lv === 'easy' ? 'Easy — numbers to 20' : lv === 'med' ? 'Medium — numbers to 50' : 'Hard — larger numbers';
-    lvlDiv.innerHTML = `<span class="m-level-lbl">${lblText}</span><div class="m-q-grid" id="${op}-${lv}-grid"></div><button class="m-check chk-${op}" onclick="checkM('${op}','${lv}','${key}')">Check answers</button><div class="m-score" id="${op}-${lv}-sc"></div>`;
+    const opLabel = op === 'add' ? 'Addition' : op === 'sub' ? 'Subtraction' : op === 'mul' ? 'Multiplication' : 'Division';
+    const lvLabel = lv === 'easy' ? 'Easy' : lv === 'med' ? 'Medium' : 'Hard';
+    lvlDiv.innerHTML = `<span class="m-level-lbl">${lblText}</span><div class="m-q-grid" id="${op}-${lv}-grid"></div><button class="m-check chk-${op}" onclick="checkM('${op}','${lv}','${key}')">Check answers</button><div class="m-score" id="${op}-${lv}-sc"></div><button class="cert-btn" style="margin-top:8px" onclick="submitTaskForCertificate('m-${op}-${lv}','${opLabel} (${lvLabel})')">Submit</button>`;
     cont.appendChild(lvlDiv);
     const grid = lvlDiv.querySelector(`#${op}-${lv}-grid`);
     MQ[op][key].forEach((item, i) => {
@@ -4123,6 +4282,7 @@ function checkM(op, lv, key) {
   const pct = Math.round(correct / qs.length * 100);
   const stars = pct >= 80 ? '⭐⭐⭐' : pct >= 60 ? '⭐⭐' : pct >= 40 ? '⭐' : '';
   sc.innerHTML = `<span class="m-score-n">${correct}/${qs.length}</span>&nbsp;correct! ${stars}&nbsp;<span style="font-size:12px;color:var(--muted)">${pct >= 80 ? 'Amazing!' : pct >= 60 ? 'Great job!' : pct >= 40 ? 'Keep going!' : 'Try again!'}</span>`;
+  recordTaskScore(`m-${op}-${lv}`, correct, qs.length);
 }
 
 function switchMath(op, btn) {
@@ -4906,11 +5066,14 @@ function buildTopicPanel(id) {
         btn.textContent = opt;
         btn.onclick = () => {
           opts.querySelectorAll('.topic-mc-opt').forEach(b => b.classList.remove('correct','wrong'));
+          opts.dataset.attempted = '1';
           if (opt === item.ans) {
             btn.classList.add('correct');
+            opts.dataset.wasCorrect = '1';
           } else {
             btn.classList.add('wrong');
             opts.querySelectorAll('.topic-mc-opt').forEach(b => { if (b.textContent === item.ans) b.classList.add('correct'); });
+            opts.dataset.wasCorrect = '0';
           }
         };
         opts.appendChild(btn);
@@ -4947,6 +5110,10 @@ function buildTopicPanel(id) {
   chkBtn.textContent = 'Check my answers ✓';
   chkBtn.onclick = () => {
     let correct = 0, total = 0;
+    container.querySelectorAll('.topic-mc-opts').forEach(opts => {
+      total++;
+      if (opts.dataset.wasCorrect === '1') correct++;
+    });
     container.querySelectorAll('.topic-input').forEach(inp => {
       total++;
       const val = inp.value.trim().toLowerCase().replace(/\s+/g,' ');
@@ -4959,7 +5126,8 @@ function buildTopicPanel(id) {
     const pct = total ? Math.round(correct/total*100) : 0;
     const stars = pct >= 80 ? '⭐⭐⭐' : pct >= 50 ? '⭐⭐' : '⭐';
     sc.style.display = 'inline';
-    sc.textContent = correct + '/' + total + ' text answers correct! ' + stars;
+    sc.textContent = correct + '/' + total + ' correct! ' + stars;
+    recordTaskScore(`topic-${id}`, correct, total);
   };
 
   const rstBtn = document.createElement('button');
@@ -4968,12 +5136,18 @@ function buildTopicPanel(id) {
   rstBtn.onclick = () => {
     container.querySelectorAll('.topic-input').forEach(i => { i.value=''; i.classList.remove('correct','wrong'); });
     container.querySelectorAll('.topic-mc-opt').forEach(b => b.classList.remove('correct','wrong'));
+    container.querySelectorAll('.topic-mc-opts').forEach(o => { delete o.dataset.attempted; delete o.dataset.wasCorrect; });
     const sc = row.querySelector('.topic-score'); if(sc) sc.style.display='none';
   };
 
+  const certBtn = document.createElement('button');
+  certBtn.className = 'cert-btn';
+  certBtn.textContent = 'Submit';
+  certBtn.onclick = () => submitTaskForCertificate(`topic-${id}`, `${TOPICS[id].title} Quiz`);
+
   const sc = document.createElement('span');
   sc.className = 'topic-score';
-  row.appendChild(chkBtn); row.appendChild(rstBtn); row.appendChild(sc);
+  row.appendChild(chkBtn); row.appendChild(rstBtn); row.appendChild(certBtn); row.appendChild(sc);
   container.appendChild(row);
 }
 
@@ -5363,6 +5537,65 @@ function selectChip(chip, section, qid, val, ans) {
   chip.classList.add('selected');
 }
 
+// ─── CERTIFICATE SYSTEM ───────────────────────────────────────────────────────
+const TASK_SCORES = {};
+let studentName = '';
+
+function syncStudentName(val) {
+  studentName = val;
+  document.querySelectorAll('.student-name-input').forEach(inp => {
+    if (inp.value !== val) inp.value = val;
+  });
+}
+
+function recordTaskScore(taskId, correct, total) {
+  TASK_SCORES[taskId] = { correct, total };
+}
+
+function certToast(msg) {
+  const t = document.getElementById('cert-toast');
+  if (!t) return;
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(window.__certToastTimer);
+  window.__certToastTimer = setTimeout(() => t.classList.remove('show'), 3200);
+}
+
+function generateCertificate(taskLabel, correct, total) {
+  if (!total || total === 0) {
+    certToast('Answer a few questions first, then submit! ✏️');
+    return;
+  }
+  const pct = Math.round((correct / total) * 100);
+  if (pct < 50) {
+    certToast('Get 50% or more to get a certificate. Keep trying! 💪');
+    return;
+  }
+  document.getElementById('cert-name').value = studentName && studentName.trim() ? studentName.trim() : 'Star Learner';
+  document.getElementById('cert-task').textContent = taskLabel;
+  document.getElementById('cert-score').textContent = `${correct} / ${total} correct (${pct}%)`;
+  document.getElementById('cert-stars').textContent = pct >= 90 ? '⭐⭐⭐' : pct >= 70 ? '⭐⭐' : '⭐';
+  document.getElementById('cert-date').textContent = 'Awarded on ' + new Date().toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' });
+  document.getElementById('cert-overlay').classList.remove('hidden');
+}
+
+function submitTaskForCertificate(taskId, taskLabel) {
+  const s = TASK_SCORES[taskId];
+  if (!s) {
+    certToast('Please check your answers first, then submit! ✏️');
+    return;
+  }
+  generateCertificate(taskLabel, s.correct, s.total);
+}
+
+function closeCertificate() {
+  document.getElementById('cert-overlay').classList.add('hidden');
+}
+
+function printCertificate() {
+  window.print();
+}
+
 function checkSection(id) {
   const qs = MATHS_QS[id] || ENG_QS[id];
   if (!qs) return;
@@ -5395,6 +5628,7 @@ function checkSection(id) {
   sc.style.display = 'inline';
   const pct = total ? Math.round(correct/total*100) : 0;
   sc.textContent = `${correct}/${total} · ${pct}% ${pct>=80?'⭐⭐⭐':pct>=50?'⭐⭐':'⭐'}`;
+  recordTaskScore(id, correct, total);
 }
 
 function resetSection(id) {
@@ -5450,6 +5684,7 @@ function updateClProgress(total) {
   const pct = Math.round(checked/total*100);
   document.getElementById('cl-fill').style.width = pct + '%';
   document.getElementById('cl-label').textContent = `${checked} / ${total} ticked`;
+  recordTaskScore('story-checklist', checked, total);
 }
 
 
@@ -5575,7 +5810,7 @@ let aacFontSize = "md";
 let aacSpeaking = false;
 let aacToastTimer = null;
 let aacSelectedVoice = null;
-let aacPhrasesOpen = false;
+let aacPhrasesOpen = true;
 let aacInitialized = false;
 
 // VOICE
@@ -5701,7 +5936,6 @@ function aacSpeakSentence() {
 function aacSpeakPhrase(phrase) {
   aacShowToast(phrase);
   aacSpeak(phrase, true);
-  aacTogglePhrases(false);
 }
 
 function aacRenderSentence() {
@@ -5792,17 +6026,20 @@ function aacRenderSymbols() {
   });
 }
 
-function aacTogglePhrases(forceClose) {
-  if (forceClose === false) { aacPhrasesOpen = false; }
+function aacTogglePhrases(forceState) {
+  if (forceState === true || forceState === false) { aacPhrasesOpen = forceState; }
   else { aacPhrasesOpen = !aacPhrasesOpen; }
   const panel = document.getElementById("aac-phrases-panel");
+  const heading = document.getElementById("aac-phrases-heading");
   const toggleBtn = document.getElementById("aac-phrases-toggle");
   if (!panel) return;
   if (aacPhrasesOpen) {
     panel.classList.remove("hidden");
+    if (heading) heading.classList.remove("hidden");
     if (toggleBtn) toggleBtn.classList.add("active");
   } else {
     panel.classList.add("hidden");
+    if (heading) heading.classList.add("hidden");
     if (toggleBtn) toggleBtn.classList.remove("active");
   }
 }
@@ -5839,6 +6076,7 @@ function aacInit() {
   aacRenderCategoryTabs();
   aacRenderSymbols();
   aacRenderQuickPhrases();
+  aacTogglePhrases(true);
   aacRenderSentence();
   aacUpdateStripButtons();
   if (window.speechSynthesis) window.speechSynthesis.getVoices();
@@ -5885,7 +6123,8 @@ buildChecklist();
   </div>
 
   <!-- Quick Phrases Panel -->
-  <div id="aac-phrases-panel" class="hidden"></div>
+  <div id="aac-phrases-heading">&#x26A1; Quick Phrases</div>
+  <div id="aac-phrases-panel"></div>
 
   <!-- Sentence Strip -->
   <div id="aac-sentence-strip">
@@ -5928,6 +6167,28 @@ buildChecklist();
 <div class="book-float" id="bookFloat">
   <a class="book-float-main" href="javascript:void(0)" onclick="window.open('https://wa.me/971544078461?text=Hi%2C%20I%27d%20like%20to%20book%20a%201-1%20session%20with%20Adaptive%20Learning%20Support.','_blank')">🎓 Book a Home Session</a>
 </div>
+
+<!-- ════ CERTIFICATE MODAL ════ -->
+<div id="cert-overlay" class="hidden">
+  <div id="cert-card">
+    <button id="cert-close" onclick="closeCertificate()">&times;</button>
+    <div class="cert-seal">&#x1F3C6;</div>
+    <div class="cert-heading">Certificate of Achievement</div>
+    <div class="cert-sub">Adaptive Learning Support</div>
+    <div class="cert-line">This certificate is proudly presented to</div>
+    <input id="cert-name" class="cert-name-input" type="text" value="Star Learner" placeholder="Type your name">
+    <div class="cert-line">for successfully completing</div>
+    <div class="cert-task" id="cert-task">Task Name</div>
+    <div class="cert-score" id="cert-score">0 / 0</div>
+    <div class="cert-stars" id="cert-stars">&#x2B50;</div>
+    <div class="cert-date" id="cert-date"></div>
+    <div class="cert-actions">
+      <button id="cert-print-btn" onclick="printCertificate()">&#x1F5A8;&#xFE0F; Print / Save as PDF</button>
+      <button id="cert-close-btn" onclick="closeCertificate()">Close</button>
+    </div>
+  </div>
+</div>
+<div id="cert-toast"></div>
 
 </body>
 </html>
