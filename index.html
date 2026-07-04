@@ -854,7 +854,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);}
 
 /* ── NOW / NEXT / THEN + TIMER WIDGET ── */
 #nnt-toggle-btn {
-  position: fixed; bottom: 18px; left: 14px; z-index: 9002;
+  position: fixed; top: 60px; right: 14px; z-index: 9002;
   display: flex; align-items: center; gap: 7px;
   background: linear-gradient(135deg,#1565C0,#7C3AED);
   color: #fff; border: none; border-radius: 50px;
@@ -875,9 +875,9 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);}
 #nnt-toggle-badge.show { display: inline-block; }
 
 #nnt-panel {
-  position: fixed; bottom: 78px; left: 14px; z-index: 9003;
+  position: fixed; top: 108px; right: 14px; z-index: 9003;
   width: min(340px, calc(100vw - 28px));
-  max-height: min(78vh, 620px);
+  max-height: min(70vh, 560px);
   overflow-y: auto;
   background: #fff; border-radius: 20px;
   box-shadow: 0 16px 40px rgba(20,15,60,.28);
@@ -1018,11 +1018,17 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);}
   font-family: 'Nunito', sans-serif; font-weight: 800; font-size: 0.76rem;
   color: #B91C1C; text-align: center;
 }
-#nnt-alert-banner.show { display: block; }
+#nnt-alert-banner.show { display: flex; align-items: center; justify-content: center; gap: 8px; flex-wrap: wrap; }
+#nnt-stop-chime-btn {
+  background: #B91C1C; color: #fff; border: none; border-radius: 20px;
+  padding: 5px 12px; font-family: 'Nunito', sans-serif; font-weight: 800;
+  font-size: 0.72rem; cursor: pointer;
+}
+#nnt-stop-chime-btn:hover { background: #991818; }
 
 @media (max-width: 420px) {
-  #nnt-panel { left: 8px; bottom: 74px; width: calc(100vw - 16px); }
-  #nnt-toggle-btn { left: 8px; padding: 9px 13px 9px 10px; font-size: 12px; }
+  #nnt-panel { right: 8px; top: 96px; width: calc(100vw - 16px); max-height: min(70vh, 560px); }
+  #nnt-toggle-btn { right: 8px; top: 52px; padding: 9px 13px 9px 10px; font-size: 12px; }
 }
 
 /* ── PROMO BANNER (per section bottom) ── */
@@ -1831,6 +1837,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);}
   <button class="mtab" onclick="showMain('socialstories',this)" id="tab-socialstories" style="color:var(--rose)">💬 Social Stories</button>
   <button class="mtab" onclick="showMain('worksheets',this)" id="tab-worksheets" style="color:var(--blue)">📚 Worksheets</button>
   <button class="mtab" onclick="showMain('aac',this)" id="tab-aac" style="color:#7C3AED">💬 AAC Board</button>
+  <button class="mtab" onclick="showMain('games',this)" id="tab-games" style="color:#E8A81C">🎮 Break Time</button>
   <button class="mtab" onclick="doLogout()" id="tab-account" style="margin-left:auto;color:var(--coral)">🚪 Log out</button>
 </nav>
 
@@ -1844,6 +1851,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);}
     <span class="fsh-emoji-row">🔤 📣 🌈 ✏️ 🎵</span>
     <h2 style="color:#0D7A60;font-family:'Baloo 2',sans-serif">Sound Explorer Worksheets</h2>
     <p style="color:#374151">Choose a vowel digraph below, then work through <strong>Circle It → Fill In → Sort It → Stories!</strong></p>
+    <p style="color:#0D7A60;font-size:0.82rem;font-weight:700;margin-top:4px">🔊 Sounds play at full volume — turn up your device volume for the clearest listening experience.</p>
     <div style="display:flex;gap:6px;flex-wrap:wrap;justify-content:center;margin-top:10px">
       <span style="background:#fff;border:2px solid #1BAD85;border-radius:20px;padding:4px 12px;font-family:'Baloo 2',sans-serif;font-size:0.9rem;font-weight:700;color:#0D7A60">🌳 ee</span>
       <span style="background:#fff;border:2px solid #7B73D9;border-radius:20px;padding:4px 12px;font-family:'Baloo 2',sans-serif;font-size:0.9rem;font-weight:700;color:#4A35B0">🌙 oo</span>
@@ -3323,6 +3331,7 @@ function nntUpdateDisplay() {
 }
 function nntSetSeconds(totalSec) {
   nntStopTick();
+  nntStopChime();
   nntTotalSeconds = totalSec;
   nntRemaining = totalSec;
   const banner = document.getElementById("nnt-alert-banner");
@@ -3340,6 +3349,7 @@ function nntSetCustom() {
 function nntStartPause() {
   if (nntRunning) { nntStopTick(); nntSetStartPauseLabel(false); return; }
   if (nntRemaining <= 0) return;
+  nntStopChime();
   nntRunning = true;
   nntSetStartPauseLabel(true);
   nntTimerHandle = setInterval(() => {
@@ -3371,8 +3381,22 @@ function nntReset() {
 function nntTimerFinished() {
   const banner = document.getElementById("nnt-alert-banner");
   if (banner) banner.classList.add("show");
-  nntPlayChime();
+  nntStartChimeLoop();
   nntTogglePanel(true); // surface the alert even if the panel was collapsed
+}
+let nntChimeHandle = null;
+function nntStartChimeLoop() {
+  nntStopChime(); // clear any previous loop first
+  nntPlayChime();
+  nntChimeHandle = setInterval(nntPlayChime, 1500);
+}
+function nntStopChime() {
+  if (nntChimeHandle) { clearInterval(nntChimeHandle); nntChimeHandle = null; }
+}
+function nntDismissAlert() {
+  nntStopChime();
+  const banner = document.getElementById("nnt-alert-banner");
+  if (banner) banner.classList.remove("show");
 }
 function nntPlayChime() {
   try {
@@ -6706,6 +6730,212 @@ buildChecklist();
 
 </section>
 
+<!-- ══════════════════════════════════════════
+     BREAK TIME GAMES SECTION
+══════════════════════════════════════════ -->
+<style>
+  .game-hero{background:linear-gradient(135deg,#FEF3DC,#FEE9D6);border:2px solid #E8A81C;}
+  .game-tabs{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin:1rem 0 1.4rem;}
+  .gtab{font-family:'Baloo 2',sans-serif;font-weight:800;font-size:14px;padding:.6rem 1.1rem;border-radius:16px;border:2px solid #E8A81C;background:#fff;color:#B5780A;cursor:pointer;transition:.2s;}
+  .gtab.active,.gtab:hover{background:#E8A81C;color:#fff;transform:translateY(-1px);}
+  .game-panel{display:none;}
+  .game-panel.active{display:flex;flex-direction:column;flex:1;min-height:0;}
+  .game-stats{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-bottom:14px;}
+  .game-stat{background:#fff;border:2px solid #EEF0F7;border-radius:14px;padding:8px 16px;font-family:'Baloo 2',sans-serif;font-weight:800;font-size:14px;color:#374151;box-shadow:0 2px 8px rgba(0,0,0,.05);}
+  .game-stat span{color:#E8A81C;}
+  .game-btnrow{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:16px;}
+  .game-btn{font-family:'Baloo 2',sans-serif;font-weight:800;font-size:14px;padding:.55rem 1.2rem;border-radius:14px;border:none;cursor:pointer;color:#fff;background:linear-gradient(135deg,#1BAD85,#0D7A60);transition:.2s;box-shadow:0 3px 10px rgba(13,122,96,.3);}
+  .game-btn:hover{transform:translateY(-2px);}
+  .game-btn.alt{background:linear-gradient(135deg,#7B73D9,#4A35B0);box-shadow:0 3px 10px rgba(74,53,176,.3);}
+  .game-btn.diff{background:#fff;color:#4A35B0;border:2px solid #7B73D9;box-shadow:none;}
+  .game-btn.diff.active,.game-btn.diff:hover{background:#7B73D9;color:#fff;}
+
+  /* Memory Match — CSS gives every board a solid, always-visible default size;
+     JS (fitGridToContainer, via ResizeObserver) then progressively enlarges it
+     to fill the full available screen space once real layout is known. */
+  #memoryGrid{display:grid;gap:10px;margin:0 auto;width:min(100%,640px);}
+  #memoryGrid.grid-3x4{grid-template-columns:repeat(4,1fr);grid-template-rows:repeat(3,1fr);aspect-ratio:4/3;}
+  #memoryGrid.grid-4x4{grid-template-columns:repeat(4,1fr);grid-template-rows:repeat(4,1fr);aspect-ratio:1/1;}
+  .mm-card{border-radius:16px;cursor:pointer;position:relative;perspective:600px;}
+  .mm-inner{width:100%;height:100%;position:relative;transform-style:preserve-3d;transition:transform .4s;}
+  .mm-card.flipped .mm-inner,.mm-card.matched .mm-inner{transform:rotateY(180deg);}
+  .mm-face{position:absolute;inset:0;border-radius:16px;display:flex;align-items:center;justify-content:center;backface-visibility:hidden;box-shadow:0 3px 10px rgba(0,0,0,.12);}
+  .mm-back{background:linear-gradient(135deg,#E8A81C,#F0C670);font-size:clamp(1.4rem,6vmin,2.4rem);}
+  .mm-front{background:#fff;border:3px solid #1BAD85;transform:rotateY(180deg);font-size:clamp(1.6rem,7vmin,3rem);}
+  .mm-card.matched .mm-front{border-color:#1BAD85;background:#E0F4EE;animation:mmPop .4s ease;}
+  @keyframes mmPop{0%{transform:rotateY(180deg) scale(1);}50%{transform:rotateY(180deg) scale(1.12);}100%{transform:rotateY(180deg) scale(1);}}
+  .game-win-banner{display:none;text-align:center;background:#E0F4EE;border:3px solid #1BAD85;border-radius:20px;padding:20px;margin-top:16px;font-family:'Baloo 2',sans-serif;}
+  .game-win-banner.show{display:block;animation:mmPop .5s ease;}
+  .game-win-banner h3{color:#0D7A60;margin:0 0 6px;font-size:1.4rem;}
+
+  /* Full-screen game section — fills the viewport below the header/nav on every device */
+  #sec-games {
+    padding: 0 !important;
+    max-width: 100% !important;
+    height: calc(100vh - 148px);
+    height: calc(100dvh - 148px);
+    min-height: 420px;
+    display: none;
+    flex-direction: column;
+    overflow-y: auto;
+    background: #FFFDF7;
+  }
+  #sec-games.active { display: flex !important; }
+  .game-scroll-inner {
+    width: 100%;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 1.2rem 1rem 2rem;
+    box-sizing: border-box;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+  /* Bubble Pop */
+  #bubbleArena{position:relative;width:100%;max-width:100%;flex:1;min-height:320px;margin:0 auto;background:linear-gradient(180deg,#E7F1FF,#FFFFFF);border:2px solid #B7D3F5;border-radius:20px;overflow:hidden;}
+  .bubble{position:absolute;bottom:-60px;width:60px;height:60px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.6rem;cursor:pointer;box-shadow:0 3px 10px rgba(0,0,0,.12);user-select:none;animation-name:bubbleRise;animation-timing-function:linear;}
+  @keyframes bubbleRise{from{transform:translateY(0);}to{transform:translateY(-440px);}}
+  .bubble.pop{animation:bubblePop .3s ease forwards !important;pointer-events:none;}
+  @keyframes bubblePop{to{transform:scale(1.6);opacity:0;}}
+  #bubbleStartOverlay{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;background:rgba(255,255,255,.9);gap:10px;text-align:center;}
+
+  /* Shared start overlay used by Memory Match, Simon Says, and Whack-a-Mole */
+  .game-start-overlay{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;background:rgba(255,255,255,.95);gap:10px;text-align:center;border-radius:20px;z-index:5;padding:16px;box-sizing:border-box;}
+
+  /* Memory Match wrap (so the start overlay can sit on top of the card grid).
+     flex:1 + min-height:0 lets it claim all the vertical room the panel has,
+     so the grid (sized in JS) can fill the full screen on any device. */
+  .mm-wrap{position:relative;flex:1;min-height:0;width:100%;display:flex;align-items:center;justify-content:center;}
+
+  /* Simon Says */
+  .sm-wrap{position:relative;flex:1;min-height:0;width:100%;display:flex;align-items:center;justify-content:center;}
+  .simon-board{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:12px;margin:0 auto;width:min(90%,340px);aspect-ratio:1/1;}
+  .simon-pad{border-radius:22px;cursor:pointer;opacity:.55;transition:opacity .15s,transform .1s;box-shadow:inset 0 -6px 14px rgba(0,0,0,.18);}
+  .simon-pad:active{transform:scale(.96);}
+  .simon-pad[data-color="red"]{background:#E74C3C;}
+  .simon-pad[data-color="blue"]{background:#2E86DE;}
+  .simon-pad[data-color="green"]{background:#27AE60;}
+  .simon-pad[data-color="yellow"]{background:#F1C40F;}
+  .simon-pad.lit{opacity:1;box-shadow:0 0 22px rgba(0,0,0,.28),inset 0 -6px 14px rgba(0,0,0,.18);}
+
+  /* Whack-a-Mole */
+  .mole-wrap{position:relative;flex:1;min-height:0;width:100%;display:flex;align-items:center;justify-content:center;}
+  .mole-grid{display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(3,1fr);gap:14px;margin:0 auto;width:min(90%,460px);aspect-ratio:1/1;}
+  .mole-hole{background:radial-gradient(ellipse at center,#8B5E34,#5E3F22);border-radius:50%;position:relative;overflow:hidden;box-shadow:inset 0 8px 14px rgba(0,0,0,.45);cursor:pointer;display:flex;align-items:flex-end;justify-content:center;}
+  .mole-hole .mole{font-size:clamp(1.6rem,7vmin,3rem);transform:translateY(120%);transition:transform .15s ease-out;}
+  .mole-hole.up .mole{transform:translateY(10%);}
+</style>
+<section class="main-section" id="sec-games">
+<div class="game-scroll-inner">
+  <div class="fun-section-hero game-hero">
+    <span class="fsh-emoji-row">🎮 🎈 🌟 🎉 🧩</span>
+    <h2 style="color:#B5780A;font-family:'Baloo 2',sans-serif">Break Time!</h2>
+    <p style="color:#374151">A fun little pause between activities. Pick a game below — <strong>take a breath, play, and come back refreshed!</strong></p>
+  </div>
+
+  <div class="game-tabs">
+    <button class="gtab active" onclick="showGamePanel('memory',this)">🧠 Memory Match</button>
+    <button class="gtab" onclick="showGamePanel('bubbles',this)">🫧 Bubble Pop</button>
+    <button class="gtab" onclick="showGamePanel('simon',this)">🎵 Simon Says</button>
+    <button class="gtab" onclick="showGamePanel('mole',this)">🔨 Whack-a-Mole</button>
+  </div>
+
+  <!-- MEMORY MATCH GAME -->
+  <div class="game-panel active" id="game-memory">
+    <div class="game-btnrow">
+      <button class="game-btn diff active" id="mm-diff-easy" onclick="mmSetDifficulty('easy')">Easy (6 pairs)</button>
+      <button class="game-btn diff" id="mm-diff-hard" onclick="mmSetDifficulty('hard')">Hard (8 pairs)</button>
+    </div>
+    <div class="game-stats">
+      <div class="game-stat">🔄 Moves: <span id="mm-moves">0</span></div>
+      <div class="game-stat">✅ Matches: <span id="mm-matches">0</span>/<span id="mm-total">6</span></div>
+    </div>
+    <div class="mm-wrap">
+      <div id="memoryGrid" class="grid-3x4"></div>
+      <div class="game-start-overlay" id="mm-start-overlay">
+        <div style="font-size:2.5rem">🧠</div>
+        <p style="font-family:'Baloo 2',sans-serif;font-weight:700;color:#374151;max-width:320px">Flip two cards at a time and find all the matching pairs!</p>
+        <button class="game-btn" onclick="mmStart()">▶️ Start</button>
+      </div>
+    </div>
+    <div class="game-win-banner" id="mm-win-banner">
+      <h3>🎉 Amazing! You matched them all!</h3>
+      <p id="mm-win-text">You did it in 0 moves.</p>
+      <button class="game-btn" onclick="mmStart()">🔁 Play Again</button>
+    </div>
+    <div class="game-btnrow" style="margin-top:14px">
+      <button class="game-btn alt" onclick="mmStart()">🔁 New Game</button>
+    </div>
+  </div>
+
+  <!-- BUBBLE POP GAME -->
+  <div class="game-panel" id="game-bubbles">
+    <div class="game-stats">
+      <div class="game-stat">🫧 Popped: <span id="bp-score">0</span></div>
+      <div class="game-stat">⏱️ Time: <span id="bp-time">30</span>s</div>
+    </div>
+    <div id="bubbleArena">
+      <div id="bubbleStartOverlay">
+        <div style="font-size:2.5rem">🫧</div>
+        <p style="font-family:'Baloo 2',sans-serif;font-weight:700;color:#374151;max-width:320px">Tap the bubbles as they float up! You have 30 seconds.</p>
+        <button class="game-btn" onclick="bpStart()">▶️ Start</button>
+      </div>
+    </div>
+    <div class="game-win-banner" id="bp-win-banner">
+      <h3>🎉 Great popping!</h3>
+      <p id="bp-win-text">You popped 0 bubbles.</p>
+      <button class="game-btn" onclick="bpStart()">🔁 Play Again</button>
+    </div>
+  </div>
+
+  <!-- SIMON SAYS GAME -->
+  <div class="game-panel" id="game-simon">
+    <div class="game-stats">
+      <div class="game-stat">⭐ Level: <span id="sm-level">0</span></div>
+    </div>
+    <div class="sm-wrap">
+      <div id="simonBoard" class="simon-board">
+        <div class="simon-pad" data-color="red" onclick="simonPadClick('red')"></div>
+        <div class="simon-pad" data-color="blue" onclick="simonPadClick('blue')"></div>
+        <div class="simon-pad" data-color="green" onclick="simonPadClick('green')"></div>
+        <div class="simon-pad" data-color="yellow" onclick="simonPadClick('yellow')"></div>
+      </div>
+      <div class="game-start-overlay" id="simonStartOverlay">
+        <div style="font-size:2.5rem">🎵</div>
+        <p style="font-family:'Baloo 2',sans-serif;font-weight:700;color:#374151;max-width:320px">Watch the colours light up, then tap them back in the same order!</p>
+        <button class="game-btn" onclick="simonStart()">▶️ Start</button>
+      </div>
+    </div>
+    <div class="game-win-banner" id="simon-win-banner">
+      <h3>🎉 Great memory!</h3>
+      <p id="simon-win-text">You reached level 0.</p>
+      <button class="game-btn" onclick="simonStart()">🔁 Play Again</button>
+    </div>
+  </div>
+
+  <!-- WHACK-A-MOLE GAME -->
+  <div class="game-panel" id="game-mole">
+    <div class="game-stats">
+      <div class="game-stat">🔨 Score: <span id="wm-score">0</span></div>
+      <div class="game-stat">⏱️ Time: <span id="wm-time">30</span>s</div>
+    </div>
+    <div class="mole-wrap">
+      <div id="moleGrid" class="mole-grid"></div>
+      <div class="game-start-overlay" id="moleStartOverlay">
+        <div style="font-size:2.5rem">🔨</div>
+        <p style="font-family:'Baloo 2',sans-serif;font-weight:700;color:#374151;max-width:320px">Whack the moles as soon as they pop up! You have 30 seconds.</p>
+        <button class="game-btn" onclick="moleStart()">▶️ Start</button>
+      </div>
+    </div>
+    <div class="game-win-banner" id="mole-win-banner">
+      <h3>🎉 Whack champion!</h3>
+      <p id="mole-win-text">You whacked 0 moles.</p>
+      <button class="game-btn" onclick="moleStart()">🔁 Play Again</button>
+    </div>
+  </div>
+</div>
+</section>
+
 <!-- AAC Toast (outside section so position:fixed works correctly) -->
 <div id="aac-toast">&#x1F50A; <span id="aac-toast-text"></span></div>
 
@@ -6765,7 +6995,7 @@ buildChecklist();
     <div class="nnt-timer-title">⏱️ Activity Timer</div>
     <div id="nnt-timer-display">05:00</div>
     <div id="nnt-timer-bar-track"><div id="nnt-timer-bar-fill"></div></div>
-    <div id="nnt-alert-banner">🔔 Time's up! Great work!</div>
+    <div id="nnt-alert-banner">🔔 Time's up! Great work! <button id="nnt-stop-chime-btn" onclick="nntDismissAlert()">🔕 Stop Sound</button></div>
 
     <div class="nnt-preset-row">
       <button class="nnt-preset-btn" onclick="nntSetPreset(1)">1 min</button>
@@ -6812,6 +7042,472 @@ buildChecklist();
   </div>
 </div>
 <div id="cert-toast"></div>
+
+<!-- ══════════════════════════════════════════
+     BREAK TIME GAMES — SCRIPT
+══════════════════════════════════════════ -->
+<script>
+// Friendly voice helper reused from phonics (falls back gracefully if unavailable)
+function gamesSay(text) {
+  try {
+    if (!window.speechSynthesis || typeof phonicsMakeUtterance !== "function") return;
+    window.speechSynthesis.cancel();
+    const u = phonicsMakeUtterance(text);
+    window.speechSynthesis.speak(u);
+  } catch (e) { /* speech not available — game still works */ }
+}
+
+function showGamePanel(id, btn) {
+  document.querySelectorAll('.game-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.gtab').forEach(b => b.classList.remove('active'));
+  const target = document.getElementById('game-' + id);
+  if (target) target.classList.add('active');
+  if (btn) btn.classList.add('active');
+  // stop any game that keeps running in the background when navigating away
+  if (id !== 'bubbles') bpStop();
+  if (id !== 'mole') moleStop();
+  if (id !== 'simon') simonStop();
+}
+
+/* ───────────────── FULL-SCREEN GAME BOARD FITTING ─────────────────
+   The CSS above already gives every board (memory grid, Simon board, mole
+   grid) a solid, always-visible default size, so the games work correctly
+   even if this enhancement never runs. On top of that, a ResizeObserver
+   watches each board's wrapper and stretches the board to use all the
+   space actually available — reacting the instant a panel becomes visible,
+   the window resizes, or the device rotates, instead of guessing with a
+   fixed delay. */
+function fitGridToContainer(gridEl, wrapEl, ratio) {
+  if (!gridEl || !wrapEl) return;
+  const availW = wrapEl.clientWidth;
+  const availH = wrapEl.clientHeight;
+  // Wrapper isn't laid out yet (e.g. panel still hidden) — leave the CSS
+  // fallback size in place rather than collapsing the board to 0.
+  if (availW < 40 || availH < 40) return;
+  let w = availW;
+  let h = w / ratio;
+  if (h > availH) {
+    h = availH;
+    w = h * ratio;
+  }
+  gridEl.style.width = Math.floor(w) + 'px';
+  gridEl.style.height = Math.floor(h) + 'px';
+}
+
+function fitMemoryGrid() {
+  const grid = document.getElementById('memoryGrid');
+  const wrap = document.querySelector('.mm-wrap');
+  if (!grid || !wrap) return;
+  const ratio = grid.classList.contains('grid-4x4') ? 1 : 4 / 3;
+  fitGridToContainer(grid, wrap, ratio);
+}
+
+function fitSimonBoard() {
+  fitGridToContainer(document.getElementById('simonBoard'), document.querySelector('.sm-wrap'), 1);
+}
+
+function fitMoleGrid() {
+  fitGridToContainer(document.getElementById('moleGrid'), document.querySelector('.mole-wrap'), 1);
+}
+
+(function initGameBoardFitting() {
+  const mmWrap = document.querySelector('.mm-wrap');
+  const smWrap = document.querySelector('.sm-wrap');
+  const moleWrap = document.querySelector('.mole-wrap');
+
+  if (typeof ResizeObserver !== 'undefined') {
+    if (mmWrap) new ResizeObserver(fitMemoryGrid).observe(mmWrap);
+    if (smWrap) new ResizeObserver(fitSimonBoard).observe(smWrap);
+    if (moleWrap) new ResizeObserver(fitMoleGrid).observe(moleWrap);
+  } else {
+    // Fallback for the rare browser without ResizeObserver support.
+    window.addEventListener('resize', () => {
+      fitMemoryGrid(); fitSimonBoard(); fitMoleGrid();
+    });
+    window.addEventListener('orientationchange', () => {
+      setTimeout(() => { fitMemoryGrid(); fitSimonBoard(); fitMoleGrid(); }, 200);
+    });
+  }
+})();
+
+/* ───────────────── MEMORY MATCH ───────────────── */
+const MM_EMOJI_POOL = ["🐶","🐱","🐸","🦋","🌻","🍓","🚗","⚽","🎈","🌈","🐢","🦁","🍎","🎵","⭐","🐧"];
+let mmDifficulty = 'easy';
+let mmCards = [];
+let mmFlippedCards = [];
+let mmMoves = 0;
+let mmMatches = 0;
+let mmLock = false;
+
+function mmStart() {
+  const overlay = document.getElementById('mm-start-overlay');
+  if (overlay) overlay.style.display = 'none';
+  mmNewGame();
+}
+
+function mmSetDifficulty(level) {
+  mmDifficulty = level;
+  document.getElementById('mm-diff-easy').classList.toggle('active', level === 'easy');
+  document.getElementById('mm-diff-hard').classList.toggle('active', level === 'hard');
+  mmStart();
+}
+
+function mmShuffle(arr) {
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+
+function mmNewGame() {
+  const pairCount = mmDifficulty === 'hard' ? 8 : 6;
+  const chosen = mmShuffle(MM_EMOJI_POOL.slice()).slice(0, pairCount);
+  mmCards = mmShuffle(chosen.concat(chosen)).map((emoji, i) => ({ id: i, emoji, matched: false }));
+  mmFlippedCards = [];
+  mmMoves = 0;
+  mmMatches = 0;
+  mmLock = false;
+  document.getElementById('mm-moves').textContent = '0';
+  document.getElementById('mm-matches').textContent = '0';
+  document.getElementById('mm-total').textContent = String(pairCount);
+  document.getElementById('mm-win-banner').classList.remove('show');
+  const grid = document.getElementById('memoryGrid');
+  grid.className = pairCount === 8 ? 'grid-4x4' : 'grid-3x4';
+  grid.innerHTML = mmCards.map(c => `
+    <div class="mm-card" id="mm-card-${c.id}" onclick="mmFlip(${c.id})">
+      <div class="mm-inner">
+        <div class="mm-face mm-back">❓</div>
+        <div class="mm-face mm-front">${c.emoji}</div>
+      </div>
+    </div>`).join('');
+  requestAnimationFrame(fitMemoryGrid);
+}
+
+function mmFlip(id) {
+  if (mmLock) return;
+  const card = mmCards.find(c => c.id === id);
+  if (!card || card.matched) return;
+  const el = document.getElementById('mm-card-' + id);
+  if (el.classList.contains('flipped')) return;
+  if (mmFlippedCards.length === 2) return;
+
+  el.classList.add('flipped');
+  mmFlippedCards.push(card);
+
+  if (mmFlippedCards.length === 2) {
+    mmMoves++;
+    document.getElementById('mm-moves').textContent = String(mmMoves);
+    mmLock = true;
+    const [a, b] = mmFlippedCards;
+    if (a.emoji === b.emoji) {
+      a.matched = true; b.matched = true;
+      document.getElementById('mm-card-' + a.id).classList.add('matched');
+      document.getElementById('mm-card-' + b.id).classList.add('matched');
+      mmMatches++;
+      document.getElementById('mm-matches').textContent = String(mmMatches);
+      mmFlippedCards = [];
+      mmLock = false;
+      const total = mmDifficulty === 'hard' ? 8 : 6;
+      if (mmMatches === total) {
+        setTimeout(() => {
+          document.getElementById('mm-win-text').textContent = `You did it in ${mmMoves} moves!`;
+          document.getElementById('mm-win-banner').classList.add('show');
+          gamesSay("Great job! You matched them all!");
+          requestAnimationFrame(fitMemoryGrid);
+        }, 300);
+      } else {
+        gamesSay("Nice match!");
+      }
+    } else {
+      setTimeout(() => {
+        document.getElementById('mm-card-' + a.id).classList.remove('flipped');
+        document.getElementById('mm-card-' + b.id).classList.remove('flipped');
+        mmFlippedCards = [];
+        mmLock = false;
+      }, 850);
+    }
+  }
+}
+
+/* ───────────────── BUBBLE POP ───────────────── */
+const BUBBLE_EMOJI = ["🫧","⭐","🎈","🌟"];
+const BUBBLE_COLORS = ["#B7D3F5","#FCE4A8","#F5C2D0","#C5E8D9"];
+let bpScore = 0;
+let bpTimeLeft = 30;
+let bpSpawnHandle = null;
+let bpTimerHandle = null;
+let bpRunning = false;
+
+function bpStart() {
+  const arena = document.getElementById('bubbleArena');
+  arena.querySelectorAll('.bubble').forEach(b => b.remove());
+  document.getElementById('bubbleStartOverlay').style.display = 'none';
+  document.getElementById('bp-win-banner').classList.remove('show');
+  bpScore = 0;
+  bpTimeLeft = 30;
+  document.getElementById('bp-score').textContent = '0';
+  document.getElementById('bp-time').textContent = '30';
+  bpRunning = true;
+
+  bpSpawnHandle = setInterval(bpSpawnBubble, 700);
+  bpTimerHandle = setInterval(() => {
+    bpTimeLeft--;
+    document.getElementById('bp-time').textContent = String(bpTimeLeft);
+    if (bpTimeLeft <= 0) bpEnd();
+  }, 1000);
+}
+
+function bpSpawnBubble() {
+  if (!bpRunning) return;
+  const arena = document.getElementById('bubbleArena');
+  const bubble = document.createElement('div');
+  bubble.className = 'bubble';
+  const emoji = BUBBLE_EMOJI[Math.floor(Math.random() * BUBBLE_EMOJI.length)];
+  bubble.textContent = emoji;
+  const size = 46 + Math.floor(Math.random() * 28);
+  bubble.style.width = size + 'px';
+  bubble.style.height = size + 'px';
+  bubble.style.left = Math.random() * (arena.clientWidth - size) + 'px';
+  bubble.style.background = BUBBLE_COLORS[Math.floor(Math.random() * BUBBLE_COLORS.length)];
+  const duration = 3.2 + Math.random() * 1.6;
+  bubble.style.animationDuration = duration + 's';
+  bubble.onclick = () => bpPop(bubble);
+  bubble.addEventListener('animationend', () => bubble.remove());
+  arena.appendChild(bubble);
+}
+
+function bpPop(bubble) {
+  if (bubble.classList.contains('pop')) return;
+  bubble.classList.add('pop');
+  bpScore++;
+  document.getElementById('bp-score').textContent = String(bpScore);
+  setTimeout(() => bubble.remove(), 300);
+}
+
+function bpEnd() {
+  bpRunning = false;
+  clearInterval(bpSpawnHandle);
+  clearInterval(bpTimerHandle);
+  document.getElementById('bubbleArena').querySelectorAll('.bubble').forEach(b => b.remove());
+  document.getElementById('bp-win-text').textContent = `You popped ${bpScore} bubbles!`;
+  document.getElementById('bp-win-banner').classList.add('show');
+  gamesSay(`Great popping! You got ${bpScore} bubbles!`);
+}
+
+function bpStop() {
+  bpRunning = false;
+  clearInterval(bpSpawnHandle);
+  clearInterval(bpTimerHandle);
+}
+
+/* ───────────────── SIMON SAYS ───────────────── */
+const SIMON_COLORS = ["red", "blue", "green", "yellow"];
+const SIMON_FREQ = { red: 220, blue: 277, green: 330, yellow: 392 };
+let simonSequence = [];
+let simonUserStep = 0;
+let simonAccepting = false;
+let simonPlayHandle = null;
+
+function simonStart() {
+  const overlay = document.getElementById('simonStartOverlay');
+  if (overlay) overlay.style.display = 'none';
+  document.getElementById('simon-win-banner').classList.remove('show');
+  simonSequence = [];
+  simonUserStep = 0;
+  simonAccepting = false;
+  document.getElementById('sm-level').textContent = '0';
+  // Create/unlock the shared audio context here, inside the button's click
+  // handler, so the browser counts it as a genuine user gesture and lets it play.
+  simonGetAudioCtx();
+  simonNextRound();
+}
+
+function simonNextRound() {
+  simonAccepting = false;
+  simonUserStep = 0;
+  simonSequence.push(SIMON_COLORS[Math.floor(Math.random() * SIMON_COLORS.length)]);
+  document.getElementById('sm-level').textContent = String(simonSequence.length - 1);
+  simonPlaySequence();
+}
+
+function simonPlaySequence() {
+  let i = 0;
+  clearInterval(simonPlayHandle);
+  simonPlayHandle = setInterval(() => {
+    if (i > 0) simonUnlight(simonSequence[i - 1]);
+    if (i >= simonSequence.length) {
+      clearInterval(simonPlayHandle);
+      simonAccepting = true;
+      return;
+    }
+    simonLight(simonSequence[i]);
+    i++;
+  }, 650);
+}
+
+function simonLight(color) {
+  const pad = document.querySelector('.simon-pad[data-color="' + color + '"]');
+  if (pad) pad.classList.add('lit');
+  simonBeep(SIMON_FREQ[color]);
+}
+
+function simonUnlight(color) {
+  const pad = document.querySelector('.simon-pad[data-color="' + color + '"]');
+  if (pad) pad.classList.remove('lit');
+}
+
+let simonAudioCtx = null;
+
+function simonGetAudioCtx() {
+  try {
+    if (!simonAudioCtx) {
+      simonAudioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    }
+    // Some browsers create contexts in a "suspended" state until a user
+    // gesture resumes them — this call is inside the Start button's click
+    // handler, so it counts as that gesture.
+    if (simonAudioCtx.state === 'suspended') simonAudioCtx.resume();
+  } catch (e) { /* Web Audio unavailable — pads still light up visually */ }
+  return simonAudioCtx;
+}
+
+function simonBeep(freq) {
+  try {
+    const ctx = simonGetAudioCtx();
+    if (!ctx) return;
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.type = "sine";
+    osc.frequency.value = freq;
+    osc.connect(gain); gain.connect(ctx.destination);
+    gain.gain.setValueAtTime(0.0001, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.22, ctx.currentTime + 0.02);
+    gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.35);
+    osc.start(); osc.stop(ctx.currentTime + 0.35);
+    osc.onended = () => { osc.disconnect(); gain.disconnect(); };
+  } catch (e) { /* Web Audio unavailable — pad still lights up visually */ }
+}
+
+function simonPadClick(color) {
+  if (!simonAccepting) return;
+  simonLight(color);
+  setTimeout(() => simonUnlight(color), 250);
+  if (color === simonSequence[simonUserStep]) {
+    simonUserStep++;
+    if (simonUserStep === simonSequence.length) {
+      simonAccepting = false;
+      document.getElementById('sm-level').textContent = String(simonSequence.length);
+      setTimeout(simonNextRound, 900);
+    }
+  } else {
+    simonAccepting = false;
+    const levelReached = simonSequence.length - 1;
+    document.getElementById('simon-win-text').textContent = `You reached level ${levelReached}!`;
+    document.getElementById('simon-win-banner').classList.add('show');
+    gamesSay(`Great memory! You reached level ${levelReached}!`);
+    requestAnimationFrame(fitSimonBoard);
+  }
+}
+
+function simonStop() {
+  clearInterval(simonPlayHandle);
+  simonAccepting = false;
+  document.querySelectorAll('.simon-pad').forEach(p => p.classList.remove('lit'));
+}
+
+/* ───────────────── WHACK-A-MOLE ───────────────── */
+const MOLE_COUNT = 9;
+let moleScore = 0;
+let moleTimeLeft = 30;
+let moleSpawnHandle = null;
+let moleTimerHandle = null;
+let moleRunning = false;
+let moleActiveHole = null;
+
+function moleBuildGrid() {
+  const grid = document.getElementById('moleGrid');
+  grid.innerHTML = '';
+  for (let i = 0; i < MOLE_COUNT; i++) {
+    const hole = document.createElement('div');
+    hole.className = 'mole-hole';
+    hole.id = 'mole-hole-' + i;
+    hole.innerHTML = '<span class="mole">🐹</span>';
+    hole.onclick = () => moleWhack(i);
+    grid.appendChild(hole);
+  }
+  requestAnimationFrame(fitMoleGrid);
+}
+
+function moleStart() {
+  const overlay = document.getElementById('moleStartOverlay');
+  if (overlay) overlay.style.display = 'none';
+  document.getElementById('mole-win-banner').classList.remove('show');
+  moleBuildGrid();
+  moleScore = 0;
+  moleTimeLeft = 30;
+  moleActiveHole = null;
+  moleRunning = true;
+  document.getElementById('wm-score').textContent = '0';
+  document.getElementById('wm-time').textContent = '30';
+
+  clearInterval(moleSpawnHandle);
+  clearInterval(moleTimerHandle);
+  moleSpawnHandle = setInterval(moleSpawn, 850);
+  moleTimerHandle = setInterval(() => {
+    moleTimeLeft--;
+    document.getElementById('wm-time').textContent = String(moleTimeLeft);
+    if (moleTimeLeft <= 0) moleEnd();
+  }, 1000);
+}
+
+function moleSpawn() {
+  if (!moleRunning) return;
+  if (moleActiveHole !== null) {
+    const prev = document.getElementById('mole-hole-' + moleActiveHole);
+    if (prev) prev.classList.remove('up');
+  }
+  const idx = Math.floor(Math.random() * MOLE_COUNT);
+  moleActiveHole = idx;
+  const hole = document.getElementById('mole-hole-' + idx);
+  if (hole) hole.classList.add('up');
+  setTimeout(() => {
+    if (moleActiveHole === idx) {
+      if (hole) hole.classList.remove('up');
+      moleActiveHole = null;
+    }
+  }, 700);
+}
+
+function moleWhack(i) {
+  if (!moleRunning) return;
+  if (moleActiveHole === i) {
+    moleScore++;
+    document.getElementById('wm-score').textContent = String(moleScore);
+    const hole = document.getElementById('mole-hole-' + i);
+    if (hole) hole.classList.remove('up');
+    moleActiveHole = null;
+  }
+}
+
+function moleEnd() {
+  moleRunning = false;
+  clearInterval(moleSpawnHandle);
+  clearInterval(moleTimerHandle);
+  const arena = document.getElementById('moleGrid');
+  if (arena) arena.querySelectorAll('.mole-hole').forEach(h => h.classList.remove('up'));
+  document.getElementById('mole-win-text').textContent = `You whacked ${moleScore} moles!`;
+  document.getElementById('mole-win-banner').classList.add('show');
+  gamesSay(`Great whacking! You got ${moleScore} moles!`);
+  requestAnimationFrame(fitMoleGrid);
+}
+
+function moleStop() {
+  moleRunning = false;
+  clearInterval(moleSpawnHandle);
+  clearInterval(moleTimerHandle);
+}
+</script>
 
 </body>
 </html>
