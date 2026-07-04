@@ -90,10 +90,10 @@ body { font-family: var(--font); background: var(--bg); color: var(--text); }
 /* ─── SECTION NAV TABS ─── */
 .main-tabs {
   display: flex;
+  flex-wrap: wrap;
   gap: 0;
   background: var(--card);
   border-bottom: 2px solid var(--border);
-  overflow-x: auto;
   padding: 0 1rem;
   position: sticky;
   top: 0;
@@ -684,14 +684,38 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);}
 .site-title span{color:#6DDCB0;}
 .site-subtitle{font-size:13px;color:rgba(255,255,255,.75);margin-top:6px;position:relative;}
 
-/* MAIN TABS */
-.main-tabs{display:flex;gap:0;background:var(--card);border-bottom:2px solid var(--border);overflow-x:auto;padding:0 .5rem;position:sticky;top:0;z-index:100;box-shadow:0 2px 8px rgba(0,0,0,.06);}
+/* MAIN TABS — grouped, modern dropdown navigation */
+.main-tabs{display:flex;align-items:center;flex-wrap:wrap;gap:4px;background:var(--card);border-bottom:2px solid var(--border);padding:.5rem .6rem;position:sticky;top:0;z-index:100;box-shadow:0 2px 8px rgba(0,0,0,.06);}
 .mtab{font-family:var(--head);font-size:13px;font-weight:700;padding:.65rem 1rem;border:none;background:none;cursor:pointer;color:var(--muted);border-bottom:3px solid transparent;margin-bottom:-2px;white-space:nowrap;transition:.2s;}
 .mtab.active{color:var(--teal);border-color:var(--teal);}
 .mtab.maths-tab.active{color:var(--gold);border-color:var(--gold);}
 .mtab.english-tab.active{color:var(--blue);border-color:var(--blue);}
 .main-section{display:none;padding:1.5rem 1rem 3rem;max-width:800px;margin:0 auto;}
 .main-section.active{display:block;}
+
+/* Folder-style dropdown groups in the main nav (Phonics & Comprehension, Maths, etc.) */
+.nav-group{position:relative;flex-shrink:0;}
+.nav-folder{display:flex;align-items:center;gap:6px;font-family:var(--head);font-size:13px;font-weight:700;padding:.65rem .9rem;border:none;border-radius:12px;background:none;cursor:pointer;color:var(--muted);white-space:nowrap;transition:background .15s,color .15s;}
+.nav-folder:hover{background:#F3F4F9;}
+.nav-group.has-active .nav-folder,.nav-group.open .nav-folder{background:var(--group-tint,#F3F4F9);color:var(--group-color,var(--teal));}
+.nav-caret{font-size:10px;transition:transform .2s;color:inherit;opacity:.7;}
+.nav-group.open .nav-caret{transform:rotate(180deg);}
+.nav-dropdown{position:absolute;top:calc(100% + 8px);left:0;min-width:220px;background:#fff;border:1px solid var(--border);border-radius:14px;box-shadow:0 12px 32px rgba(20,20,40,.16);padding:8px;display:flex;flex-direction:column;gap:2px;opacity:0;visibility:hidden;transform:translateY(-6px);transition:opacity .16s ease,transform .16s ease,visibility .16s;z-index:200;}
+.nav-group.open .nav-dropdown{opacity:1;visibility:visible;transform:translateY(0);}
+.nav-item{display:flex;align-items:center;gap:8px;font-family:var(--font);font-size:13.5px;font-weight:700;padding:.62rem .8rem;border:none;border-radius:9px;background:none;cursor:pointer;color:var(--text);text-align:left;white-space:nowrap;transition:background .12s;}
+.nav-item:hover{background:#F3F4F9;}
+.nav-item.active{background:var(--group-tint,#F3F4F9);color:var(--group-color,var(--teal));}
+
+/* Single (non-grouped) top-level nav buttons */
+.nav-single{font-family:var(--head);font-size:13px;font-weight:700;padding:.65rem .9rem;border:none;border-radius:12px;background:none;cursor:pointer;white-space:nowrap;transition:background .15s;}
+.nav-single:hover{background:#F3F4F9;}
+.nav-single.active{background:#F3F4F9;}
+
+@media (max-width:640px){
+  .main-tabs{gap:2px;padding:.4rem;}
+  .nav-folder,.nav-single{font-size:12px;padding:.55rem .65rem;}
+  .nav-dropdown{min-width:200px;}
+}
 
 /* SUB TABS */
 .sub-tabs{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:1.3rem;}
@@ -1830,16 +1854,55 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);}
 
 <!-- ════════════════ MAIN TABS ════════════════ -->
 <nav class="main-tabs" id="mainTabs">
-  <button class="mtab active" onclick="showMain('phonics',this)" id="tab-phonics">🔤 Phonics Sounds</button>
-  <button class="mtab" onclick="showMain('comprehension',this)" id="tab-comprehension">📖 Comprehension</button>
-  <button class="mtab math-tab" onclick="showMain('maths',this)" id="tab-maths">🔢 Maths</button>
-  <button class="mtab" onclick="showMain('lifeskills',this)" id="tab-lifeskills" style="color:var(--gold)">🌟 Life Skills</button>
-  <button class="mtab" onclick="showMain('socialstories',this)" id="tab-socialstories" style="color:var(--rose)">💬 Social Stories</button>
-  <button class="mtab" onclick="showMain('worksheets',this)" id="tab-worksheets" style="color:var(--blue)">📚 Worksheets</button>
-  <button class="mtab" onclick="showMain('aac',this)" id="tab-aac" style="color:#7C3AED">💬 AAC Board</button>
-  <button class="mtab" onclick="showMain('games',this)" id="tab-games" style="color:#E8A81C">🎮 Break Time</button>
-  <button class="mtab" onclick="doLogout()" id="tab-account" style="margin-left:auto;color:var(--coral)">🚪 Log out</button>
+  <div class="nav-group has-active" style="--group-color:var(--teal);--group-tint:var(--teal-l)">
+    <button class="nav-folder" onclick="toggleNavFolder(this)" id="folder-phonics">🔤📖 Phonics &amp; Comprehension <span class="nav-caret">▾</span></button>
+    <div class="nav-dropdown">
+      <button class="nav-item active" onclick="showMain('phonics',this)" id="tab-phonics">🔤 Phonics Sounds</button>
+      <button class="nav-item" onclick="showMain('comprehension',this)" id="tab-comprehension">📖 Comprehension</button>
+      <button class="nav-item" onclick="goToWorksheets('english',this)" id="tab-ws-english">📝 English Worksheets</button>
+    </div>
+  </div>
+
+  <div class="nav-group" style="--group-color:var(--gold);--group-tint:var(--gold-l)">
+    <button class="nav-folder" onclick="toggleNavFolder(this)" id="folder-maths">🔢 Maths <span class="nav-caret">▾</span></button>
+    <div class="nav-dropdown">
+      <button class="nav-item" onclick="showMain('maths',this)" id="tab-maths">🔢 Maths Practice</button>
+      <button class="nav-item" onclick="goToWorksheets('maths',this)" id="tab-ws-maths">📐 Maths Worksheets</button>
+    </div>
+  </div>
+
+  <div class="nav-group" style="--group-color:var(--rose);--group-tint:var(--rose-l)">
+    <button class="nav-folder" onclick="toggleNavFolder(this)" id="folder-life">🌟 Life Skills &amp; Social Stories <span class="nav-caret">▾</span></button>
+    <div class="nav-dropdown">
+      <button class="nav-item" onclick="showMain('lifeskills',this)" id="tab-lifeskills">🌟 Life Skills</button>
+      <button class="nav-item" onclick="showMain('socialstories',this)" id="tab-socialstories">💬 Social Stories</button>
+    </div>
+  </div>
+
+  <button class="nav-single" onclick="showMain('aac',this)" id="tab-aac" style="color:#7C3AED">🗣️ Alternative Communication</button>
+  <button class="nav-single" onclick="showMain('games',this)" id="tab-games" style="color:#E8A81C">🎮 Games</button>
+  <button class="nav-single" onclick="doLogout()" id="tab-account" style="margin-left:auto;color:var(--coral)">🚪 Log out</button>
 </nav>
+
+<script>
+// ─── NAV DROPDOWN (folder-style groups: Phonics & Comprehension, Maths, Life Skills & Social Stories) ───
+function toggleNavFolder(btn) {
+  const group = btn.closest('.nav-group');
+  const wasOpen = group.classList.contains('open');
+  document.querySelectorAll('.nav-group.open').forEach(g => g.classList.remove('open'));
+  if (!wasOpen) group.classList.add('open');
+}
+document.addEventListener('click', (e) => {
+  if (!e.target.closest('.nav-group')) {
+    document.querySelectorAll('.nav-group.open').forEach(g => g.classList.remove('open'));
+  }
+});
+// Jump straight to a specific Worksheets subject (Maths or English) from the dropdown
+function goToWorksheets(subject, btn) {
+  showMain('worksheets', btn);
+  showWSMain(subject);
+}
+</script>
 
 <div id="site-content">
 
@@ -3226,13 +3289,18 @@ function showMain(id, btn) {
   // Hide all section types
   document.querySelectorAll('.main-section').forEach(s => s.classList.remove('active'));
   document.querySelectorAll('.ws-main-section').forEach(s => s.classList.remove('active'));
-  // Deactivate all tabs
-  document.querySelectorAll('.mtab').forEach(b => b && b.classList.remove('active'));
+  // Deactivate all top-nav buttons (dropdown items + single buttons) and folder highlighting
+  document.querySelectorAll('#mainTabs .nav-item, #mainTabs .nav-single').forEach(b => b && b.classList.remove('active'));
+  document.querySelectorAll('#mainTabs .nav-group').forEach(g => g.classList.remove('has-active', 'open'));
   // Show the target section
   var target = document.getElementById('sec-' + id);
   if (target) target.classList.add('active');
-  // Activate the clicked tab
-  if (btn) btn.classList.add('active');
+  // Activate the clicked tab, and highlight its parent dropdown folder (if any)
+  if (btn) {
+    btn.classList.add('active');
+    var parentGroup = btn.closest('.nav-group');
+    if (parentGroup) parentGroup.classList.add('has-active');
+  }
   // AAC-specific: lazy-init and toggle WhatsApp button
   if (id === 'aac') { aacInit(); }
   aacUpdateWaBtn(id);
@@ -5757,7 +5825,8 @@ function showWSMain(id, btn) {
   document.querySelectorAll('#ws-container .ws-main-section').forEach(s => s.classList.remove('active'));
   document.querySelectorAll('#ws-nav .mtab').forEach(b => b.classList.remove('active'));
   document.getElementById('ws-sec-' + id).classList.add('active');
-  btn.classList.add('active');
+  if (!btn) btn = document.querySelector('#ws-nav .mtab[onclick*="\'' + id + '\'"]');
+  if (btn) btn.classList.add('active');
 }
 function showWSTopic(prefix, id, btn) {
   const group = prefix === 'm' ? 'ws-mathTabs' : 'ws-engTabs';
@@ -6693,7 +6762,7 @@ buildChecklist();
     <div id="aac-header-left">
       <span id="aac-header-icon">💬</span>
       <div>
-        <div id="aac-app-name">AAC Communication Board</div>
+        <div id="aac-app-name">Alternative Communication Board</div>
         <div id="aac-app-sub">Adaptive Learning Support</div>
       </div>
     </div>
@@ -6829,7 +6898,7 @@ buildChecklist();
 <div class="game-scroll-inner">
   <div class="fun-section-hero game-hero">
     <span class="fsh-emoji-row">🎮 🎈 🌟 🎉 🧩</span>
-    <h2 style="color:#B5780A;font-family:'Baloo 2',sans-serif">Break Time!</h2>
+    <h2 style="color:#B5780A;font-family:'Baloo 2',sans-serif">Games!</h2>
     <p style="color:#374151">A fun little pause between activities. Pick a game below — <strong>take a breath, play, and come back refreshed!</strong></p>
   </div>
 
@@ -6955,7 +7024,7 @@ buildChecklist();
 <!-- ════ NOW / NEXT / THEN SCHEDULE + ACTIVITY TIMER WIDGET ════ -->
 <button id="nnt-toggle-btn" onclick="nntTogglePanel()">
   <span id="nnt-toggle-emoji">🗓️</span>
-  <span>Schedule &amp; Timer</span>
+  <span>Now &amp; Next &amp; Timer</span>
   <span id="nnt-toggle-badge"></span>
 </button>
 
