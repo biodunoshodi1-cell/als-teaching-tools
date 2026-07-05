@@ -146,7 +146,7 @@ body.dyslexia-mode .comp-passage p, body.dyslexia-mode .story-text, body.dyslexi
 .mtab.active { color: var(--teal); border-color: var(--teal); }
 .mtab.math-tab.active { color: var(--add); border-color: var(--add); }
 
-.main-section { display: none; padding: 1.5rem 1rem 3rem; max-width: 780px; margin: 0 auto; }
+.main-section { display: none; padding: 1.5rem 0.75rem 3rem; max-width: 860px; margin: 0 auto; width: 100%; }
 .main-section.active { display: block; }
 
 /* ─── PHONICS HERO CARD ─── */
@@ -183,6 +183,26 @@ body.dyslexia-mode .comp-passage p, body.dyslexia-mode .story-text, body.dyslexi
 .stab.active { background: var(--teal-l); border-color: var(--teal-m); color: var(--teal); }
 .sound-panel { display: none; }
 .sound-panel.active { display: block; }
+
+/* ─── PHONICS SOUND TABS: distinct colours + clear "tap to switch" affordance ─── */
+.sound-tabs-hint {
+  font-family: var(--font); font-size: 0.78rem; font-weight: 700; color: var(--muted);
+  margin: -0.6rem 0 0.7rem; display: flex; align-items: center; gap: 5px;
+}
+#soundTabs .stab { border-width: 2px; font-weight: 800; box-shadow: 0 1px 4px rgba(0,0,0,.05); }
+#soundTabs .stab:hover { transform: translateY(-2px) scale(1.04); box-shadow: 0 4px 10px rgba(0,0,0,.12); }
+#soundTabs .stab:focus-visible { outline: 3px solid var(--indigo); outline-offset: 2px; }
+#soundTabs .stab:nth-child(6n+1) { background: var(--teal-l);   border-color: var(--teal-m);   color: var(--teal); }
+#soundTabs .stab:nth-child(6n+2) { background: var(--indigo-l); border-color: var(--indigo-m); color: var(--indigo); }
+#soundTabs .stab:nth-child(6n+3) { background: var(--gold-l);   border-color: var(--gold-m);   color: var(--gold); }
+#soundTabs .stab:nth-child(6n+4) { background: var(--rose-l);   border-color: var(--rose-m);   color: var(--rose); }
+#soundTabs .stab:nth-child(6n+5) { background: var(--coral-l);  border-color: var(--coral-m);  color: var(--coral); }
+#soundTabs .stab:nth-child(6n+0) { background: var(--blue-l);   border-color: var(--blue-m);   color: var(--blue); }
+#soundTabs .stab.active {
+  transform: scale(1.08);
+  box-shadow: 0 0 0 3px currentColor inset, 0 4px 12px rgba(0,0,0,.15);
+}
+#soundTabs .stab.active::before { content: '🔊 '; }
 
 /* ─── PART TABS (within each sound) ─── */
 .part-tabs {
@@ -719,7 +739,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);}
 .mtab.active{color:var(--teal);border-color:var(--teal);}
 .mtab.maths-tab.active{color:var(--gold);border-color:var(--gold);}
 .mtab.english-tab.active{color:var(--blue);border-color:var(--blue);}
-.main-section{display:none;padding:1.5rem 1rem 3rem;max-width:800px;margin:0 auto;}
+.main-section{display:none;padding:1.5rem 0.75rem 3rem;max-width:860px;margin:0 auto;width:100%;}
 .main-section.active{display:block;}
 
 /* Folder-style dropdown groups in the main nav (Phonics & Comprehension, Maths, etc.) */
@@ -744,6 +764,10 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);}
   .main-tabs{gap:2px;padding:.4rem;}
   .nav-folder,.nav-single{font-size:12px;padding:.55rem .65rem;}
   .nav-dropdown{min-width:200px;}
+  .main-section, .ws-main-section { padding-left: 0.55rem; padding-right: 0.55rem; }
+}
+@media (max-width:400px){
+  .main-section, .ws-main-section { padding-left: 0.4rem; padding-right: 0.4rem; }
 }
 
 /* SUB TABS */
@@ -1304,7 +1328,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);}
 .promo-book-btn:hover { opacity: .85; }
 
 /* ── Worksheets combined styles ── */
-.ws-main-section{display:none;padding:1.5rem 1rem 3rem;max-width:800px;margin:0 auto;}
+.ws-main-section{display:none;padding:1.5rem 0.75rem 3rem;max-width:860px;margin:0 auto;width:100%;}
 .ws-main-section.active{display:block;}
 .ws-topic-panel{display:none;}
 .ws-topic-panel.active{display:block;}
@@ -1657,14 +1681,31 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);}
 
 @media print {
   body * { visibility: hidden !important; }
-  #cert-overlay, #cert-overlay * { visibility: visible !important; }
-  #cert-overlay {
-    position: fixed; inset: 0; background: #fff !important; backdrop-filter: none;
-    display: flex !important; align-items: flex-start; padding-top: 40px;
+  .print-visible, .print-visible * { visibility: visible !important; }
+  .print-visible {
+    position: absolute !important; left: 0; top: 0; width: 100% !important;
+    max-width: 100% !important; margin: 0 !important; padding: 24px !important;
+  }
+  #cert-overlay.print-visible {
+    position: fixed !important; inset: 0; background: #fff !important; backdrop-filter: none;
+    display: flex !important; align-items: flex-start; padding-top: 40px !important;
   }
   #cert-close, .cert-actions { display: none !important; }
   #cert-card { box-shadow: none; border: 6px double #D4A017; }
+  /* Hide interactive-only controls even inside the printed area */
+  .print-visible .als-focus-nav,
+  .print-visible #als-tools-btn,
+  .print-visible .nav-single,
+  .print-visible button { display: none !important; }
+  .print-visible input, .print-visible textarea { border: 1.5px solid #999 !important; background: #fff !important; }
+  #als-print-watermark {
+    display: block !important; visibility: visible !important;
+    position: fixed; top: 50%; left: 50%; transform: translate(-50%,-50%) rotate(-30deg);
+    font-family: 'Baloo 2', sans-serif; font-weight: 800; font-size: 34px; color: #000;
+    opacity: 0.07; white-space: nowrap; z-index: 99999; text-align: center; line-height: 1.4;
+  }
 }
+#als-print-watermark { display: none; }
 
 /* ── WhatsApp AAC button ── */
 #aac-wa-btn {
@@ -2141,18 +2182,8 @@ function goToWorksheets(subject, btn) {
   <div class="fun-section-hero" style="background:linear-gradient(135deg,#E0F4EE,#EEEDFE);border:2px solid #1BAD85">
     <span class="fsh-emoji-row">🔤 📣 🌈 ✏️ 🎵</span>
     <h2 style="color:#0D7A60;font-family:'Baloo 2',sans-serif">Sound Explorer Worksheets</h2>
-    <p style="color:#374151">Choose a vowel digraph below, then work through <strong>Circle It → Fill In → Sort It → Stories!</strong></p>
+    <p style="color:#374151;font-weight:800;font-size:1.05rem">Choose a vowel digraph below, then work through <strong>Circle It → Fill In → Sort It → Stories!</strong></p>
     <p style="color:#0D7A60;font-size:0.82rem;font-weight:700;margin-top:4px">🔊 Sounds play at full volume — turn up your device volume for the clearest listening experience.</p>
-    <div style="display:flex;gap:6px;flex-wrap:wrap;justify-content:center;margin-top:10px">
-      <span style="background:#fff;border:2px solid #1BAD85;border-radius:20px;padding:4px 12px;font-family:'Baloo 2',sans-serif;font-size:0.9rem;font-weight:700;color:#0D7A60">🌳 ee</span>
-      <span style="background:#fff;border:2px solid #7B73D9;border-radius:20px;padding:4px 12px;font-family:'Baloo 2',sans-serif;font-size:0.9rem;font-weight:700;color:#4A35B0">🌙 oo</span>
-      <span style="background:#fff;border:2px solid #E8A81C;border-radius:20px;padding:4px 12px;font-family:'Baloo 2',sans-serif;font-size:0.9rem;font-weight:700;color:#B5780A">⛵ oa</span>
-      <span style="background:#fff;border:2px solid #1BAD85;border-radius:20px;padding:4px 12px;font-family:'Baloo 2',sans-serif;font-size:0.9rem;font-weight:700;color:#0D7A60">💎 oi</span>
-      <span style="background:#fff;border:2px solid #D96090;border-radius:20px;padding:4px 12px;font-family:'Baloo 2',sans-serif;font-size:0.9rem;font-weight:700;color:#B03060">🎈 oy</span>
-      <span style="background:#fff;border:2px solid #E8A81C;border-radius:20px;padding:4px 12px;font-family:'Baloo 2',sans-serif;font-size:0.9rem;font-weight:700;color:#B5780A">☀️ ay</span>
-      <span style="background:#fff;border:2px solid #E87A5C;border-radius:20px;padding:4px 12px;font-family:'Baloo 2',sans-serif;font-size:0.9rem;font-weight:700;color:#C84B2F">🦁 aw</span>
-      <span style="background:#fff;border:2px solid #7B73D9;border-radius:20px;padding:4px 12px;font-family:'Baloo 2',sans-serif;font-size:0.9rem;font-weight:700;color:#4A35B0">+ more!</span>
-    </div>
   </div>
 
   <div class="worksheet-name-block">
@@ -2161,6 +2192,7 @@ function goToWorksheets(subject, btn) {
   </div>
 
   <!-- Sound selector tabs -->
+  <div class="sound-tabs-hint">👆 <span>Tap any sound below to switch what you're practicing</span></div>
   <div class="sound-tabs" id="soundTabs">
     <button class="stab active" onclick="showSound('ee',this)">ee</button>
     <button class="stab" onclick="showSound('oo',this)">oo</button>
@@ -6484,8 +6516,23 @@ function closeCertificate() {
   document.getElementById('cert-overlay').classList.add('hidden');
 }
 
-function printCertificate() {
+function alsPrintElement(el) {
+  document.querySelectorAll('.print-visible').forEach(e => e.classList.remove('print-visible'));
+  if (el) el.classList.add('print-visible');
   window.print();
+}
+window.addEventListener('afterprint', () => {
+  document.querySelectorAll('.print-visible').forEach(e => e.classList.remove('print-visible'));
+});
+
+function alsPrintCurrentPage() {
+  if (typeof alsTogglePanel === 'function') alsTogglePanel(false);
+  const active = document.querySelector('.main-section.active');
+  alsPrintElement(active);
+}
+
+function printCertificate() {
+  alsPrintElement(document.getElementById('cert-overlay'));
 }
 
 // ─── SUPPORT TOOLS: points, calm mode, reading mode, certificate gallery, break card ───
@@ -7689,7 +7736,7 @@ buildChecklist();
     <div id="als-progress-summary" style="display:flex;gap:14px;flex-wrap:wrap;margin-bottom:1.2rem"></div>
     <div id="als-progress-table"></div>
     <div style="margin-top:1.2rem;display:flex;gap:10px;flex-wrap:wrap">
-      <button class="cert-btn" onclick="window.print()">🖨️ Print This Report</button>
+      <button class="cert-btn" onclick="alsPrintElement(document.getElementById('sec-progress'))">🖨️ Print This Report</button>
       <button class="cert-btn" style="background:var(--coral)" onclick="alsResetProgress()">🗑️ Clear Progress Data</button>
     </div>
   </div>
@@ -7815,6 +7862,10 @@ buildChecklist();
       🏆 My Certificates <span id="als-cert-count-badge"></span>
     </button>
 
+    <button class="als-tool-btn" onclick="alsPrintCurrentPage()">
+      🖨️ Print This Page
+    </button>
+
     <div class="als-toggle-row">
       <label class="als-toggle" for="als-focus-toggle">
         <span>🎯 One Activity at a Time <small>Shows a single question, with a Next button</small></span>
@@ -7866,6 +7917,9 @@ buildChecklist();
 
 <!-- ════ CELEBRATION BANNER ════ -->
 <div id="als-celebrate-banner" aria-live="polite"></div>
+
+<!-- ════ PRINT WATERMARK (only visible on printed pages) ════ -->
+<div id="als-print-watermark">Adaptive Learning Support<br><span style="font-size:0.5em">hello@adaptivelearningsupport.com</span></div>
 
 <!-- ════ FLOATING BOOK-A-SESSION BUTTON ════ -->
 <div class="book-float" id="bookFloat">
