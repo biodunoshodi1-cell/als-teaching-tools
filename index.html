@@ -38,6 +38,35 @@
 html { scroll-behavior: smooth; }
 body { font-family: var(--font); background: var(--bg); color: var(--text); }
 
+/* ─── SKIP LINK (accessibility) ─── */
+.skip-link {
+  position: absolute; left: -9999px; top: 0;
+  background: var(--indigo); color: #fff;
+  padding: 10px 18px; border-radius: 0 0 8px 0;
+  font-family: var(--head); font-weight: 700; font-size: 14px;
+  z-index: 10000; text-decoration: none;
+}
+.skip-link:focus {
+  left: 0;
+}
+
+/* ─── CALM MODE (accessibility) ─── */
+body.calm-mode * { animation: none !important; transition: none !important; }
+body.calm-mode { letter-spacing: 0.01em; }
+body.calm-mode .card, body.calm-mode .comp-passage, body.calm-mode .q-item { line-height: 1.7 !important; }
+body.calm-mode section, body.calm-mode .card { padding-top: calc(1em + 4px); }
+
+/* ─── DYSLEXIA-FRIENDLY READING MODE ─── */
+body.dyslexia-mode, body.dyslexia-mode input, body.dyslexia-mode button {
+  font-family: 'Comic Sans MS', 'Comic Sans', 'Nunito', sans-serif !important;
+  letter-spacing: 0.035em !important;
+  word-spacing: 0.12em !important;
+  line-height: 1.8 !important;
+}
+body.dyslexia-mode .comp-passage p, body.dyslexia-mode .story-text, body.dyslexia-mode p {
+  max-width: 62ch;
+}
+
 /* ─── TOP NAV ─── */
 .site-header {
   background: linear-gradient(135deg, #1E1B4B 0%, #0D4A38 100%);
@@ -1055,6 +1084,141 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);}
   #nnt-toggle-btn { right: 8px; top: 52px; padding: 9px 13px 9px 10px; font-size: 12px; }
 }
 
+/* ── SUPPORT TOOLS: floating button + panel ── */
+#als-tools-btn {
+  position: fixed; top: 60px; left: 14px; z-index: 9002;
+  display: flex; align-items: center; gap: 7px;
+  background: linear-gradient(135deg,#0D7A60,#1BAD85);
+  color: #fff; border: none; border-radius: 50px;
+  padding: 10px 14px; font-family: 'Baloo 2', sans-serif;
+  font-size: 13px; font-weight: 800; cursor: pointer;
+  box-shadow: 0 4px 18px rgba(13,122,96,.40);
+  transition: transform .2s, box-shadow .2s;
+  white-space: nowrap;
+}
+#als-tools-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 24px rgba(13,122,96,.5); }
+#als-points-badge {
+  background: rgba(255,255,255,0.25); border-radius: 20px;
+  padding: 2px 9px; font-size: 11.5px; font-weight: 900;
+}
+
+#als-tools-panel {
+  position: fixed; top: 108px; left: 14px; z-index: 9003;
+  width: min(320px, calc(100vw - 28px));
+  max-height: min(75vh, 560px); overflow-y: auto;
+  background: #fff; border-radius: 20px;
+  box-shadow: 0 16px 40px rgba(20,15,60,.28);
+  border: 2px solid #E4E7EE;
+  display: none; flex-direction: column;
+}
+#als-tools-panel.open { display: flex; }
+#als-tools-head {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 12px 14px; background: linear-gradient(100deg,#0D7A60,#1BAD85);
+  border-radius: 18px 18px 0 0; flex-shrink: 0;
+}
+#als-tools-head h4 { color: #fff; font-family: 'Baloo 2', sans-serif; font-size: 0.95rem; font-weight: 800; margin: 0; }
+#als-tools-close {
+  background: rgba(255,255,255,.2); border: none; color: #fff;
+  width: 26px; height: 26px; border-radius: 50%; cursor: pointer;
+  font-size: 15px; display: flex; align-items: center; justify-content: center;
+}
+#als-tools-close:hover { background: rgba(255,255,255,.35); }
+#als-tools-body { padding: 14px; display: flex; flex-direction: column; gap: 12px; }
+
+#als-points-row {
+  display: flex; align-items: center; gap: 10px;
+  background: var(--gold-l); border: 2px solid #F5DFA6; border-radius: 14px; padding: 10px 12px;
+}
+#als-points-emoji { font-size: 1.8rem; }
+#als-points-num { font-family: 'Baloo 2', sans-serif; font-weight: 800; font-size: 1rem; color: var(--gold); }
+#als-points-sub { font-size: 0.68rem; color: var(--muted); font-weight: 600; }
+
+.als-tool-btn {
+  width: 100%; border: 2px solid #E4E7EE; background: #FAFBFF; border-radius: 14px;
+  padding: 11px; font-family: 'Baloo 2', sans-serif; font-weight: 800; font-size: 0.85rem;
+  color: var(--slate); cursor: pointer; transition: transform .12s, border-color .15s;
+  text-align: center;
+}
+.als-tool-btn:hover { border-color: var(--teal-m); transform: translateY(-1px); }
+.als-tool-btn.als-tool-break { background: linear-gradient(135deg,#E0F4EE,#EEEDFE); border-color: var(--teal-m); }
+#als-cert-count-badge { color: var(--teal); font-weight: 900; }
+
+.als-toggle-row { border-top: 2px solid #F0F2F8; padding-top: 10px; }
+.als-toggle {
+  display: flex; align-items: center; justify-content: space-between; gap: 10px;
+  cursor: pointer; font-family: 'Nunito', sans-serif; font-weight: 700; font-size: 0.8rem; color: var(--slate);
+}
+.als-toggle small { display: block; font-weight: 600; font-size: 0.65rem; color: var(--muted); margin-top: 1px; }
+.als-toggle input { position: absolute; opacity: 0; width: 0; height: 0; }
+.als-switch {
+  flex-shrink: 0; width: 40px; height: 22px; border-radius: 20px; background: #D9DCE8; position: relative;
+  transition: background .2s;
+}
+.als-switch::before {
+  content: ''; position: absolute; top: 2px; left: 2px; width: 18px; height: 18px; border-radius: 50%;
+  background: #fff; transition: transform .2s; box-shadow: 0 1px 3px rgba(0,0,0,.25);
+}
+.als-toggle input:checked + .als-switch { background: var(--teal-m); }
+.als-toggle input:checked + .als-switch::before { transform: translateX(18px); }
+.als-toggle input:focus-visible + .als-switch { outline: 2px solid var(--indigo); outline-offset: 2px; }
+
+@media (max-width: 420px) {
+  #als-tools-panel { left: 8px; top: 96px; width: calc(100vw - 16px); }
+  #als-tools-btn { left: 8px; top: 52px; padding: 9px 12px; font-size: 12px; }
+  #als-points-badge { display: none; }
+}
+
+/* ── CERTIFICATE GALLERY MODAL ── */
+#als-cert-gallery {
+  position: fixed; inset: 0; z-index: 9500; background: rgba(20,15,45,.55);
+  display: flex; align-items: center; justify-content: center; padding: 1rem;
+}
+#als-cert-gallery.hidden { display: none; }
+#als-cert-gallery-card {
+  background: #fff; border-radius: 20px; padding: 1.6rem; width: min(480px, 100%);
+  max-height: 80vh; overflow-y: auto; position: relative; box-shadow: 0 20px 60px rgba(0,0,0,.35);
+}
+#als-cert-gallery-card h3 { font-family: 'Baloo 2', sans-serif; color: var(--teal); margin-bottom: 12px; }
+#als-cert-gallery-close {
+  position: absolute; top: 14px; right: 14px; border: none; background: var(--bg);
+  width: 30px; height: 30px; border-radius: 50%; font-size: 16px; cursor: pointer;
+}
+.als-cert-item {
+  display: flex; align-items: center; justify-content: space-between; gap: 10px;
+  border: 2px solid var(--border); border-radius: 12px; padding: 10px 12px; margin-bottom: 8px;
+}
+.als-cert-item-info { font-family: 'Nunito', sans-serif; }
+.als-cert-item-task { font-weight: 800; color: var(--slate); font-size: 0.85rem; }
+.als-cert-item-meta { font-size: 0.7rem; color: var(--muted); margin-top: 2px; }
+.als-cert-item button {
+  border: none; background: var(--teal); color: #fff; border-radius: 10px;
+  padding: 7px 12px; font-weight: 800; font-size: 0.72rem; cursor: pointer; white-space: nowrap;
+}
+#als-cert-empty { color: var(--muted); font-size: 0.85rem; text-align: center; padding: 1.5rem 0; }
+
+/* ── BREAK-TIME OVERLAY ── */
+#als-break-overlay {
+  position: fixed; inset: 0; z-index: 9600;
+  background: linear-gradient(135deg, #E0F4EE 0%, #EEEDFE 100%);
+  display: flex; align-items: center; justify-content: center; padding: 1.5rem;
+}
+#als-break-overlay.hidden { display: none; }
+#als-break-card { text-align: center; max-width: 420px; }
+#als-break-emoji { font-size: 4rem; margin-bottom: 0.6rem; }
+#als-break-card h3 { font-family: 'Baloo 2', sans-serif; font-size: 1.6rem; color: var(--teal); margin-bottom: 0.6rem; }
+#als-break-card p { color: var(--slate); font-weight: 600; margin-bottom: 1.2rem; }
+#als-break-suggestions { display: flex; flex-direction: column; gap: 10px; margin-bottom: 1.6rem; }
+#als-break-suggestions div {
+  background: #fff; border-radius: 12px; padding: 12px 14px; font-weight: 700;
+  color: var(--slate); box-shadow: var(--shadow); font-size: 0.9rem;
+}
+#als-break-resume-btn {
+  border: none; background: linear-gradient(135deg,#0D7A60,#1BAD85); color: #fff;
+  padding: 14px 24px; border-radius: 50px; font-family: 'Baloo 2', sans-serif;
+  font-weight: 800; font-size: 1rem; cursor: pointer; box-shadow: 0 4px 18px rgba(13,122,96,.4);
+}
+
 /* ── PROMO BANNER (per section bottom) ── */
 .promo-banner {
   margin: 1.4rem 0 0;
@@ -1703,6 +1867,8 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);}
 </head>
 <body>
 
+<a href="#site-content" class="skip-link">Skip to content</a>
+
 <!-- ════════════════ HEADER ════════════════ -->
 <header class="site-header">
   <div class="site-title">Adaptive <span>Learning</span> Support Worksheet</div>
@@ -1881,6 +2047,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);}
 
   <button class="nav-single" onclick="showMain('aac',this)" id="tab-aac" style="color:#7C3AED">🗣️ Alternative Communication</button>
   <button class="nav-single" onclick="showMain('games',this)" id="tab-games" style="color:#E8A81C">🎮 Games</button>
+  <button class="nav-single" onclick="showMain('progress',this)" id="tab-progress" style="color:#0D7A60">📊 Progress</button>
   <button class="nav-single" onclick="doLogout()" id="tab-account" style="margin-left:auto;color:var(--coral)">🚪 Log out</button>
 </nav>
 
@@ -2190,7 +2357,7 @@ function goToWorksheets(subject, btn) {
             </div>
           </div>
           <div class="div-visual" id="dv-area"></div>
-          <div id="dv-result" style="font-size:12px;font-weight:700;color:var(--div-d);margin-top:.3rem"></div>
+          <div id="dv-result" aria-live="polite" role="status" style="font-size:12px;font-weight:700;color:var(--div-d);margin-top:.3rem"></div>
           <div class="tip-box">Each dot goes into a group — that's sharing equally!</div>
         </div>
       </div>
@@ -2374,7 +2541,7 @@ function goToWorksheets(subject, btn) {
       <div class="chk-bar">
         <button class="chk-btn" onclick="checkSection('shapes')">✓ Check Answers</button>
         <button class="reset-btn" onclick="resetSection('shapes')">↺ Reset</button>
-        <span class="score-out" id="sc-shapes"></span>
+        <span class="score-out" aria-live="polite" role="status" id="sc-shapes"></span>
         <button class="cert-btn" onclick="submitTaskForCertificate('shapes','Shapes')">Submit</button>
       </div>
     </div>
@@ -2481,7 +2648,7 @@ function goToWorksheets(subject, btn) {
       <div class="chk-bar">
         <button class="chk-btn" onclick="checkSection('angles')">✓ Check Answers</button>
         <button class="reset-btn" onclick="resetSection('angles')">↺ Reset</button>
-        <span class="score-out" id="sc-angles"></span>
+        <span class="score-out" aria-live="polite" role="status" id="sc-angles"></span>
         <button class="cert-btn" onclick="submitTaskForCertificate('angles','Angles')">Submit</button>
       </div>
     </div>
@@ -2548,7 +2715,7 @@ function goToWorksheets(subject, btn) {
       <div class="chk-bar">
         <button class="chk-btn" onclick="checkSection('fractions')">✓ Check Answers</button>
         <button class="reset-btn" onclick="resetSection('fractions')">↺ Reset</button>
-        <span class="score-out" id="sc-fractions"></span>
+        <span class="score-out" aria-live="polite" role="status" id="sc-fractions"></span>
         <button class="cert-btn" onclick="submitTaskForCertificate('fractions','Fractions')">Submit</button>
       </div>
     </div>
@@ -2604,7 +2771,7 @@ function goToWorksheets(subject, btn) {
       <div class="chk-bar">
         <button class="chk-btn" onclick="checkSection('symmetry')">✓ Check Answers</button>
         <button class="reset-btn" onclick="resetSection('symmetry')">↺ Reset</button>
-        <span class="score-out" id="sc-symmetry"></span>
+        <span class="score-out" aria-live="polite" role="status" id="sc-symmetry"></span>
         <button class="cert-btn" onclick="submitTaskForCertificate('symmetry','Symmetry')">Submit</button>
       </div>
     </div>
@@ -2671,7 +2838,7 @@ function goToWorksheets(subject, btn) {
       <div class="chk-bar">
         <button class="chk-btn" onclick="checkSection('lines')">✓ Check Answers</button>
         <button class="reset-btn" onclick="resetSection('lines')">↺ Reset</button>
-        <span class="score-out" id="sc-lines"></span>
+        <span class="score-out" aria-live="polite" role="status" id="sc-lines"></span>
         <button class="cert-btn" onclick="submitTaskForCertificate('lines','Lines')">Submit</button>
       </div>
     </div>
@@ -2739,7 +2906,7 @@ function goToWorksheets(subject, btn) {
       <div class="chk-bar">
         <button class="chk-btn" onclick="checkSection('tally')">✓ Check Answers</button>
         <button class="reset-btn" onclick="resetSection('tally')">↺ Reset</button>
-        <span class="score-out" id="sc-tally"></span>
+        <span class="score-out" aria-live="polite" role="status" id="sc-tally"></span>
         <button class="cert-btn" onclick="submitTaskForCertificate('tally','Tally Charts')">Submit</button>
       </div>
     </div>
@@ -2842,7 +3009,7 @@ function goToWorksheets(subject, btn) {
       <div class="chk-bar">
         <button class="chk-btn" onclick="checkSection('wordclass')">✓ Check Answers</button>
         <button class="reset-btn" onclick="resetSection('wordclass')">↺ Reset</button>
-        <span class="score-out" id="sc-wordclass"></span>
+        <span class="score-out" aria-live="polite" role="status" id="sc-wordclass"></span>
         <button class="cert-btn" onclick="submitTaskForCertificate('wordclass','Word Classes')">Submit</button>
       </div>
     </div>
@@ -2902,7 +3069,7 @@ function goToWorksheets(subject, btn) {
       <div class="chk-bar">
         <button class="chk-btn" onclick="checkSection('tenses')">✓ Check Answers</button>
         <button class="reset-btn" onclick="resetSection('tenses')">↺ Reset</button>
-        <span class="score-out" id="sc-tenses"></span>
+        <span class="score-out" aria-live="polite" role="status" id="sc-tenses"></span>
         <button class="cert-btn" onclick="submitTaskForCertificate('tenses','Tenses')">Submit</button>
       </div>
     </div>
@@ -2953,7 +3120,7 @@ function goToWorksheets(subject, btn) {
       <div class="chk-bar">
         <button class="chk-btn" onclick="checkSection('activepas')">✓ Check Answers</button>
         <button class="reset-btn" onclick="resetSection('activepas')">↺ Reset</button>
-        <span class="score-out" id="sc-activepas"></span>
+        <span class="score-out" aria-live="polite" role="status" id="sc-activepas"></span>
         <button class="cert-btn" onclick="submitTaskForCertificate('activepas','Active & Passive Voice')">Submit</button>
       </div>
     </div>
@@ -3002,7 +3169,7 @@ function goToWorksheets(subject, btn) {
       <div class="chk-bar">
         <button class="chk-btn" onclick="checkSection('svo')">✓ Check Answers</button>
         <button class="reset-btn" onclick="resetSection('svo')">↺ Reset</button>
-        <span class="score-out" id="sc-svo"></span>
+        <span class="score-out" aria-live="polite" role="status" id="sc-svo"></span>
         <button class="cert-btn" onclick="submitTaskForCertificate('svo','Subject, Verb & Object')">Submit</button>
       </div>
     </div>
@@ -3053,7 +3220,7 @@ function goToWorksheets(subject, btn) {
       <div class="chk-bar">
         <button class="chk-btn" onclick="checkSection('phrases')">✓ Check Answers</button>
         <button class="reset-btn" onclick="resetSection('phrases')">↺ Reset</button>
-        <span class="score-out" id="sc-phrases"></span>
+        <span class="score-out" aria-live="polite" role="status" id="sc-phrases"></span>
         <button class="cert-btn" onclick="submitTaskForCertificate('phrases','Phrases')">Submit</button>
       </div>
     </div>
@@ -3098,7 +3265,7 @@ function goToWorksheets(subject, btn) {
       <div class="chk-bar">
         <button class="chk-btn" onclick="checkSection('clauses')">✓ Check Answers</button>
         <button class="reset-btn" onclick="resetSection('clauses')">↺ Reset</button>
-        <span class="score-out" id="sc-clauses"></span>
+        <span class="score-out" aria-live="polite" role="status" id="sc-clauses"></span>
         <button class="cert-btn" onclick="submitTaskForCertificate('clauses','Clauses')">Submit</button>
       </div>
     </div>
@@ -3153,7 +3320,7 @@ function goToWorksheets(subject, btn) {
       <div class="chk-bar">
         <button class="chk-btn" onclick="checkSection('sentences')">✓ Check Answers</button>
         <button class="reset-btn" onclick="resetSection('sentences')">↺ Reset</button>
-        <span class="score-out" id="sc-sentences"></span>
+        <span class="score-out" aria-live="polite" role="status" id="sc-sentences"></span>
         <button class="cert-btn" onclick="submitTaskForCertificate('sentences','Sentence Types')">Submit</button>
       </div>
     </div>
@@ -3303,6 +3470,7 @@ function showMain(id, btn) {
   }
   // AAC-specific: lazy-init and toggle WhatsApp button
   if (id === 'aac') { aacInit(); }
+  if (id === 'progress' && typeof alsRenderProgressReport === 'function') { alsRenderProgressReport(); }
   aacUpdateWaBtn(id);
   nntUpdateVisibility(id);
 }
@@ -4898,7 +5066,7 @@ const MQ = {
     const lblText = lv === 'easy' ? 'Easy — numbers to 20' : lv === 'med' ? 'Medium — numbers to 50' : 'Hard — larger numbers';
     const opLabel = op === 'add' ? 'Addition' : op === 'sub' ? 'Subtraction' : op === 'mul' ? 'Multiplication' : 'Division';
     const lvLabel = lv === 'easy' ? 'Easy' : lv === 'med' ? 'Medium' : 'Hard';
-    lvlDiv.innerHTML = `<span class="m-level-lbl">${lblText}</span><div class="m-q-grid" id="${op}-${lv}-grid"></div><button class="m-check chk-${op}" onclick="checkM('${op}','${lv}','${key}')">Check answers</button><div class="m-score" id="${op}-${lv}-sc"></div><button class="cert-btn" style="margin-top:8px" onclick="submitTaskForCertificate('m-${op}-${lv}','${opLabel} (${lvLabel})')">Submit</button>`;
+    lvlDiv.innerHTML = `<span class="m-level-lbl">${lblText}</span><div class="m-q-grid" id="${op}-${lv}-grid"></div><button class="m-check chk-${op}" onclick="checkM('${op}','${lv}','${key}')">Check answers</button><div class="m-score" aria-live="polite" role="status" id="${op}-${lv}-sc"></div><button class="cert-btn" style="margin-top:8px" onclick="submitTaskForCertificate('m-${op}-${lv}','${opLabel} (${lvLabel})')">Submit</button>`;
     cont.appendChild(lvlDiv);
     const grid = lvlDiv.querySelector(`#${op}-${lv}-grid`);
     MQ[op][key].forEach((item, i) => {
@@ -6194,7 +6362,13 @@ function syncStudentName(val) {
 }
 
 function recordTaskScore(taskId, correct, total) {
-  TASK_SCORES[taskId] = { correct, total };
+  const isNewTask = !TASK_SCORES[taskId];
+  TASK_SCORES[taskId] = { correct, total, date: new Date().toISOString() };
+  // Award points the first time a task is checked (avoids farming points by re-checking the same task repeatedly)
+  if (isNewTask && typeof alsAddPoints === 'function') {
+    alsAddPoints(correct * 10);
+  }
+  try { localStorage.setItem('als_task_scores', JSON.stringify(TASK_SCORES)); } catch(e) {}
 }
 
 function certToast(msg) {
@@ -6222,6 +6396,14 @@ function generateCertificate(taskLabel, correct, total) {
   document.getElementById('cert-stars').textContent = pct >= 90 ? '⭐⭐⭐' : pct >= 70 ? '⭐⭐' : '⭐';
   document.getElementById('cert-date').textContent = 'Awarded on ' + new Date().toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' });
   document.getElementById('cert-overlay').classList.remove('hidden');
+  if (typeof alsSaveCertificate === 'function') {
+    alsSaveCertificate({
+      name: document.getElementById('cert-name').value,
+      task: taskLabel,
+      correct, total, pct,
+      date: new Date().toISOString()
+    });
+  }
 }
 
 function submitTaskForCertificate(taskId, taskLabel) {
@@ -6239,6 +6421,214 @@ function closeCertificate() {
 
 function printCertificate() {
   window.print();
+}
+
+// ─── SUPPORT TOOLS: points, calm mode, reading mode, certificate gallery, break card ───
+let alsPoints = 0;
+let alsCertificates = [];
+
+function alsLoadState() {
+  try { alsPoints = parseInt(localStorage.getItem('als_points') || '0', 10) || 0; } catch(e) { alsPoints = 0; }
+  try { alsCertificates = JSON.parse(localStorage.getItem('als_certificates') || '[]'); } catch(e) { alsCertificates = []; }
+  try {
+    const saved = JSON.parse(localStorage.getItem('als_task_scores') || '{}');
+    Object.assign(TASK_SCORES, saved);
+  } catch(e) {}
+  alsRenderPoints();
+  alsRenderCertBadge();
+
+  try {
+    const calm = localStorage.getItem('als_calm_mode') === '1';
+    document.body.classList.toggle('calm-mode', calm);
+    const calmToggle = document.getElementById('als-calm-toggle');
+    if (calmToggle) calmToggle.checked = calm;
+  } catch(e) {}
+  try {
+    const dys = localStorage.getItem('als_dyslexia_mode') === '1';
+    document.body.classList.toggle('dyslexia-mode', dys);
+    const dysToggle = document.getElementById('als-dyslexia-toggle');
+    if (dysToggle) dysToggle.checked = dys;
+  } catch(e) {}
+}
+
+function alsRenderPoints() {
+  const badge = document.getElementById('als-points-badge');
+  const num = document.getElementById('als-points-num');
+  if (badge) badge.textContent = '⭐ ' + alsPoints;
+  if (num) num.textContent = alsPoints + (alsPoints === 1 ? ' point' : ' points');
+}
+
+function alsAddPoints(n) {
+  if (!n || n <= 0) return;
+  alsPoints += n;
+  try { localStorage.setItem('als_points', String(alsPoints)); } catch(e) {}
+  alsRenderPoints();
+}
+
+function alsTogglePanel(forceState) {
+  const panel = document.getElementById('als-tools-panel');
+  if (!panel) return;
+  const open = (forceState === true || forceState === false) ? forceState : !panel.classList.contains('open');
+  panel.classList.toggle('open', open);
+}
+
+function alsToggleCalmMode(on) {
+  document.body.classList.toggle('calm-mode', !!on);
+  try { localStorage.setItem('als_calm_mode', on ? '1' : '0'); } catch(e) {}
+}
+
+function alsToggleDyslexiaMode(on) {
+  document.body.classList.toggle('dyslexia-mode', !!on);
+  try { localStorage.setItem('als_dyslexia_mode', on ? '1' : '0'); } catch(e) {}
+}
+
+// Certificate gallery
+function alsRenderCertBadge() {
+  const badge = document.getElementById('als-cert-count-badge');
+  if (badge) badge.textContent = alsCertificates.length ? '(' + alsCertificates.length + ')' : '';
+}
+
+function alsSaveCertificate(cert) {
+  alsCertificates.push(cert);
+  try { localStorage.setItem('als_certificates', JSON.stringify(alsCertificates)); } catch(e) {}
+  alsRenderCertBadge();
+}
+
+function alsOpenCertGallery() {
+  const list = document.getElementById('als-cert-gallery-list');
+  if (!list) return;
+  if (!alsCertificates.length) {
+    list.innerHTML = '<div id="als-cert-empty">No certificates yet — complete an activity and submit it to earn your first one! 🌟</div>';
+  } else {
+    list.innerHTML = alsCertificates.slice().reverse().map((c, revIdx) => {
+      const idx = alsCertificates.length - 1 - revIdx;
+      const d = new Date(c.date);
+      const dateStr = isNaN(d) ? '' : d.toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' });
+      return '<div class="als-cert-item">' +
+        '<div class="als-cert-item-info">' +
+          '<div class="als-cert-item-task">🏆 ' + c.task + '</div>' +
+          '<div class="als-cert-item-meta">' + c.correct + '/' + c.total + ' correct (' + c.pct + '%) · ' + dateStr + '</div>' +
+        '</div>' +
+        '<button onclick="alsReopenCertificate(' + idx + ')">View</button>' +
+      '</div>';
+    }).join('');
+  }
+  document.getElementById('als-cert-gallery').classList.remove('hidden');
+  alsTogglePanel(false);
+}
+
+function alsCloseCertGallery() {
+  document.getElementById('als-cert-gallery').classList.add('hidden');
+}
+
+function alsReopenCertificate(idx) {
+  const c = alsCertificates[idx];
+  if (!c) return;
+  document.getElementById('cert-name').value = c.name || 'Star Learner';
+  document.getElementById('cert-task').textContent = c.task;
+  document.getElementById('cert-score').textContent = c.correct + ' / ' + c.total + ' correct (' + c.pct + '%)';
+  document.getElementById('cert-stars').textContent = c.pct >= 90 ? '⭐⭐⭐' : c.pct >= 70 ? '⭐⭐' : '⭐';
+  const d = new Date(c.date);
+  document.getElementById('cert-date').textContent = 'Awarded on ' + (isNaN(d) ? '' : d.toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' }));
+  alsCloseCertGallery();
+  document.getElementById('cert-overlay').classList.remove('hidden');
+}
+
+// Break card — pauses the Now/Next/Then timer if it's running, and resumes exactly where the learner left off
+let alsBreakTimerWasRunning = false;
+function alsOpenBreak() {
+  alsBreakTimerWasRunning = (typeof nntRunning !== 'undefined') && nntRunning;
+  if (alsBreakTimerWasRunning && typeof nntStopTick === 'function') nntStopTick();
+  alsTogglePanel(false);
+  document.getElementById('als-break-overlay').classList.remove('hidden');
+}
+function alsCloseBreak() {
+  document.getElementById('als-break-overlay').classList.add('hidden');
+  if (alsBreakTimerWasRunning && typeof nntStartPause === 'function') {
+    nntStartPause();
+    alsBreakTimerWasRunning = false;
+  }
+}
+
+document.addEventListener('DOMContentLoaded', alsLoadState);
+
+// ─── PROGRESS REPORT (for parents/teachers/therapists) ───
+function alsCategoryLabel(taskId) {
+  if (taskId.startsWith('phonics')) return 'Phonics';
+  if (taskId.startsWith('comp')) return 'Comprehension';
+  if (taskId.startsWith('m-')) return 'Maths — Arithmetic';
+  if (['shapes','angles','fractions','symmetry','lines','tally'].includes(taskId)) return 'Maths — Topics';
+  if (['wordclass','tenses','activepas','svo','phrases','clauses','sentences'].includes(taskId)) return 'English Worksheets';
+  if (taskId.startsWith('ws-')) return 'Worksheets';
+  return 'Other Activities';
+}
+
+function alsRenderProgressReport() {
+  const summaryEl = document.getElementById('als-progress-summary');
+  const tableEl = document.getElementById('als-progress-table');
+  if (!summaryEl || !tableEl) return;
+
+  const entries = Object.entries(TASK_SCORES);
+  const totalTasks = entries.length;
+  const totalCorrect = entries.reduce((sum, [,s]) => sum + s.correct, 0);
+  const totalQuestions = entries.reduce((sum, [,s]) => sum + s.total, 0);
+  const overallPct = totalQuestions ? Math.round((totalCorrect / totalQuestions) * 100) : 0;
+
+  const statCard = (label, value) => '<div style="background:var(--card);border:2px solid var(--border);border-radius:14px;padding:12px 16px;flex:1;min-width:130px;text-align:center">' +
+    '<div style="font-family:\'Baloo 2\',sans-serif;font-weight:800;font-size:1.4rem;color:var(--teal)">' + value + '</div>' +
+    '<div style="font-size:0.72rem;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.03em">' + label + '</div></div>';
+
+  summaryEl.innerHTML =
+    statCard('Activities Completed', totalTasks) +
+    statCard('Overall Accuracy', totalQuestions ? overallPct + '%' : '—') +
+    statCard('Points Earned', alsPoints) +
+    statCard('Certificates', alsCertificates.length);
+
+  if (!totalTasks) {
+    tableEl.innerHTML = '<p style="color:var(--muted);text-align:center;padding:1rem 0">No activities completed yet. Once your child checks their answers on any worksheet, their progress will appear here.</p>';
+    return;
+  }
+
+  // Group by subject category
+  const byCategory = {};
+  entries.forEach(([taskId, s]) => {
+    const cat = alsCategoryLabel(taskId);
+    if (!byCategory[cat]) byCategory[cat] = { correct: 0, total: 0, count: 0 };
+    byCategory[cat].correct += s.correct;
+    byCategory[cat].total += s.total;
+    byCategory[cat].count += 1;
+  });
+
+  let rows = Object.entries(byCategory).map(([cat, d]) => {
+    const pct = d.total ? Math.round((d.correct / d.total) * 100) : 0;
+    return '<tr><td style="padding:8px 10px;font-weight:700">' + cat + '</td>' +
+      '<td style="padding:8px 10px;text-align:center">' + d.count + '</td>' +
+      '<td style="padding:8px 10px;text-align:center">' + d.correct + ' / ' + d.total + '</td>' +
+      '<td style="padding:8px 10px;text-align:center;font-weight:800;color:' + (pct >= 70 ? 'var(--correct)' : pct >= 50 ? 'var(--gold)' : 'var(--wrong)') + '">' + pct + '%</td></tr>';
+  }).join('');
+
+  tableEl.innerHTML = '<table style="width:100%;border-collapse:collapse;font-family:\'Nunito\',sans-serif;font-size:0.85rem">' +
+    '<thead><tr style="border-bottom:2px solid var(--border)">' +
+      '<th style="padding:8px 10px;text-align:left">Subject Area</th>' +
+      '<th style="padding:8px 10px">Tasks</th>' +
+      '<th style="padding:8px 10px">Score</th>' +
+      '<th style="padding:8px 10px">Accuracy</th>' +
+    '</tr></thead><tbody>' + rows + '</tbody></table>';
+}
+
+function alsResetProgress() {
+  if (!confirm('This will clear all recorded progress, points, and certificates on this device. This cannot be undone. Continue?')) return;
+  try {
+    localStorage.removeItem('als_task_scores');
+    localStorage.removeItem('als_points');
+    localStorage.removeItem('als_certificates');
+  } catch(e) {}
+  Object.keys(TASK_SCORES).forEach(k => delete TASK_SCORES[k]);
+  alsCertificates = [];
+  alsPoints = 0;
+  alsRenderPoints();
+  alsRenderCertBadge();
+  alsRenderProgressReport();
 }
 
 function checkSection(id) {
@@ -7005,6 +7395,22 @@ buildChecklist();
 </div>
 </section>
 
+<section class="main-section" id="sec-progress">
+  <div class="fun-section-hero" style="background:linear-gradient(135deg,#E0F4EE,#EEEDFE)">
+    <span class="fsh-emoji-row">📊 ⭐ 🏆 📈</span>
+    <h2 style="color:#0D7A60;font-family:'Baloo 2',sans-serif">My Progress</h2>
+    <p style="color:#374151">A summary of activities completed so far — great for sharing with a parent, teacher, or therapist.</p>
+  </div>
+  <div class="card" style="max-width:720px;margin:1rem auto;padding:1.4rem">
+    <div id="als-progress-summary" style="display:flex;gap:14px;flex-wrap:wrap;margin-bottom:1.2rem"></div>
+    <div id="als-progress-table"></div>
+    <div style="margin-top:1.2rem;display:flex;gap:10px;flex-wrap:wrap">
+      <button class="cert-btn" onclick="window.print()">🖨️ Print This Report</button>
+      <button class="cert-btn" style="background:var(--coral)" onclick="alsResetProgress()">🗑️ Clear Progress Data</button>
+    </div>
+  </div>
+</section>
+
 <!-- AAC Toast (outside section so position:fixed works correctly) -->
 <div id="aac-toast">&#x1F50A; <span id="aac-toast-text"></span></div>
 
@@ -7082,6 +7488,78 @@ buildChecklist();
       <button class="nnt-ctrl-btn" id="nnt-reset-btn" onclick="nntReset()">↺ Reset</button>
     </div>
 
+  </div>
+</div>
+
+<!-- ════ SUPPORT TOOLS: POINTS, CALM MODE, READING MODE, CERTIFICATES, BREAK CARD ════ -->
+<button id="als-tools-btn" onclick="alsTogglePanel()" aria-haspopup="true" aria-controls="als-tools-panel">
+  <span aria-hidden="true">🧰</span>
+  <span>Support Tools</span>
+  <span id="als-points-badge">⭐ 0</span>
+</button>
+
+<div id="als-tools-panel" role="dialog" aria-label="Support tools">
+  <div id="als-tools-head">
+    <h4>🧰 Support Tools</h4>
+    <button id="als-tools-close" onclick="alsTogglePanel(false)" aria-label="Close support tools">&times;</button>
+  </div>
+  <div id="als-tools-body">
+
+    <div id="als-points-row">
+      <span id="als-points-emoji">⭐</span>
+      <div>
+        <div id="als-points-num">0 points</div>
+        <div id="als-points-sub">Earned by completing activities</div>
+      </div>
+    </div>
+
+    <button class="als-tool-btn als-tool-break" onclick="alsOpenBreak()">
+      ☕ Take a Break
+    </button>
+
+    <button class="als-tool-btn" onclick="alsOpenCertGallery()">
+      🏆 My Certificates <span id="als-cert-count-badge"></span>
+    </button>
+
+    <div class="als-toggle-row">
+      <label class="als-toggle" for="als-calm-toggle">
+        <span>🌿 Calm Mode <small>Less motion, more space</small></span>
+        <input type="checkbox" id="als-calm-toggle" onchange="alsToggleCalmMode(this.checked)">
+        <span class="als-switch"></span>
+      </label>
+    </div>
+    <div class="als-toggle-row">
+      <label class="als-toggle" for="als-dyslexia-toggle">
+        <span>🔤 Reading Support <small>Wider letter &amp; word spacing</small></span>
+        <input type="checkbox" id="als-dyslexia-toggle" onchange="alsToggleDyslexiaMode(this.checked)">
+        <span class="als-switch"></span>
+      </label>
+    </div>
+
+  </div>
+</div>
+
+<!-- ════ CERTIFICATE GALLERY MODAL ════ -->
+<div id="als-cert-gallery" class="hidden">
+  <div id="als-cert-gallery-card">
+    <button id="als-cert-gallery-close" onclick="alsCloseCertGallery()" aria-label="Close certificate gallery">&times;</button>
+    <h3>🏆 My Certificates</h3>
+    <div id="als-cert-gallery-list"></div>
+  </div>
+</div>
+
+<!-- ════ BREAK-TIME OVERLAY ════ -->
+<div id="als-break-overlay" class="hidden" role="dialog" aria-label="Break time">
+  <div id="als-break-card">
+    <div id="als-break-emoji">☕</div>
+    <h3>Taking a break</h3>
+    <p id="als-break-msg">Good idea. Your timer is paused and nothing here will change while you're away.</p>
+    <div id="als-break-suggestions">
+      <div>🫁 Take 3 slow breaths — in through your nose, out through your mouth</div>
+      <div>🧘 Stretch your arms, or get up and move for a minute</div>
+      <div>💧 Have a sip of water</div>
+    </div>
+    <button id="als-break-resume-btn" onclick="alsCloseBreak()">✅ I'm ready — let's continue</button>
   </div>
 </div>
 
