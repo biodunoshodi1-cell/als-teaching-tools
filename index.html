@@ -227,6 +227,23 @@ body.dyslexia-mode .comp-passage p, body.dyslexia-mode .story-text, body.dyslexi
 .part-panel { display: none; }
 .part-panel.active { display: block; }
 
+/* ─── PART TABS: distinct colours + bold "tap to switch" toggle look ─── */
+.part-tabs-hint {
+  font-family: var(--font); font-size: 0.8rem; font-weight: 700; color: var(--muted);
+  margin: -0.6rem 0 0.6rem; display: flex; align-items: center; gap: 5px;
+}
+.part-tabs .ptab { font-size: 14px; font-weight: 800; border-width: 2px; padding: 7px 15px; box-shadow: 0 1px 4px rgba(0,0,0,.05); }
+.part-tabs .ptab:hover { transform: translateY(-2px) scale(1.04); box-shadow: 0 4px 10px rgba(0,0,0,.12); }
+.part-tabs .ptab:focus-visible { outline: 3px solid var(--indigo); outline-offset: 2px; }
+.part-tabs .ptab:nth-child(4n+1) { background: var(--teal-l);   border-color: var(--teal-m);   color: var(--teal); }
+.part-tabs .ptab:nth-child(4n+2) { background: var(--indigo-l); border-color: var(--indigo-m); color: var(--indigo); }
+.part-tabs .ptab:nth-child(4n+3) { background: var(--gold-l);   border-color: var(--gold-m);   color: var(--gold); }
+.part-tabs .ptab:nth-child(4n+0) { background: var(--rose-l);   border-color: var(--rose-m);   color: var(--rose); }
+.part-tabs .ptab.active {
+  transform: scale(1.08);
+  box-shadow: 0 0 0 3px currentColor inset, 0 4px 12px rgba(0,0,0,.15);
+}
+
 /* ─── CARDS ─── */
 .card {
   background: var(--card);
@@ -280,9 +297,9 @@ body.dyslexia-mode .comp-passage p, body.dyslexia-mode .story-text, body.dyslexi
   transition: border-color .15s;
 }
 .q-item:hover { border-color: var(--teal-m); }
-.q-num  { font-size: 11px; font-weight: 700; color: var(--muted); min-width: 20px; padding-top: 2px; }
+.q-num  { font-size: 12px; font-weight: 700; color: var(--muted); min-width: 20px; padding-top: 2px; }
 .q-body { flex: 1; }
-.q-text { font-size: 14px; color: var(--text); line-height: 1.5; margin-bottom: 8px; }
+.q-text { font-size: 16px; color: var(--text); line-height: 1.6; margin-bottom: 8px; }
 
 /* ─── CHIPS ─── */
 .chips { display: flex; flex-wrap: wrap; gap: 6px; }
@@ -290,7 +307,7 @@ body.dyslexia-mode .comp-passage p, body.dyslexia-mode .story-text, body.dyslexi
   display: inline-block;
   padding: 5px 14px;
   border-radius: 20px;
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 600;
   cursor: pointer;
   border: 1.5px solid transparent;
@@ -308,7 +325,7 @@ body.dyslexia-mode .comp-passage p, body.dyslexia-mode .story-text, body.dyslexi
   border: 1.5px solid var(--border);
   border-radius: var(--radius-sm);
   padding: 5px 10px;
-  font-size: 14px;
+  font-size: 16px;
   font-family: var(--font);
   background: var(--card);
   color: var(--text);
@@ -325,7 +342,7 @@ body.dyslexia-mode .comp-passage p, body.dyslexia-mode .story-text, body.dyslexi
   transition: background .15s;
 }
 .chk-btn:hover { background: var(--teal-l); color: var(--teal); }
-.hint { font-size: 11px; color: var(--muted); margin-top: 4px; display: none; }
+.hint { font-size: 12px; color: var(--muted); margin-top: 4px; display: none; }
 .hint.show { display: block; }
 
 /* ─── WORD BANK ─── */
@@ -401,10 +418,10 @@ body.dyslexia-mode .comp-passage p, body.dyslexia-mode .story-text, body.dyslexi
   background: linear-gradient(135deg, #F0F9F5, #F0EFFE);
   border: 1px solid var(--border); border-radius: var(--radius);
   padding: 1.2rem; margin-bottom: 1.2rem;
-  line-height: 2; font-size: 15px;
+  line-height: 2; font-size: 17px;
 }
 .comp-passage h3 { font-family: var(--head); font-size: 16px; font-weight: 700; color: var(--slate); margin-bottom: 10px; }
-.comp-q { font-size: 14px; color: var(--text); margin: 8px 0 4px; }
+.comp-q { font-size: 16px; color: var(--text); margin: 8px 0 4px; }
 .comp-q span { font-weight: 700; }
 .comp-ans {
   width: 100%; border: 1.5px solid var(--border); border-radius: var(--radius-sm);
@@ -802,10 +819,10 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);}
 .q-list{display:flex;flex-direction:column;gap:9px;}
 .q-item{padding:11px 13px;background:#FAFBFD;border:1px solid var(--border);border-radius:var(--radius-sm);}
 .q-item:hover{border-color:var(--teal-m);}
-.q-num{font-size:11px;font-weight:700;color:var(--muted);margin-bottom:4px;}
-.q-text{font-size:14px;color:var(--text);line-height:1.6;margin-bottom:6px;}
+.q-num{font-size:12px;font-weight:700;color:var(--muted);margin-bottom:4px;}
+.q-text{font-size:16px;color:var(--text);line-height:1.7;margin-bottom:6px;}
 .q-text strong{color:var(--indigo);}
-.ans-input{width:100%;border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:7px 10px;font-size:14px;font-family:var(--font);background:var(--card);color:var(--text);transition:.2s;margin-top:4px;}
+.ans-input{width:100%;border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:7px 10px;font-size:16px;font-family:var(--font);background:var(--card);color:var(--text);transition:.2s;margin-top:4px;}
 .ans-input:focus{outline:none;border-color:var(--teal-m);}
 .ans-input.correct{border-color:var(--teal-m);background:var(--teal-l);color:var(--teal);}
 .ans-input.wrong{border-color:var(--wrong);background:var(--wrong-bg);color:var(--wrong);}
@@ -823,7 +840,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);}
 
 /* MCQ CHIPS */
 .chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px;}
-.chip{display:inline-block;padding:5px 14px;border-radius:20px;font-size:13px;font-weight:600;cursor:pointer;border:1.5px solid var(--border);background:var(--card);color:var(--text);transition:.15s;user-select:none;}
+.chip{display:inline-block;padding:5px 14px;border-radius:20px;font-size:14px;font-weight:600;cursor:pointer;border:1.5px solid var(--border);background:var(--card);color:var(--text);transition:.15s;user-select:none;}
 .chip:hover{border-color:var(--teal-m);}
 .chip.selected{border-color:var(--teal-m);background:var(--teal-l);color:var(--teal);}
 .chip.correct{background:var(--teal-l);border-color:var(--teal-m);color:var(--teal);}
@@ -879,7 +896,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);}
 .story-section{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:1.2rem;margin-bottom:1rem;}
 .story-section h4{font-family:var(--head);font-size:15px;font-weight:800;margin-bottom:.4rem;}
 .story-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-bottom:4px;}
-.story-textarea{width:100%;border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:9px 11px;font-size:14px;font-family:var(--font);background:#FAFBFD;color:var(--text);resize:vertical;min-height:80px;transition:.2s;}
+.story-textarea{width:100%;border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:9px 11px;font-size:16px;font-family:var(--font);background:#FAFBFD;color:var(--text);resize:vertical;min-height:80px;transition:.2s;}
 .story-textarea:focus{outline:none;border-color:var(--teal-m);}
 .checklist{display:flex;flex-direction:column;gap:7px;}
 .cl-item{display:flex;align-items:flex-start;gap:10px;padding:9px 12px;background:#FAFBFD;border:1px solid var(--border);border-radius:var(--radius-sm);cursor:pointer;transition:.15s;user-select:none;}
@@ -1680,26 +1697,27 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);}
 #cert-toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
 @media print {
-  body * { visibility: hidden !important; }
-  .print-visible, .print-visible * { visibility: visible !important; }
-  .print-visible {
-    position: absolute !important; left: 0; top: 0; width: 100% !important;
-    max-width: 100% !important; margin: 0 !important; padding: 24px !important;
-  }
-  #cert-overlay.print-visible {
-    position: fixed !important; inset: 0; background: #fff !important; backdrop-filter: none;
-    display: flex !important; align-items: flex-start; padding-top: 40px !important;
-  }
+  /* Hide app chrome/UI that should never appear on a printed page */
+  #mainTabs, .site-header, .skip-link,
+  #als-tools-btn, #als-tools-panel, #als-cert-gallery, #als-break-overlay,
+  #nnt-toggle-btn, #nnt-panel, .book-float, #aac-wa-btn, #aac-toast,
+  #als-celebrate-banner, .als-focus-nav, .promo-banner { display: none !important; }
+
+  /* Hide interactive controls within the printed worksheet (but not the AAC/Games boards,
+     where the buttons ARE the content) */
+  .main-section:not(#sec-aac):not(#sec-games) button,
+  .ws-main-section button { display: none !important; }
+  .main-section input, .main-section textarea,
+  .ws-main-section input, .ws-main-section textarea { border: 1.5px solid #999 !important; background: #fff !important; }
+
+  /* Certificate printing: hide the worksheet behind it, show only the certificate */
+  body.als-print-cert #site-content { display: none !important; }
   #cert-close, .cert-actions { display: none !important; }
   #cert-card { box-shadow: none; border: 6px double #D4A017; }
-  /* Hide interactive-only controls even inside the printed area */
-  .print-visible .als-focus-nav,
-  .print-visible #als-tools-btn,
-  .print-visible .nav-single,
-  .print-visible button { display: none !important; }
-  .print-visible input, .print-visible textarea { border: 1.5px solid #999 !important; background: #fff !important; }
+
+  /* Faint brand watermark on every printed page */
   #als-print-watermark {
-    display: block !important; visibility: visible !important;
+    display: block !important;
     position: fixed; top: 50%; left: 50%; transform: translate(-50%,-50%) rotate(-30deg);
     font-family: 'Baloo 2', sans-serif; font-weight: 800; font-size: 34px; color: #000;
     opacity: 0.07; white-space: nowrap; z-index: 99999; text-align: center; line-height: 1.4;
@@ -4421,6 +4439,7 @@ Object.entries(SOUNDS).forEach(([key, data]) => {
       </button>
     </div>
     <div class="fun-divider">✦ ✦ ✦</div>
+    <div class="part-tabs-hint">👆 <span>Tap a step below to move to it — try them in order!</span></div>
     <div class="part-tabs" id="ptabs-${key}">
       <button class="ptab active" onclick="showPart('${key}',0,this)">👂 Circle It</button>
       <button class="ptab" onclick="showPart('${key}',1,this)">✏️ Fill In</button>
@@ -6517,18 +6536,20 @@ function closeCertificate() {
 }
 
 function alsPrintElement(el) {
-  document.querySelectorAll('.print-visible').forEach(e => e.classList.remove('print-visible'));
-  if (el) el.classList.add('print-visible');
+  document.body.classList.remove('als-print-cert');
+  if (el && el.id === 'cert-overlay') {
+    document.body.classList.add('als-print-cert');
+  }
   window.print();
 }
 window.addEventListener('afterprint', () => {
-  document.querySelectorAll('.print-visible').forEach(e => e.classList.remove('print-visible'));
+  document.body.classList.remove('als-print-cert');
 });
 
 function alsPrintCurrentPage() {
   if (typeof alsTogglePanel === 'function') alsTogglePanel(false);
-  const active = document.querySelector('.main-section.active');
-  alsPrintElement(active);
+  document.body.classList.remove('als-print-cert');
+  window.print();
 }
 
 function printCertificate() {
