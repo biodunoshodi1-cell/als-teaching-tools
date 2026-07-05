@@ -1127,7 +1127,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);}
 #als-tools-body { padding: 14px; display: flex; flex-direction: column; gap: 12px; }
 
 #als-points-row {
-  display: flex; align-items: center; gap: 10px;
+  display: flex; align-items: flex-start; gap: 10px;
   background: var(--gold-l); border: 2px solid #F5DFA6; border-radius: 14px; padding: 10px 12px;
 }
 #als-points-emoji { font-size: 1.8rem; }
@@ -1197,7 +1197,68 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);}
 }
 #als-cert-empty { color: var(--muted); font-size: 0.85rem; text-align: center; padding: 1.5rem 0; }
 
-/* ── BREAK-TIME OVERLAY ── */
+/* ── FOCUS MODE: one question at a time (reduces information overload) ── */
+.q-list.als-focus-active .q-item { display: none; }
+.q-list.als-focus-active .q-item.als-current { display: block; animation: alsFadeIn .3s ease; }
+@keyframes alsFadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+.als-focus-nav {
+  display: none; align-items: center; justify-content: space-between; gap: 10px;
+  margin-top: 14px; padding: 10px 14px; background: var(--teal-l);
+  border-radius: 14px; border: 2px solid var(--teal-m);
+}
+.als-focus-nav button {
+  border: none; border-radius: 10px; padding: 9px 16px;
+  font-family: 'Baloo 2', sans-serif; font-weight: 800; font-size: 0.85rem;
+  cursor: pointer; background: var(--teal); color: #fff; white-space: nowrap;
+}
+.als-focus-nav button:disabled { background: #C7CCDA; cursor: default; }
+.als-focus-progress { font-family: 'Nunito', sans-serif; font-weight: 800; font-size: 0.85rem; color: var(--teal); text-align: center; flex: 1; }
+
+/* ── GAMIFICATION: confetti burst ── */
+.als-confetti-piece {
+  position: fixed; top: -20px; width: 10px; height: 16px; z-index: 9999;
+  pointer-events: none; border-radius: 2px;
+  animation: alsConfettiFall linear forwards;
+}
+@keyframes alsConfettiFall {
+  0%   { transform: translateY(0) rotate(0deg); opacity: 1; }
+  100% { transform: translateY(105vh) rotate(540deg); opacity: 0.9; }
+}
+
+/* ── GAMIFICATION: level bar, streak, badges ── */
+#als-level-row { margin-top: 8px; }
+#als-level-label { font-family: 'Baloo 2', sans-serif; font-size: 0.72rem; font-weight: 800; color: var(--indigo); display: flex; justify-content: space-between; margin-bottom: 4px; }
+#als-level-track { height: 8px; border-radius: 6px; background: #EDEBFB; overflow: hidden; }
+#als-level-fill { height: 100%; border-radius: 6px; background: linear-gradient(90deg,#7B73D9,#4A35B0); transition: width .4s ease; }
+#als-streak-row {
+  display: flex; align-items: center; gap: 8px; font-family: 'Nunito', sans-serif;
+  font-weight: 800; font-size: 0.78rem; color: var(--coral); margin-top: 8px;
+}
+#als-badges-grid { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 6px; }
+.als-badge {
+  width: 52px; height: 52px; border-radius: 14px; display: flex; align-items: center; justify-content: center;
+  font-size: 1.5rem; background: var(--gold-l); border: 2px solid #F5DFA6; position: relative;
+}
+.als-badge.locked { background: #EEF0F7; border-color: #E4E7EE; filter: grayscale(1); opacity: 0.55; }
+.als-badge-tooltip {
+  position: absolute; bottom: 100%; left: 50%; transform: translateX(-50%);
+  background: #1E2330; color: #fff; font-size: 0.62rem; font-weight: 700;
+  padding: 4px 8px; border-radius: 8px; white-space: nowrap; margin-bottom: 6px;
+  display: none; font-family: 'Nunito', sans-serif;
+}
+.als-badge:hover .als-badge-tooltip { display: block; }
+
+/* ── GAMIFICATION: celebration banner ── */
+#als-celebrate-banner {
+  position: fixed; top: 18%; left: 50%; transform: translate(-50%,-20px);
+  background: linear-gradient(135deg,#0D7A60,#1BAD85); color: #fff;
+  padding: 16px 28px; border-radius: 20px; font-family: 'Baloo 2', sans-serif;
+  font-weight: 800; font-size: 1.1rem; box-shadow: 0 12px 34px rgba(13,122,96,.4);
+  z-index: 9999; opacity: 0; pointer-events: none; transition: opacity .3s, transform .3s;
+  text-align: center; max-width: 90vw;
+}
+#als-celebrate-banner.show { opacity: 1; transform: translate(-50%,0); }
 #als-break-overlay {
   position: fixed; inset: 0; z-index: 9600;
   background: linear-gradient(135deg, #E0F4EE 0%, #EEEDFE 100%);
@@ -2038,14 +2099,14 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);}
   </div>
 
   <div class="nav-group" style="--group-color:var(--rose);--group-tint:var(--rose-l)">
-    <button class="nav-folder" onclick="toggleNavFolder(this)" id="folder-life">🌟 Life Skills &amp; Social Stories <span class="nav-caret">▾</span></button>
+    <button class="nav-folder" onclick="toggleNavFolder(this)" id="folder-life">🌟 Life Skills, Social Stories &amp; Communication <span class="nav-caret">▾</span></button>
     <div class="nav-dropdown">
       <button class="nav-item" onclick="showMain('lifeskills',this)" id="tab-lifeskills">🌟 Life Skills</button>
       <button class="nav-item" onclick="showMain('socialstories',this)" id="tab-socialstories">💬 Social Stories</button>
+      <button class="nav-item" onclick="showMain('aac',this)" id="tab-aac" style="color:#7C3AED">🗣️ Alternative Communication</button>
     </div>
   </div>
 
-  <button class="nav-single" onclick="showMain('aac',this)" id="tab-aac" style="color:#7C3AED">🗣️ Alternative Communication</button>
   <button class="nav-single" onclick="showMain('games',this)" id="tab-games" style="color:#E8A81C">🎮 Games</button>
   <button class="nav-single" onclick="showMain('progress',this)" id="tab-progress" style="color:#0D7A60">📊 Progress</button>
   <button class="nav-single" onclick="doLogout()" id="tab-account" style="margin-left:auto;color:var(--coral)">🚪 Log out</button>
@@ -3533,6 +3594,7 @@ function nntAdvance() {
   nntState.next = nntState.then;
   nntState.then = { emoji:"❓", text:"What's next?" };
   nntRenderBoard();
+  if (typeof alsCelebrate === 'function') alsCelebrate("You're doing great! 🌟");
 }
 
 // Timer
@@ -6342,6 +6404,7 @@ function buildQList(id, qs) {
     div.innerHTML = html;
     container.appendChild(div);
   });
+  if (typeof alsInitFocusForContainer === 'function') alsInitFocusForContainer(id);
 }
 
 function selectChip(chip, section, qid, val, ans) {
@@ -6396,6 +6459,8 @@ function generateCertificate(taskLabel, correct, total) {
   document.getElementById('cert-stars').textContent = pct >= 90 ? '⭐⭐⭐' : pct >= 70 ? '⭐⭐' : '⭐';
   document.getElementById('cert-date').textContent = 'Awarded on ' + new Date().toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' });
   document.getElementById('cert-overlay').classList.remove('hidden');
+  if (typeof alsConfetti === 'function') alsConfetti();
+  if (typeof alsCelebrate === 'function') alsCelebrate();
   if (typeof alsSaveCertificate === 'function') {
     alsSaveCertificate({
       name: document.getElementById('cert-name').value,
@@ -6430,12 +6495,16 @@ let alsCertificates = [];
 function alsLoadState() {
   try { alsPoints = parseInt(localStorage.getItem('als_points') || '0', 10) || 0; } catch(e) { alsPoints = 0; }
   try { alsCertificates = JSON.parse(localStorage.getItem('als_certificates') || '[]'); } catch(e) { alsCertificates = []; }
+  try { alsBadges = JSON.parse(localStorage.getItem('als_badges') || '[]'); } catch(e) { alsBadges = []; }
   try {
     const saved = JSON.parse(localStorage.getItem('als_task_scores') || '{}');
     Object.assign(TASK_SCORES, saved);
   } catch(e) {}
   alsRenderPoints();
   alsRenderCertBadge();
+  alsRenderLevel();
+  alsRenderBadges();
+  alsUpdateStreak();
 
   try {
     const calm = localStorage.getItem('als_calm_mode') === '1';
@@ -6449,6 +6518,11 @@ function alsLoadState() {
     const dysToggle = document.getElementById('als-dyslexia-toggle');
     if (dysToggle) dysToggle.checked = dys;
   } catch(e) {}
+  try {
+    alsFocusMode = localStorage.getItem('als_focus_mode') === '1';
+    const focusToggle = document.getElementById('als-focus-toggle');
+    if (focusToggle) focusToggle.checked = alsFocusMode;
+  } catch(e) { alsFocusMode = false; }
 }
 
 function alsRenderPoints() {
@@ -6463,6 +6537,8 @@ function alsAddPoints(n) {
   alsPoints += n;
   try { localStorage.setItem('als_points', String(alsPoints)); } catch(e) {}
   alsRenderPoints();
+  alsRenderLevel();
+  alsCheckBadges();
 }
 
 function alsTogglePanel(forceState) {
@@ -6492,6 +6568,7 @@ function alsSaveCertificate(cert) {
   alsCertificates.push(cert);
   try { localStorage.setItem('als_certificates', JSON.stringify(alsCertificates)); } catch(e) {}
   alsRenderCertBadge();
+  alsCheckBadges();
 }
 
 function alsOpenCertGallery() {
@@ -6617,18 +6694,224 @@ function alsRenderProgressReport() {
 }
 
 function alsResetProgress() {
-  if (!confirm('This will clear all recorded progress, points, and certificates on this device. This cannot be undone. Continue?')) return;
+  if (!confirm('This will clear all recorded progress, points, certificates, and badges on this device. This cannot be undone. Continue?')) return;
   try {
     localStorage.removeItem('als_task_scores');
     localStorage.removeItem('als_points');
     localStorage.removeItem('als_certificates');
+    localStorage.removeItem('als_badges');
+    localStorage.removeItem('als_streak');
+    localStorage.removeItem('als_last_active_date');
   } catch(e) {}
   Object.keys(TASK_SCORES).forEach(k => delete TASK_SCORES[k]);
   alsCertificates = [];
   alsPoints = 0;
+  alsBadges = [];
+  alsStreak = 0;
   alsRenderPoints();
   alsRenderCertBadge();
   alsRenderProgressReport();
+  alsRenderLevel();
+  alsRenderBadges();
+  alsRenderStreak();
+}
+
+// ─── GAMIFICATION: levels, streaks, badges, confetti, encouragement ───
+const ALS_LEVELS = [
+  { name: 'Explorer',   min: 0    },
+  { name: 'Adventurer', min: 100  },
+  { name: 'Champion',   min: 250  },
+  { name: 'Superstar',  min: 500  },
+  { name: 'Legend',     min: 1000 },
+  { name: 'Master',     min: 2000 }
+];
+const ALS_BADGES = [
+  { id: 'first-cert',  emoji: '🌟',  name: 'First Star',    check: s => s.certs   >= 1  },
+  { id: 'five-certs',  emoji: '🏅',  name: 'High Five',     check: s => s.certs   >= 5  },
+  { id: 'ten-certs',   emoji: '🎯',  name: 'Perfect Ten',   check: s => s.certs   >= 10 },
+  { id: 'century',     emoji: '💯',  name: 'Century Club',  check: s => s.points  >= 100 },
+  { id: 'high-flyer',  emoji: '🚀',  name: 'High Flyer',    check: s => s.points  >= 500 },
+  { id: 'streak-3',    emoji: '🔥',  name: '3-Day Streak',  check: s => s.streak  >= 3  },
+  { id: 'streak-7',    emoji: '🔥🔥', name: 'Week Warrior', check: s => s.streak  >= 7  }
+];
+const ALS_ENCOURAGEMENTS = [
+  "You're doing great! 🌟", "Amazing work! 🎉", "Keep it up, superstar! ⭐",
+  "Fantastic effort! 💪", "Wow, look at you go! 🚀", "Nice job! 🙌"
+];
+
+let alsBadges = [];
+let alsStreak = 0;
+
+function alsUpdateStreak() {
+  const today = new Date().toISOString().slice(0, 10);
+  let last = null;
+  try { last = localStorage.getItem('als_last_active_date'); } catch(e) {}
+  try { alsStreak = parseInt(localStorage.getItem('als_streak') || '0', 10) || 0; } catch(e) { alsStreak = 0; }
+  if (last !== today) {
+    const yesterday = new Date(Date.now() - 86400000).toISOString().slice(0, 10);
+    alsStreak = (last === yesterday) ? alsStreak + 1 : 1;
+    try {
+      localStorage.setItem('als_last_active_date', today);
+      localStorage.setItem('als_streak', String(alsStreak));
+    } catch(e) {}
+  }
+  alsRenderStreak();
+}
+
+function alsRenderStreak() {
+  const el = document.getElementById('als-streak-text');
+  if (!el) return;
+  el.textContent = alsStreak <= 1 ? 'Day 1 — welcome back!' : alsStreak + '-day streak — keep it up!';
+}
+
+function alsGetLevelInfo(points) {
+  let idx = 0;
+  for (let i = 0; i < ALS_LEVELS.length; i++) { if (points >= ALS_LEVELS[i].min) idx = i; }
+  const cur = ALS_LEVELS[idx];
+  const next = ALS_LEVELS[idx + 1];
+  return { levelNum: idx + 1, name: cur.name, floor: cur.min, nextFloor: next ? next.min : null };
+}
+
+function alsRenderLevel() {
+  const nameEl = document.getElementById('als-level-name');
+  const nextEl = document.getElementById('als-level-next');
+  const fillEl = document.getElementById('als-level-fill');
+  if (!nameEl) return;
+  const info = alsGetLevelInfo(alsPoints);
+  nameEl.textContent = 'Level ' + info.levelNum + ' · ' + info.name;
+  if (info.nextFloor === null) {
+    nextEl.textContent = 'Max level! 🎉';
+    fillEl.style.width = '100%';
+  } else {
+    const span = info.nextFloor - info.floor;
+    const progressed = alsPoints - info.floor;
+    const pct = Math.max(0, Math.min(100, Math.round((progressed / span) * 100)));
+    nextEl.textContent = progressed + '/' + span;
+    fillEl.style.width = pct + '%';
+  }
+}
+
+function alsRenderBadges() {
+  const grid = document.getElementById('als-badges-grid');
+  if (!grid) return;
+  grid.innerHTML = ALS_BADGES.map(b => {
+    const earned = alsBadges.includes(b.id);
+    return '<div class="als-badge' + (earned ? '' : ' locked') + '">' + b.emoji +
+      '<span class="als-badge-tooltip">' + b.name + (earned ? '' : ' (locked)') + '</span></div>';
+  }).join('');
+}
+
+function alsCheckBadges() {
+  const stats = { points: alsPoints, certs: alsCertificates.length, streak: alsStreak };
+  const newlyEarned = [];
+  ALS_BADGES.forEach(b => {
+    if (!alsBadges.includes(b.id) && b.check(stats)) {
+      alsBadges.push(b.id);
+      newlyEarned.push(b);
+    }
+  });
+  if (newlyEarned.length) {
+    try { localStorage.setItem('als_badges', JSON.stringify(alsBadges)); } catch(e) {}
+    alsConfetti();
+    alsCelebrate('🎖️ New badge: ' + newlyEarned[0].name + '!');
+  }
+  alsRenderBadges();
+}
+
+function alsCelebrate(customMsg) {
+  const banner = document.getElementById('als-celebrate-banner');
+  if (!banner) return;
+  banner.textContent = customMsg || ALS_ENCOURAGEMENTS[Math.floor(Math.random() * ALS_ENCOURAGEMENTS.length)];
+  banner.classList.add('show');
+  clearTimeout(window.__alsCelebrateTimer);
+  window.__alsCelebrateTimer = setTimeout(() => banner.classList.remove('show'), 2200);
+}
+
+function alsConfetti() {
+  const colors = ['#0D7A60', '#7C3AED', '#E8A81C', '#C84B2F', '#185FA5', '#B03060'];
+  for (let i = 0; i < 28; i++) {
+    const piece = document.createElement('div');
+    piece.className = 'als-confetti-piece';
+    piece.style.left = (Math.random() * 100) + 'vw';
+    piece.style.background = colors[Math.floor(Math.random() * colors.length)];
+    piece.style.animationDuration = (2 + Math.random() * 1.5) + 's';
+    document.body.appendChild(piece);
+    setTimeout(() => piece.remove(), 3700);
+  }
+}
+
+// ─── FOCUS MODE: one activity/question at a time (reduces cognitive load) ───
+let alsFocusMode = false;
+let alsFocusIndex = {};
+let alsFocusRegisteredIds = [];
+
+function alsInitFocusForContainer(id) {
+  const container = document.getElementById('ql-' + id);
+  if (!container) return;
+  if (!alsFocusRegisteredIds.includes(id)) alsFocusRegisteredIds.push(id);
+  if (!document.getElementById('als-focus-nav-' + id)) {
+    const nav = document.createElement('div');
+    nav.className = 'als-focus-nav';
+    nav.id = 'als-focus-nav-' + id;
+    nav.innerHTML =
+      '<button onclick="alsFocusNav(\'' + id + '\',-1)" id="als-focus-prev-' + id + '">◀ Previous</button>' +
+      '<span class="als-focus-progress" id="als-focus-progress-' + id + '"></span>' +
+      '<button onclick="alsFocusNav(\'' + id + '\',1)" id="als-focus-next-' + id + '">Next ▶</button>';
+    container.insertAdjacentElement('afterend', nav);
+  }
+  if (alsFocusIndex[id] === undefined) alsFocusIndex[id] = 0;
+  alsFocusRefresh(id);
+}
+
+function alsFocusRefresh(id) {
+  const container = document.getElementById('ql-' + id);
+  const nav = document.getElementById('als-focus-nav-' + id);
+  if (!container) return;
+  const items = Array.from(container.querySelectorAll('.q-item'));
+  if (!alsFocusMode || items.length === 0) {
+    container.classList.remove('als-focus-active');
+    items.forEach(it => it.classList.remove('als-current'));
+    if (nav) nav.style.display = 'none';
+    return;
+  }
+  container.classList.add('als-focus-active');
+  let index = alsFocusIndex[id] || 0;
+  index = Math.max(0, Math.min(index, items.length - 1));
+  alsFocusIndex[id] = index;
+  items.forEach((it, i) => it.classList.toggle('als-current', i === index));
+  if (nav) {
+    nav.style.display = 'flex';
+    const progress = document.getElementById('als-focus-progress-' + id);
+    const prevBtn = document.getElementById('als-focus-prev-' + id);
+    const nextBtn = document.getElementById('als-focus-next-' + id);
+    if (progress) progress.textContent = 'Question ' + (index + 1) + ' of ' + items.length;
+    if (prevBtn) prevBtn.disabled = (index === 0);
+    if (nextBtn) {
+      if (index === items.length - 1) {
+        nextBtn.textContent = '✅ Last one — scroll down to check!';
+        nextBtn.disabled = true;
+      } else {
+        nextBtn.textContent = 'Next ▶';
+        nextBtn.disabled = false;
+      }
+    }
+  }
+}
+
+function alsFocusNav(id, dir) {
+  const container = document.getElementById('ql-' + id);
+  if (!container) return;
+  const items = container.querySelectorAll('.q-item');
+  let index = (alsFocusIndex[id] || 0) + dir;
+  index = Math.max(0, Math.min(index, items.length - 1));
+  alsFocusIndex[id] = index;
+  alsFocusRefresh(id);
+}
+
+function alsToggleFocusMode(on) {
+  alsFocusMode = !!on;
+  try { localStorage.setItem('als_focus_mode', on ? '1' : '0'); } catch(e) {}
+  alsFocusRegisteredIds.forEach(id => alsFocusRefresh(id));
 }
 
 function checkSection(id) {
@@ -6685,6 +6968,7 @@ function buildStoryPlan() {
     div.innerHTML = `<div class="q-num">Q${i+1}</div><div class="q-text">${q.q}</div><textarea class="ans-input ans-wide story-textarea" rows="3" placeholder="Write your answer here…"></textarea>`;
     container.appendChild(div);
   });
+  if (typeof alsInitFocusForContainer === 'function') alsInitFocusForContainer('storyplan');
 }
 
 // ─── BUILD CHECKLIST ─────────────────────────────────────────────────────────
@@ -7507,10 +7791,20 @@ buildChecklist();
 
     <div id="als-points-row">
       <span id="als-points-emoji">⭐</span>
-      <div>
+      <div style="flex:1">
         <div id="als-points-num">0 points</div>
         <div id="als-points-sub">Earned by completing activities</div>
+        <div id="als-level-row">
+          <div id="als-level-label"><span id="als-level-name">Level 1 · Explorer</span><span id="als-level-next">0/100</span></div>
+          <div id="als-level-track"><div id="als-level-fill" style="width:0%"></div></div>
+        </div>
+        <div id="als-streak-row"><span>🔥</span><span id="als-streak-text">Start today's streak!</span></div>
       </div>
+    </div>
+
+    <div>
+      <div style="font-family:'Baloo 2',sans-serif;font-weight:800;font-size:0.78rem;color:var(--slate);margin-bottom:6px">🎖️ My Badges</div>
+      <div id="als-badges-grid"></div>
     </div>
 
     <button class="als-tool-btn als-tool-break" onclick="alsOpenBreak()">
@@ -7521,6 +7815,13 @@ buildChecklist();
       🏆 My Certificates <span id="als-cert-count-badge"></span>
     </button>
 
+    <div class="als-toggle-row">
+      <label class="als-toggle" for="als-focus-toggle">
+        <span>🎯 One Activity at a Time <small>Shows a single question, with a Next button</small></span>
+        <input type="checkbox" id="als-focus-toggle" onchange="alsToggleFocusMode(this.checked)">
+        <span class="als-switch"></span>
+      </label>
+    </div>
     <div class="als-toggle-row">
       <label class="als-toggle" for="als-calm-toggle">
         <span>🌿 Calm Mode <small>Less motion, more space</small></span>
@@ -7562,6 +7863,9 @@ buildChecklist();
     <button id="als-break-resume-btn" onclick="alsCloseBreak()">✅ I'm ready — let's continue</button>
   </div>
 </div>
+
+<!-- ════ CELEBRATION BANNER ════ -->
+<div id="als-celebrate-banner" aria-live="polite"></div>
 
 <!-- ════ FLOATING BOOK-A-SESSION BUTTON ════ -->
 <div class="book-float" id="bookFloat">
