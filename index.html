@@ -1321,6 +1321,103 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);}
   font-weight: 800; font-size: 1rem; cursor: pointer; box-shadow: 0 4px 18px rgba(13,122,96,.4);
 }
 
+/* ── EMOTION CHECK-IN OVERLAY ── */
+#als-emotion-overlay {
+  position: fixed; inset: 0; z-index: 9700;
+  background: rgba(20,15,45,.55);
+  display: flex; align-items: center; justify-content: center; padding: 1.5rem;
+}
+#als-emotion-overlay.hidden { display: none; }
+#als-emotion-card {
+  background: #fff; border-radius: 24px; padding: 1.8rem; width: min(460px, 100%);
+  max-height: 88vh; overflow-y: auto; text-align: center; box-shadow: 0 20px 60px rgba(0,0,0,.35);
+}
+#als-emotion-card h3 { font-family: 'Baloo 2', sans-serif; font-size: 1.4rem; color: var(--indigo); margin-bottom: 6px; }
+#als-emotion-sub { color: var(--muted); font-weight: 600; margin-bottom: 1.2rem; font-size: 0.9rem; }
+#als-emotion-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 1.2rem;
+}
+.als-emotion-btn {
+  border: 2px solid var(--border); background: var(--card); border-radius: 16px;
+  padding: 14px 6px; font-size: 2rem; cursor: pointer; display: flex; flex-direction: column;
+  align-items: center; gap: 6px; transition: transform .15s, border-color .15s;
+}
+.als-emotion-btn span { font-family: 'Nunito', sans-serif; font-size: 0.72rem; font-weight: 800; color: var(--slate); }
+.als-emotion-btn:hover { transform: translateY(-2px) scale(1.05); border-color: var(--indigo-m); }
+.als-emotion-btn:focus-visible { outline: 3px solid var(--indigo); outline-offset: 2px; }
+#als-emotion-cancel {
+  border: none; background: none; color: var(--muted); font-weight: 700; font-size: 0.82rem;
+  cursor: pointer; text-decoration: underline; padding: 6px;
+}
+#als-emotion-response-emoji { font-size: 3.4rem; margin-bottom: 0.6rem; }
+#als-emotion-response-msg { color: var(--slate); font-weight: 700; font-size: 1rem; margin-bottom: 1.3rem; line-height: 1.5; }
+#als-emotion-done-btn {
+  border: none; background: linear-gradient(135deg,#7B73D9,#4A35B0); color: #fff;
+  padding: 12px 26px; border-radius: 50px; font-family: 'Baloo 2', sans-serif;
+  font-weight: 800; font-size: 0.95rem; cursor: pointer; box-shadow: 0 4px 18px rgba(74,53,176,.35);
+}
+
+/* ── TOKEN BOARD OVERLAY ── */
+#als-token-overlay {
+  position: fixed; inset: 0; z-index: 9700;
+  background: rgba(20,15,45,.55);
+  display: flex; align-items: center; justify-content: center; padding: 1.5rem;
+}
+#als-token-overlay.hidden { display: none; }
+#als-token-card {
+  background: #fff; border-radius: 24px; padding: 1.8rem; width: min(460px, 100%);
+  max-height: 88vh; overflow-y: auto; text-align: center; position: relative;
+  box-shadow: 0 20px 60px rgba(0,0,0,.35);
+}
+#als-token-card h3 { font-family: 'Baloo 2', sans-serif; font-size: 1.4rem; color: var(--gold); margin-bottom: 6px; }
+#als-token-reward-display { color: var(--slate); font-weight: 700; font-size: 0.92rem; margin-bottom: 1rem; }
+#als-token-reward-text { color: var(--gold); }
+#als-token-settings-btn, #als-token-close {
+  position: absolute; top: 14px; border: none; background: var(--bg);
+  width: 32px; height: 32px; border-radius: 50%; font-size: 15px; cursor: pointer;
+}
+#als-token-settings-btn { left: 14px; }
+#als-token-close { right: 14px; font-size: 18px; }
+#als-token-settings {
+  background: var(--gold-l); border: 2px solid #F5DFA6; border-radius: 14px;
+  padding: 12px; margin-bottom: 1rem; text-align: left; display: flex; flex-direction: column; gap: 10px;
+}
+#als-token-settings.hidden { display: none; }
+#als-token-settings label {
+  display: flex; flex-direction: column; gap: 4px; font-family: 'Nunito', sans-serif;
+  font-size: 0.8rem; font-weight: 700; color: var(--slate);
+}
+#als-token-settings input {
+  border: 1.5px solid var(--border); border-radius: 10px; padding: 8px 10px; font-size: 0.9rem;
+  font-family: var(--font);
+}
+#als-token-settings-save {
+  border: none; background: var(--gold); color: #fff; border-radius: 10px;
+  padding: 9px; font-weight: 800; font-family: 'Baloo 2', sans-serif; cursor: pointer;
+}
+#als-token-grid {
+  display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; margin-bottom: 1.3rem;
+}
+.als-token-slot {
+  aspect-ratio: 1/1; border-radius: 12px; border: 2px dashed var(--border);
+  background: var(--bg); display: flex; align-items: center; justify-content: center;
+  font-size: 1.3rem;
+}
+.als-token-slot.filled {
+  border: 2px solid var(--gold); background: var(--gold-l); animation: alsFadeIn .3s ease;
+}
+#als-token-add-btn {
+  border: none; background: linear-gradient(135deg,#E8A81C,#F6C453); color: #fff;
+  padding: 13px 24px; border-radius: 50px; font-family: 'Baloo 2', sans-serif;
+  font-weight: 800; font-size: 1rem; cursor: pointer; box-shadow: 0 4px 18px rgba(232,168,28,.4);
+}
+#als-token-claim-btn {
+  border: none; background: linear-gradient(135deg,#0D7A60,#1BAD85); color: #fff;
+  padding: 13px 24px; border-radius: 50px; font-family: 'Baloo 2', sans-serif;
+  font-weight: 800; font-size: 1rem; cursor: pointer; box-shadow: 0 4px 18px rgba(13,122,96,.4);
+}
+#als-token-add-btn.hidden, #als-token-claim-btn.hidden { display: none; }
+
 /* ── PROMO BANNER (per section bottom) ── */
 .promo-banner {
   margin: 1.4rem 0 0;
@@ -1635,6 +1732,10 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);}
 }
 .cert-btn:hover { transform: translateY(-1px); }
 .cert-btn:active { transform: scale(0.96); }
+.cert-btn-danger {
+  border: 1.5px solid #A83A22; background: linear-gradient(135deg,#E0604A,#C84B2F);
+  color: #fff; font-weight: 800;
+}
 #cert-overlay {
   position: fixed; inset: 0; z-index: 99999; background: rgba(20,15,40,0.72);
   display: flex; align-items: center; justify-content: center; padding: 16px;
@@ -1724,6 +1825,37 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);}
   }
 }
 #als-print-watermark { display: none; }
+
+/* ── INSTRUCTION AUDIO: 🔊 icon used on every activity instruction ── */
+.als-instr-speak {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: var(--indigo-l); border: 2px solid var(--indigo-m); border-radius: 12px;
+  padding: 7px 12px; font-family: var(--font); font-size: 0.92em; font-weight: 700;
+  color: var(--indigo); cursor: pointer; text-align: left; line-height: 1.4;
+  transition: transform .12s, box-shadow .12s;
+}
+.als-instr-speak:hover { transform: translateY(-1px); box-shadow: 0 3px 10px rgba(0,0,0,.1); }
+.als-instr-speak:focus-visible { outline: 3px solid var(--indigo); outline-offset: 2px; }
+.als-instr-speak.speaking { background: var(--indigo); color: #fff; border-color: var(--indigo); }
+.als-instr-speak span { pointer-events: none; }
+
+/* ── PDF DOWNLOAD: watermark layer temporarily injected into the worksheet during export ── */
+#als-pdf-watermark-layer {
+  position: absolute; inset: 0; pointer-events: none; z-index: 5; overflow: hidden;
+}
+.als-pdf-wm-row {
+  display: flex; justify-content: space-around; align-items: center;
+  transform: rotate(-25deg); opacity: 0.09; white-space: nowrap;
+  font-family: 'Baloo 2', sans-serif; font-weight: 800; font-size: 20px; color: #14213D;
+  margin: 90px -120px;
+}
+#als-pdf-download-status {
+  position: fixed; top: 50%; left: 50%; transform: translate(-50%,-50%);
+  background: #1E2330; color: #fff; padding: 16px 26px; border-radius: 16px;
+  font-family: 'Baloo 2', sans-serif; font-weight: 700; font-size: 0.95rem;
+  z-index: 100000; box-shadow: 0 12px 34px rgba(0,0,0,.35); display: none;
+}
+#als-pdf-download-status.show { display: block; }
 
 /* ── WhatsApp AAC button ── */
 #aac-wa-btn {
@@ -1984,6 +2116,8 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);}
 }
 
 </style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
 <body>
 
@@ -2201,6 +2335,7 @@ function goToWorksheets(subject, btn) {
     <span class="fsh-emoji-row">🔤 📣 🌈 ✏️ 🎵</span>
     <h2 style="color:#0D7A60;font-family:'Baloo 2',sans-serif">Sound Explorer Worksheets</h2>
     <p style="color:#374151;font-weight:800;font-size:1.05rem">Choose a vowel digraph below, then work through <strong>Circle It → Fill In → Sort It → Stories!</strong></p>
+    <button type="button" class="als-instr-speak" aria-label="Play instruction aloud" style="margin-top:6px" onclick="alsSpeakInstruction('Choose a vowel sound below, then work through Circle It, Fill In, Sort It, and Stories.', this)">🔊 <span>Hear these instructions</span></button>
     <p style="color:#0D7A60;font-size:0.82rem;font-weight:700;margin-top:4px">🔊 Sounds play at full volume — turn up your device volume for the clearest listening experience.</p>
   </div>
 
@@ -2245,6 +2380,7 @@ function goToWorksheets(subject, btn) {
     <span class="fsh-emoji-row">📖 🔍 💡 ✨ 🌟</span>
     <h2 style="color:#0D7A60;font-family:'Baloo 2',sans-serif">Reading & Comprehension</h2>
     <p style="color:#374151">Read the story carefully 👀 then answer the questions. You can do it! 💪</p>
+    <button type="button" class="als-instr-speak" aria-label="Play instruction aloud" style="margin-top:6px" onclick="alsSpeakInstruction('Read the story carefully, then answer the questions. You can do it!', this)">🔊 <span>Hear these instructions</span></button>
     <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:10px">
       <span style="background:#fff;padding:5px 12px;border-radius:20px;font-size:0.8rem;font-weight:700;color:#0D7A60;border:2px solid #1BAD85">🌊 Sea Story</span>
       <span style="background:#fff;padding:5px 12px;border-radius:20px;font-size:0.8rem;font-weight:700;color:#4A35B0;border:2px solid #7B73D9">🌲 Forest</span>
@@ -2512,6 +2648,7 @@ function goToWorksheets(subject, btn) {
     <span class="fsh-emoji-row">🌟 🏠 🛒 🤝 🧠</span>
     <h2 style="color:#B5780A;font-family:'Baloo 2',sans-serif">Life Skills</h2>
     <p style="color:#374151">Real life learning — skills you use every single day! 💪</p>
+    <button type="button" class="als-instr-speak" aria-label="Play instruction aloud" style="margin-top:6px" onclick="alsSpeakInstruction('Real life learning. These are skills you use every single day.', this)">🔊 <span>Hear these instructions</span></button>
     <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:10px;font-size:1.6rem">
       🛍️ 🍳 🚌 💰 🧹 📅 🤝 💊
     </div>
@@ -2554,6 +2691,7 @@ function goToWorksheets(subject, btn) {
     <span class="fsh-emoji-row">💬 🤝 😊 👥 🌍</span>
     <h2 style="color:#B03060;font-family:'Baloo 2',sans-serif">Social Stories</h2>
     <p style="color:#374151">Learn how to handle real situations with confidence! 🌟</p>
+    <button type="button" class="als-instr-speak" aria-label="Play instruction aloud" style="margin-top:6px" onclick="alsSpeakInstruction('Learn how to handle real situations with confidence.', this)">🔊 <span>Hear these instructions</span></button>
     <div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:12px">
       <div class="scene-card" style="flex:1;min-width:80px;max-width:100px;background:linear-gradient(135deg,#FFF0F8,#FCEAF1);border-color:#D96090">
         <span class="scene-art">🏫</span><div class="scene-title" style="color:#B03060;font-size:0.75rem">At School</div>
@@ -2621,6 +2759,7 @@ function goToWorksheets(subject, btn) {
     <div style="font-size:48px;margin-bottom:4px">🔢✨📐</div>
     <h2>Mathematics Worksheets</h2>
     <p>Six fun topics · 15+ questions each · Check your answers as you go!</p>
+    <button type="button" class="als-instr-speak" aria-label="Play instruction aloud" style="margin-top:6px" onclick="alsSpeakInstruction('Six fun topics, with fifteen or more questions each. Check your answers as you go.', this)">🔊 <span>Hear these instructions</span></button>
   </div>
 
   <div class="sub-tabs" id="ws-mathTabs">
@@ -3031,6 +3170,7 @@ function goToWorksheets(subject, btn) {
     <h2>English Language Worksheets</h2>
     <div style="font-size:42px;margin-bottom:4px">📚✍️💬</div>
     <p>Eight topics · 15+ tasks each · From word classes to story writing!</p>
+    <button type="button" class="als-instr-speak" aria-label="Play instruction aloud" style="margin-top:6px" onclick="alsSpeakInstruction('Eight topics, with fifteen or more tasks each. From word classes to story writing.', this)">🔊 <span>Hear these instructions</span></button>
     <div style="display:flex;gap:6px;flex-wrap:wrap;justify-content:center;margin-top:10px;font-size:0.78rem;font-weight:700;color:#185FA5">
       <span style="background:#fff;padding:4px 10px;border-radius:20px;border:2px solid #4B8FD0">🔤 Word Classes</span>
       <span style="background:#fff;padding:4px 10px;border-radius:20px;border:2px solid #4B8FD0">⏱ Tenses</span>
@@ -4524,6 +4664,31 @@ function speakPhonicsWord(word, el) {
   else setTimeout(doSpeak, 150);
 }
 
+// ─── GENERAL-PURPOSE INSTRUCTION SPEAKER: used by every 🔊 icon across all activities ───
+function alsSpeakInstruction(text, btn) {
+  if (!window.speechSynthesis) return;
+  window.speechSynthesis.cancel();
+  document.querySelectorAll('.als-instr-speak.speaking').forEach(b => b.classList.remove('speaking'));
+
+  const doSpeak = () => {
+    const u = phonicsMakeUtterance(text);
+    u.rate = 0.88; // clear but a touch quicker than single-word phonics playback, since instructions are longer
+    if (btn) btn.classList.add('speaking');
+    u.onend = u.onerror = () => { if (btn) btn.classList.remove('speaking'); };
+    window.speechSynthesis.speak(u);
+  };
+  if (window.speechSynthesis.getVoices().length) doSpeak();
+  else setTimeout(doSpeak, 150);
+}
+
+// Wraps a chunk of instruction text with a clickable 🔊 icon.
+// Usage in template strings: als_sp('Tap the picture that starts with the /sh/ sound.')
+function als_sp(text) {
+  const safe = text.replace(/'/g, "&#39;").replace(/"/g, '&quot;');
+  return '<button type="button" class="als-instr-speak" aria-label="Play instruction aloud" ' +
+    'onclick="alsSpeakInstruction(\'' + safe.replace(/'/g, "\\'") + '\', this)">🔊 <span>' + text + '</span></button>';
+}
+
 // Speak every mascot word for a sound, one after another, highlighting each
 function speakAllPhonicsWords(key) {
   if (!window.speechSynthesis) return;
@@ -4587,7 +4752,7 @@ function buildCircle(key, data) {
     <div class="card teal-l">
       <div class="card-head">
         <div class="card-icon ci-teal">👂</div>
-        <div class="card-head-text"><h3>Part 1 — Circle the Right Sound</h3><p>Tap the word that contains the /${key}/ sound</p></div>
+        <div class="card-head-text"><h3>Part 1 — Circle the Right Sound</h3><p>Tap the word that contains the /${key}/ sound</p>${als_sp('Tap the word that contains the /' + key + '/ sound.')}</div>
       </div>
       <div class="score-bar"><span class="score-label">Score</span><div class="score-track"><div class="score-fill" id="${key}-c-bar" style="width:0%"></div></div><span class="score-num" id="${key}-c-score">0 / ${scores.total}</span></div>
       <div class="q-list" id="${key}-c-qs"></div>
@@ -4640,7 +4805,7 @@ function buildFill(key, data) {
     <div class="card indigo-l">
       <div class="card-head">
         <div class="card-icon ci-indigo">✏️</div>
-        <div class="card-head-text"><h3>Part 2 — Fill in the Missing Word</h3><p>Type the /${key}/ word that completes the sentence</p></div>
+        <div class="card-head-text"><h3>Part 2 — Fill in the Missing Word</h3><p>Type the /${key}/ word that completes the sentence</p>${als_sp('Type the /' + key + '/ word that completes the sentence.')}</div>
       </div>
       <div class="score-bar"><span class="score-label">Score</span><div class="score-track"><div class="score-fill" id="${key}-f-bar" style="width:0%"></div></div><span class="score-num" id="${key}-f-score">0 / ${scores.total}</span></div>
       <div class="q-list" id="${key}-f-qs"></div>
@@ -4691,7 +4856,7 @@ function buildSort(key, data) {
     <div class="card gold-l">
       <div class="card-head">
         <div class="card-icon ci-gold">🔀</div>
-        <div class="card-head-text"><h3>Part 3 — Sort the Words</h3><p>Tap a word, then tap the column to place it</p></div>
+        <div class="card-head-text"><h3>Part 3 — Sort the Words</h3><p>Tap a word, then tap the column to place it</p>${als_sp('Tap a word, then tap the column to place it.')}</div>
       </div>
       <div class="instruction">Tap a word from the pool below, then tap the correct column.</div>
       <div class="word-pool" id="${key}-pool"></div>
@@ -4845,7 +5010,7 @@ function buildStory(key, data) {
     <div class="card rose-l">
       <div class="card-head">
         <div class="card-icon ci-rose">📚</div>
-        <div class="card-head-text"><h3>Part 4 — Read the Story</h3><p>Read the story carefully and enjoy!</p></div>
+        <div class="card-head-text"><h3>Part 4 — Read the Story</h3><p>Read the story carefully and enjoy!</p>${als_sp('Read the story carefully and enjoy!')}</div>
       </div>
       <div class="story-box" id="${key}-storybox">
         <div class="story-title">${s.title}</div>
@@ -6552,6 +6717,78 @@ function alsPrintCurrentPage() {
   window.print();
 }
 
+async function alsDownloadWorksheetPDF() {
+  if (typeof alsTogglePanel === 'function') alsTogglePanel(false);
+  const statusEl = document.getElementById('als-pdf-download-status');
+  const target = document.querySelector('.main-section.active');
+
+  if (!target) { alert("Couldn't find a page to download — please open a worksheet first."); return; }
+  if (typeof html2canvas === 'undefined' || typeof window.jspdf === 'undefined') {
+    // Libraries didn't load (e.g. no internet connection to the CDN) — fall back to print,
+    // which still produces a watermarked, savable PDF via the browser's own "Save as PDF" option.
+    alert("The PDF tool needs an internet connection to load. Opening the print dialog instead — choose \"Save as PDF\" there.");
+    alsPrintCurrentPage();
+    return;
+  }
+
+  if (statusEl) statusEl.classList.add('show');
+
+  // 1) Temporarily hide interactive-only controls so the export looks like a clean worksheet
+  const restoreList = [];
+  target.querySelectorAll('.als-focus-nav, button:not(.static-illustration)').forEach(el => {
+    restoreList.push([el, el.style.display]);
+    el.style.display = 'none';
+  });
+
+  // 2) Inject a repeating watermark layer sized to the worksheet's full height
+  const wm = document.createElement('div');
+  wm.id = 'als-pdf-watermark-layer';
+  const fullHeight = target.scrollHeight || 1200;
+  const rowCount = Math.ceil(fullHeight / 220) + 2;
+  let wmHTML = '';
+  for (let r = 0; r < rowCount; r++) {
+    wmHTML += '<div class="als-pdf-wm-row"><span>Adaptive Learning Support</span><span>info@adaptivelearningsupport.com</span><span>Adaptive Learning Support</span></div>';
+  }
+  wm.innerHTML = wmHTML;
+  const priorPosition = target.style.position;
+  if (!priorPosition) target.style.position = 'relative';
+  target.appendChild(wm);
+
+  try {
+    const canvas = await html2canvas(target, { scale: 2, backgroundColor: '#ffffff', useCORS: true, windowWidth: target.scrollWidth });
+
+    const { jsPDF } = window.jspdf;
+    const pdf = new jsPDF('p', 'pt', 'a4');
+    const pageW = pdf.internal.pageSize.getWidth();
+    const pageH = pdf.internal.pageSize.getHeight();
+    const imgW = pageW;
+    const imgH = (canvas.height * imgW) / canvas.width;
+    const imgData = canvas.toDataURL('image/jpeg', 0.92);
+
+    let heightLeft = imgH;
+    let position = 0;
+    pdf.addImage(imgData, 'JPEG', 0, position, imgW, imgH);
+    heightLeft -= pageH;
+    while (heightLeft > 0) {
+      position = heightLeft - imgH;
+      pdf.addPage();
+      pdf.addImage(imgData, 'JPEG', 0, position, imgW, imgH);
+      heightLeft -= pageH;
+    }
+
+    const studentName = (document.getElementById('cert-name') && document.getElementById('cert-name').value) || 'Worksheet';
+    const safeName = studentName.replace(/[^a-z0-9]+/gi, '_');
+    pdf.save('Adaptive_Learning_Support_' + safeName + '_' + Date.now() + '.pdf');
+  } catch (err) {
+    alert("Sorry, something went wrong creating the PDF. You can still use \"Print This Page\" and choose \"Save as PDF\" from the print dialog.");
+  } finally {
+    wm.remove();
+    target.style.position = priorPosition;
+    restoreList.forEach(([el, disp]) => { el.style.display = disp; });
+    if (statusEl) statusEl.classList.remove('show');
+  }
+}
+
 function printCertificate() {
   alsPrintElement(document.getElementById('cert-overlay'));
 }
@@ -6564,6 +6801,8 @@ function alsLoadState() {
   try { alsPoints = parseInt(localStorage.getItem('als_points') || '0', 10) || 0; } catch(e) { alsPoints = 0; }
   try { alsCertificates = JSON.parse(localStorage.getItem('als_certificates') || '[]'); } catch(e) { alsCertificates = []; }
   try { alsBadges = JSON.parse(localStorage.getItem('als_badges') || '[]'); } catch(e) { alsBadges = []; }
+  alsLoadEmotionLog();
+  alsLoadTokenBoard();
   try {
     const saved = JSON.parse(localStorage.getItem('als_task_scores') || '{}');
     Object.assign(TASK_SCORES, saved);
@@ -6695,6 +6934,139 @@ function alsCloseBreak() {
   }
 }
 
+// ─── EMOTION CHECK-IN ───
+let alsEmotionLog = [];
+const ALS_EMOTION_RESPONSES = {
+  happy:      ["That's wonderful to hear! 🌟 Keep that happy feeling going.", "Yay! Happy days are the best days. 😄"],
+  okay:       ["Okay is a perfectly good place to be. 🙂 Thanks for sharing.", "Good to know. Steady as you go today!"],
+  calm:       ["Lovely — calm is a great feeling to learn in. 😌", "Nice and calm. That's a great headspace for today."],
+  tired:      ["Thanks for telling me. It's okay to feel tired sometimes — maybe take a short break before you continue.", "Tired days happen. Go gently, and rest if you need to."],
+  worried:    ["Thanks for sharing that. It's okay to feel worried sometimes — if it keeps feeling big, it can help to tell a parent, teacher, or another grown-up you trust.", "I hear you. Worried feelings are okay to have — talking to a trusted grown-up about it can really help."],
+  frustrated: ["That's a really understandable feeling. Taking a short break can sometimes help it feel smaller.", "Thanks for telling me. It's okay to feel frustrated — a little break might help before you continue."],
+  sad:        ["Thank you for sharing that with me. It's okay to feel sad sometimes — talking to a parent, teacher, or someone you trust about it can really help.", "I'm glad you told me. Sad feelings are okay to have, and it can help to talk to a grown-up you trust about it."]
+};
+
+function alsLoadEmotionLog() {
+  try { alsEmotionLog = JSON.parse(localStorage.getItem('als_emotion_log') || '[]'); } catch(e) { alsEmotionLog = []; }
+}
+
+function alsOpenEmotionCheckin() {
+  if (typeof alsTogglePanel === 'function') alsTogglePanel(false);
+  document.getElementById('als-emotion-step-pick').classList.remove('hidden');
+  document.getElementById('als-emotion-step-response').classList.add('hidden');
+  document.getElementById('als-emotion-overlay').classList.remove('hidden');
+}
+
+function alsCloseEmotionCheckin() {
+  document.getElementById('als-emotion-overlay').classList.add('hidden');
+}
+
+function alsPickEmotion(id, emoji, label) {
+  alsEmotionLog.push({ emotion: id, label, date: new Date().toISOString() });
+  // Keep the log from growing forever — most recent 200 check-ins is plenty for a progress report
+  if (alsEmotionLog.length > 200) alsEmotionLog = alsEmotionLog.slice(-200);
+  try { localStorage.setItem('als_emotion_log', JSON.stringify(alsEmotionLog)); } catch(e) {}
+
+  const responses = ALS_EMOTION_RESPONSES[id] || ["Thanks for sharing how you feel."];
+  const msg = responses[Math.floor(Math.random() * responses.length)];
+
+  document.getElementById('als-emotion-response-emoji').textContent = emoji;
+  document.getElementById('als-emotion-response-msg').textContent = msg;
+  document.getElementById('als-emotion-step-pick').classList.add('hidden');
+  document.getElementById('als-emotion-step-response').classList.remove('hidden');
+
+  if (id === 'happy' || id === 'calm') {
+    if (typeof alsConfetti === 'function') alsConfetti();
+  }
+}
+
+// ─── TOKEN BOARD (ABA-style token economy, separate from the points/badges system) ───
+let alsTokenGoal = 10;
+let alsTokenCount = 0;
+let alsTokenReward = 'a fun reward!';
+
+function alsLoadTokenBoard() {
+  try { alsTokenGoal = parseInt(localStorage.getItem('als_token_goal') || '10', 10) || 10; } catch(e) { alsTokenGoal = 10; }
+  try { alsTokenCount = parseInt(localStorage.getItem('als_token_count') || '0', 10) || 0; } catch(e) { alsTokenCount = 0; }
+  try { alsTokenReward = localStorage.getItem('als_token_reward') || 'a fun reward!'; } catch(e) { alsTokenReward = 'a fun reward!'; }
+}
+
+function alsOpenTokenBoard() {
+  if (typeof alsTogglePanel === 'function') alsTogglePanel(false);
+  document.getElementById('als-token-settings').classList.add('hidden');
+  alsRenderTokenBoard();
+  document.getElementById('als-token-overlay').classList.remove('hidden');
+}
+
+function alsCloseTokenBoard() {
+  document.getElementById('als-token-overlay').classList.add('hidden');
+}
+
+function alsToggleTokenSettings() {
+  const panel = document.getElementById('als-token-settings');
+  const opening = panel.classList.contains('hidden');
+  panel.classList.toggle('hidden');
+  if (opening) {
+    document.getElementById('als-token-goal-input').value = alsTokenGoal;
+    document.getElementById('als-token-reward-input').value = alsTokenReward;
+  }
+}
+
+function alsSaveTokenSettings() {
+  const goalInput = document.getElementById('als-token-goal-input');
+  const rewardInput = document.getElementById('als-token-reward-input');
+  let goal = parseInt(goalInput.value, 10);
+  if (!goal || goal < 1) goal = 10;
+  if (goal > 50) goal = 50;
+  alsTokenGoal = goal;
+  alsTokenReward = (rewardInput.value || '').trim() || 'a fun reward!';
+  // If the goal shrank below the current count, cap the count so the board doesn't show overflow
+  if (alsTokenCount > alsTokenGoal) alsTokenCount = alsTokenGoal;
+  try {
+    localStorage.setItem('als_token_goal', String(alsTokenGoal));
+    localStorage.setItem('als_token_reward', alsTokenReward);
+    localStorage.setItem('als_token_count', String(alsTokenCount));
+  } catch(e) {}
+  document.getElementById('als-token-settings').classList.add('hidden');
+  alsRenderTokenBoard();
+}
+
+function alsRenderTokenBoard() {
+  const grid = document.getElementById('als-token-grid');
+  const rewardEl = document.getElementById('als-token-reward-text');
+  const claimBtn = document.getElementById('als-token-claim-btn');
+  const addBtn = document.getElementById('als-token-add-btn');
+  if (!grid) return;
+  rewardEl.textContent = alsTokenReward;
+  let html = '';
+  for (let i = 0; i < alsTokenGoal; i++) {
+    html += '<div class="als-token-slot' + (i < alsTokenCount ? ' filled' : '') + '">' + (i < alsTokenCount ? '⭐' : '') + '</div>';
+  }
+  grid.innerHTML = html;
+  const full = alsTokenCount >= alsTokenGoal;
+  claimBtn.classList.toggle('hidden', !full);
+  addBtn.classList.toggle('hidden', full);
+}
+
+function alsAddToken() {
+  if (alsTokenCount >= alsTokenGoal) return;
+  alsTokenCount++;
+  try { localStorage.setItem('als_token_count', String(alsTokenCount)); } catch(e) {}
+  alsRenderTokenBoard();
+  if (alsTokenCount >= alsTokenGoal) {
+    if (typeof alsConfetti === 'function') alsConfetti();
+    if (typeof alsCelebrate === 'function') alsCelebrate('🎉 Token board full! Time to claim your reward!');
+  }
+}
+
+function alsClaimTokenReward() {
+  if (typeof alsConfetti === 'function') alsConfetti();
+  if (typeof alsCelebrate === 'function') alsCelebrate('🎉 Reward claimed! Great work!');
+  alsTokenCount = 0;
+  try { localStorage.setItem('als_token_count', '0'); } catch(e) {}
+  alsRenderTokenBoard();
+}
+
 document.addEventListener('DOMContentLoaded', alsLoadState);
 
 // ─── PROGRESS REPORT (for parents/teachers/therapists) ───
@@ -6729,6 +7101,8 @@ function alsRenderProgressReport() {
     statCard('Points Earned', alsPoints) +
     statCard('Certificates', alsCertificates.length);
 
+  alsRenderMoodHistory();
+
   if (!totalTasks) {
     tableEl.innerHTML = '<p style="color:var(--muted);text-align:center;padding:1rem 0">No activities completed yet. Once your child checks their answers on any worksheet, their progress will appear here.</p>';
     return;
@@ -6761,8 +7135,29 @@ function alsRenderProgressReport() {
     '</tr></thead><tbody>' + rows + '</tbody></table>';
 }
 
+function alsRenderMoodHistory() {
+  const el = document.getElementById('als-mood-history');
+  if (!el) return;
+  if (!alsEmotionLog.length) {
+    el.innerHTML = '';
+    return;
+  }
+  const EMOJI = { happy:'😄', okay:'🙂', calm:'😌', tired:'😴', worried:'😟', frustrated:'😠', sad:'😢' };
+  const recent = alsEmotionLog.slice(-14).reverse();
+  const chips = recent.map(entry => {
+    const d = new Date(entry.date);
+    const dateStr = isNaN(d) ? '' : d.toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
+    return '<span title="' + entry.label + ' — ' + dateStr + '" style="font-size:1.3rem;display:inline-flex;flex-direction:column;align-items:center;gap:2px">' +
+      (EMOJI[entry.emotion] || '🙂') +
+      '<span style="font-size:0.6rem;font-weight:700;color:var(--muted);font-family:\'Nunito\',sans-serif">' + dateStr + '</span></span>';
+  }).join('');
+  el.innerHTML =
+    '<div style="font-family:\'Baloo 2\',sans-serif;font-weight:800;font-size:0.85rem;color:var(--indigo);margin-bottom:8px">😊 Recent Mood Check-Ins</div>' +
+    '<div style="display:flex;gap:12px;flex-wrap:wrap;background:var(--indigo-l);border:2px solid var(--indigo-m);border-radius:14px;padding:12px">' + chips + '</div>';
+}
+
 function alsResetProgress() {
-  if (!confirm('This will clear all recorded progress, points, certificates, and badges on this device. This cannot be undone. Continue?')) return;
+  if (!confirm('This will clear all recorded progress, points, certificates, badges, and mood check-ins on this device. This cannot be undone. Continue?')) return;
   try {
     localStorage.removeItem('als_task_scores');
     localStorage.removeItem('als_points');
@@ -6770,9 +7165,11 @@ function alsResetProgress() {
     localStorage.removeItem('als_badges');
     localStorage.removeItem('als_streak');
     localStorage.removeItem('als_last_active_date');
+    localStorage.removeItem('als_emotion_log');
   } catch(e) {}
   Object.keys(TASK_SCORES).forEach(k => delete TASK_SCORES[k]);
   alsCertificates = [];
+  alsEmotionLog = [];
   alsPoints = 0;
   alsBadges = [];
   alsStreak = 0;
@@ -7579,6 +7976,48 @@ buildChecklist();
   .game-win-banner.show{display:block;animation:mmPop .5s ease;}
   .game-win-banner h3{color:#0D7A60;margin:0 0 6px;font-size:1.4rem;}
 
+  /* ═══ LEARNING GAMES (Pop the Sound / Word Train / Times Table Blitz /
+     Fraction Match / Vocab Swap / Grammar Detective) ═══ */
+  .lg-panel{max-width:640px;margin:0 auto;width:100%;}
+  .lg-head{text-align:center;margin-bottom:14px;}
+  .lg-head h3{font-family:'Baloo 2',sans-serif;font-size:1.3rem;margin-bottom:4px;}
+  .lg-head p{color:var(--muted);font-weight:700;font-size:.92rem;}
+  .lg-startbtn{display:block;margin:26px auto;font-family:'Baloo 2',sans-serif;font-weight:800;font-size:1.15rem;padding:.9rem 2.2rem;border-radius:999px;border:none;color:#fff;cursor:pointer;box-shadow:0 4px 14px rgba(0,0,0,.18);transition:.2s;}
+  .lg-startbtn:hover{transform:translateY(-2px) scale(1.03);}
+  .lg-opts{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:10px;}
+  .lg-opt{background:#fff;border:3px solid #EEF0F7;border-radius:18px;padding:18px 10px;font-family:'Baloo 2',sans-serif;font-weight:800;font-size:1.3rem;cursor:pointer;transition:.15s;text-align:center;}
+  .lg-opt:hover{transform:translateY(-2px);}
+  .lg-opt:active{transform:scale(.96);}
+  .lg-opt.correct{background:var(--correct-bg);border-color:var(--correct);color:var(--correct);}
+  .lg-opt.wrong{background:var(--wrong-bg);border-color:var(--wrong);color:var(--wrong);}
+  .lg-qtext{text-align:center;font-family:'Baloo 2',sans-serif;font-weight:800;font-size:2.2rem;margin:18px 0;}
+  .lg-qtag{text-align:center;font-weight:800;font-size:.8rem;letter-spacing:.06em;text-transform:uppercase;margin-bottom:4px;}
+  .lg-msg{text-align:center;font-family:'Baloo 2',sans-serif;font-weight:800;font-size:1.15rem;min-height:1.6rem;margin-top:14px;}
+  .lg-msg.ok{color:var(--correct);}
+  .lg-msg.no{color:var(--wrong);}
+  .lg-slot-row{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;min-height:64px;padding:12px;border:2px dashed var(--border);border-radius:16px;margin-bottom:20px;}
+  .lg-slot-row .lg-placeholder{color:var(--muted);font-weight:700;align-self:center;}
+  .lg-letter-row{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;}
+  .lg-letter{width:52px;height:52px;border-radius:12px;font-family:'Baloo 2',sans-serif;font-weight:800;font-size:1.5rem;cursor:pointer;border:2px solid transparent;display:flex;align-items:center;justify-content:center;transition:.15s;}
+  .lg-letter.avail{background:var(--teal-l);border-color:var(--teal-m);color:var(--teal);}
+  .lg-letter.avail:hover{transform:translateY(-3px);}
+  .lg-letter.placed{background:#fff;border-color:var(--teal-m);color:var(--teal);}
+  .lg-cardgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;}
+  .lg-card{aspect-ratio:1/1;border-radius:14px;cursor:pointer;perspective:600px;}
+  .lg-card.matched{visibility:hidden;}
+  .lg-card-inner{width:100%;height:100%;position:relative;transform-style:preserve-3d;transition:transform .4s;}
+  .lg-card.flip .lg-card-inner{transform:rotateY(180deg);}
+  .lg-card-face{position:absolute;inset:0;border-radius:14px;display:flex;align-items:center;justify-content:center;backface-visibility:hidden;font-family:'Baloo 2',sans-serif;font-weight:800;box-shadow:0 2px 8px rgba(0,0,0,.08);}
+  .lg-card-back{background:linear-gradient(135deg,#7B73D9,#4A35B0);color:#fff;font-size:1.6rem;}
+  .lg-card-front{background:#fff;border:3px solid #7B73D9;color:#4A35B0;transform:rotateY(180deg);font-size:1.1rem;}
+  .lg-sentence{padding:20px;background:var(--bg);border:2px solid var(--border);border-radius:16px;text-align:center;line-height:2.2;margin-bottom:10px;}
+  .lg-word{font-family:'Baloo 2',sans-serif;font-weight:800;font-size:1.4rem;padding:4px 8px;border-radius:8px;cursor:pointer;transition:.15s;}
+  .lg-word:hover{background:var(--teal-l);color:var(--teal);}
+  .lg-final{text-align:center;padding:30px 10px;}
+  .lg-final .lg-emoji{font-size:3.2rem;display:block;margin-bottom:8px;}
+  .lg-final h3{font-family:'Baloo 2',sans-serif;font-size:1.6rem;margin-bottom:6px;}
+  .lg-final p{font-weight:800;color:var(--muted);margin-bottom:16px;}
+
   /* Full-screen game section — fills the viewport below the header/nav on every device */
   #sec-games {
     padding: 0 !important;
@@ -7651,6 +8090,15 @@ buildChecklist();
     <button class="gtab" onclick="showGamePanel('mole',this)">🔨 Whack-a-Mole</button>
   </div>
 
+  <div class="game-tabs" style="margin-top:-6px">
+    <button class="gtab" onclick="showGamePanel('popsound',this)">🎈 Pop the Sound</button>
+    <button class="gtab" onclick="showGamePanel('wordtrain',this)">🚂 Word Train</button>
+    <button class="gtab" onclick="showGamePanel('timesblitz',this)">⚡ Times Table Blitz</button>
+    <button class="gtab" onclick="showGamePanel('fractionmatch',this)">🧩 Fraction Match</button>
+    <button class="gtab" onclick="showGamePanel('vocabswap',this)">📚 Vocab Swap</button>
+    <button class="gtab" onclick="showGamePanel('grammardetective',this)">🕵️ Grammar Detective</button>
+  </div>
+
   <!-- MEMORY MATCH GAME -->
   <div class="game-panel active" id="game-memory">
     <div class="game-btnrow">
@@ -7702,7 +8150,8 @@ buildChecklist();
   <!-- SIMON SAYS GAME -->
   <div class="game-panel" id="game-simon">
     <div class="game-stats">
-      <div class="game-stat">⭐ Level: <span id="sm-level">0</span></div>
+      <div class="game-stat">⏱️ Time: <span id="sm-time">60</span>s</div>
+      <div class="game-stat">✅ Score: <span id="sm-score">0</span>/<span id="sm-total">0</span></div>
     </div>
     <div class="sm-wrap">
       <div id="simonBoard" class="simon-board">
@@ -7713,13 +8162,14 @@ buildChecklist();
       </div>
       <div class="game-start-overlay" id="simonStartOverlay">
         <div style="font-size:2.5rem">🎵</div>
-        <p style="font-family:'Baloo 2',sans-serif;font-weight:700;color:#374151;max-width:320px">Watch the colours light up, then tap them back in the same order!</p>
+        <p style="font-family:'Baloo 2',sans-serif;font-weight:700;color:#374151;max-width:320px">Listen carefully to the instructions, then click on the matching colour!</p>
         <button class="game-btn" onclick="simonStart()">▶️ Start</button>
       </div>
     </div>
     <div class="game-win-banner" id="simon-win-banner">
-      <h3>🎉 Great memory!</h3>
-      <p id="simon-win-text">You reached level 0.</p>
+      <h3 id="simon-win-title">🎉 Great job!</h3>
+      <div id="simon-win-stars" class="star-row" style="justify-content:center;"></div>
+      <p id="simon-win-text">You did great!</p>
       <button class="game-btn" onclick="simonStart()">🔁 Play Again</button>
     </div>
   </div>
@@ -7744,6 +8194,171 @@ buildChecklist();
       <button class="game-btn" onclick="moleStart()">🔁 Play Again</button>
     </div>
   </div>
+
+  <!-- POP THE SOUND -->
+  <div class="game-panel" id="game-popsound">
+    <div class="lg-panel">
+      <div class="lg-head">
+        <h3 style="color:#185FA5">🎈 Pop the Sound!</h3>
+        <p>Listen for the target sound and tap the matching word.</p>
+      </div>
+      <div id="ps-idle" class="lg-idle" style="text-align:center">
+        <button class="lg-startbtn" style="background:linear-gradient(135deg,#4B8FD0,#185FA5)" onclick="psStart()">▶️ Start Game</button>
+      </div>
+      <div id="ps-play" style="display:none">
+        <div class="game-stats">
+          <div class="game-stat">⏱️ Time: <span id="ps-time">30</span>s</div>
+          <div class="game-stat">🎯 Find: <span id="ps-target">/ee/</span></div>
+          <div class="game-stat">⭐ Score: <span id="ps-score">0</span></div>
+        </div>
+        <div class="lg-opts" id="ps-opts"></div>
+      </div>
+      <div id="ps-over" class="lg-final" style="display:none">
+        <span class="lg-emoji">🏆</span>
+        <h3>Time's Up!</h3>
+        <p>Final Score: <span id="ps-finalscore">0</span></p>
+        <button class="game-btn" onclick="psStart()">🔁 Play Again</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- WORD TRAIN -->
+  <div class="game-panel" id="game-wordtrain">
+    <div class="lg-panel">
+      <div class="lg-head">
+        <h3 style="color:#1D9E75">🚂 Word Train</h3>
+        <p>Build the word that matches the clue.</p>
+      </div>
+      <div id="wt-idle" class="lg-idle" style="text-align:center">
+        <button class="lg-startbtn" style="background:linear-gradient(135deg,#4CC266,#1D9E75)" onclick="wtStart()">▶️ Board the Train</button>
+      </div>
+      <div id="wt-play" style="display:none">
+        <div class="game-stats">
+          <div class="game-stat">🚃 Train: <span id="wt-round">1</span>/<span id="wt-total">4</span></div>
+          <div class="game-stat" style="cursor:pointer" onclick="wtHearClue()">🔊 Hear Clue</div>
+          <div class="game-stat">⭐ Score: <span id="wt-score">0</span></div>
+        </div>
+        <p style="text-align:center;font-weight:700;color:var(--muted);margin-bottom:14px" id="wt-cluetext"></p>
+        <div class="lg-slot-row" id="wt-slots"></div>
+        <div class="lg-letter-row" id="wt-letters"></div>
+      </div>
+      <div id="wt-over" class="lg-final" style="display:none">
+        <span class="lg-emoji">🚉</span>
+        <h3>You arrived at the station!</h3>
+        <p>Final Score: <span id="wt-finalscore">0</span></p>
+        <button class="game-btn" onclick="wtStart()">🔁 Play Again</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- TIMES TABLE BLITZ -->
+  <div class="game-panel" id="game-timesblitz">
+    <div class="lg-panel">
+      <div class="lg-head">
+        <h3 style="color:#853A0B">⚡ Times Table Blitz</h3>
+        <p>Answer as fast as you can to build your streak!</p>
+      </div>
+      <div id="tb-idle" class="lg-idle" style="text-align:center">
+        <button class="lg-startbtn" style="background:linear-gradient(135deg,#E8A81C,#853A0B)" onclick="tbStart()">▶️ Start Blitz</button>
+      </div>
+      <div id="tb-play" style="display:none">
+        <div class="game-stats">
+          <div class="game-stat">⏱️ <span id="tb-time">60</span>s</div>
+          <div class="game-stat">🔥 Streak: <span id="tb-streak">0</span></div>
+          <div class="game-stat">⭐ <span id="tb-score">0</span></div>
+        </div>
+        <div class="lg-qtext" id="tb-qtext">? × ? = ?</div>
+        <div class="lg-opts" id="tb-opts"></div>
+      </div>
+      <div id="tb-over" class="lg-final" style="display:none">
+        <span class="lg-emoji">🏆</span>
+        <h3>Time's Up!</h3>
+        <p>Final Score: <span id="tb-finalscore">0</span> · Highest Streak: <span id="tb-finalstreak">0</span></p>
+        <button class="game-btn" onclick="tbStart()">🔁 Play Again</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- FRACTION MATCH -->
+  <div class="game-panel" id="game-fractionmatch">
+    <div class="lg-panel">
+      <div class="lg-head">
+        <h3 style="color:#4A35B0">🧩 Fraction Match</h3>
+        <p>Match the equivalent fractions and decimals.</p>
+      </div>
+      <div id="fm-idle" class="lg-idle" style="text-align:center">
+        <button class="lg-startbtn" style="background:linear-gradient(135deg,#7B73D9,#4A35B0)" onclick="fmStart()">▶️ Start Matching</button>
+      </div>
+      <div id="fm-play" style="display:none">
+        <div class="game-stats">
+          <div class="game-stat">🔄 Moves: <span id="fm-moves">0</span></div>
+          <div class="game-stat">✅ Matches: <span id="fm-matches">0</span>/<span id="fm-total">6</span></div>
+        </div>
+        <div class="lg-cardgrid" id="fm-grid"></div>
+      </div>
+      <div id="fm-over" class="lg-final" style="display:none">
+        <span class="lg-emoji">🏆</span>
+        <h3>All Matched!</h3>
+        <p>Completed in <span id="fm-finalmoves">0</span> moves</p>
+        <button class="game-btn" onclick="fmStart()">🔁 Play Again</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- VOCAB SWAP (Synonym/Antonym) -->
+  <div class="game-panel" id="game-vocabswap">
+    <div class="lg-panel">
+      <div class="lg-head">
+        <h3 style="color:#B03060">📚 Vocab Swap</h3>
+        <p>Find the matching word before time runs out!</p>
+      </div>
+      <div id="vs-idle" class="lg-idle" style="text-align:center">
+        <button class="lg-startbtn" style="background:linear-gradient(135deg,#D96090,#B03060)" onclick="vsStart()">▶️ Start Timer</button>
+      </div>
+      <div id="vs-play" style="display:none">
+        <div class="game-stats">
+          <div class="game-stat">⏱️ <span id="vs-time">45</span>s</div>
+          <div class="game-stat">⭐ <span id="vs-score">0</span></div>
+        </div>
+        <div class="lg-qtag" id="vs-qtag" style="color:#B03060">Find the Synonym for</div>
+        <div class="lg-qtext" id="vs-qtext">"Happy"</div>
+        <div class="lg-opts" id="vs-opts"></div>
+      </div>
+      <div id="vs-over" class="lg-final" style="display:none">
+        <span class="lg-emoji">🏆</span>
+        <h3>Time's Up!</h3>
+        <p>Final Score: <span id="vs-finalscore">0</span></p>
+        <button class="game-btn" onclick="vsStart()">🔁 Play Again</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- GRAMMAR DETECTIVE -->
+  <div class="game-panel" id="game-grammardetective">
+    <div class="lg-panel">
+      <div class="lg-head">
+        <h3 style="color:#0D7A60">🕵️ Grammar Detective</h3>
+        <p>Tap the word that makes the sentence grammatically incorrect.</p>
+      </div>
+      <div id="gd-idle" class="lg-idle" style="text-align:center">
+        <button class="lg-startbtn" style="background:linear-gradient(135deg,#1BAD85,#0D7A60)" onclick="gdStart()">▶️ Start Investigation</button>
+      </div>
+      <div id="gd-play" style="display:none">
+        <div class="game-stats">
+          <div class="game-stat">🕵️ Case: <span id="gd-round">1</span>/<span id="gd-total">4</span></div>
+          <div class="game-stat">⭐ Score: <span id="gd-score">0</span></div>
+        </div>
+        <div class="lg-sentence" id="gd-sentence"></div>
+        <div class="lg-msg" id="gd-msg"></div>
+      </div>
+      <div id="gd-over" class="lg-final" style="display:none">
+        <span class="lg-emoji">🏆</span>
+        <h3>Case Closed!</h3>
+        <p>Final Detective Score: <span id="gd-finalscore">0</span></p>
+        <button class="game-btn" onclick="gdStart()">🔁 Play Again</button>
+      </div>
+    </div>
+  </div>
 </div>
 </section>
 
@@ -7756,9 +8371,10 @@ buildChecklist();
   <div class="card" style="max-width:720px;margin:1rem auto;padding:1.4rem">
     <div id="als-progress-summary" style="display:flex;gap:14px;flex-wrap:wrap;margin-bottom:1.2rem"></div>
     <div id="als-progress-table"></div>
+    <div id="als-mood-history" style="margin-top:1.2rem"></div>
     <div style="margin-top:1.2rem;display:flex;gap:10px;flex-wrap:wrap">
       <button class="cert-btn" onclick="alsPrintElement(document.getElementById('sec-progress'))">🖨️ Print This Report</button>
-      <button class="cert-btn" style="background:var(--coral)" onclick="alsResetProgress()">🗑️ Clear Progress Data</button>
+      <button class="cert-btn cert-btn-danger" onclick="alsResetProgress()">🗑️ Clear Progress Data</button>
     </div>
   </div>
 </section>
@@ -7879,12 +8495,24 @@ buildChecklist();
       ☕ Take a Break
     </button>
 
+    <button class="als-tool-btn" onclick="alsOpenEmotionCheckin()">
+      😊 How I'm Feeling
+    </button>
+
+    <button class="als-tool-btn" onclick="alsOpenTokenBoard()">
+      🎯 Token Board
+    </button>
+
     <button class="als-tool-btn" onclick="alsOpenCertGallery()">
       🏆 My Certificates <span id="als-cert-count-badge"></span>
     </button>
 
     <button class="als-tool-btn" onclick="alsPrintCurrentPage()">
       🖨️ Print This Page
+    </button>
+
+    <button class="als-tool-btn" onclick="alsDownloadWorksheetPDF()">
+      📥 Download as PDF
     </button>
 
     <div class="als-toggle-row">
@@ -7936,11 +8564,66 @@ buildChecklist();
   </div>
 </div>
 
+<!-- ════ EMOTION CHECK-IN OVERLAY ════ -->
+<div id="als-emotion-overlay" class="hidden" role="dialog" aria-label="How are you feeling">
+  <div id="als-emotion-card">
+    <div id="als-emotion-step-pick">
+      <h3>How are you feeling right now?</h3>
+      <p id="als-emotion-sub">Tap the face that matches how you feel today.</p>
+      <div id="als-emotion-grid">
+        <button class="als-emotion-btn" data-emotion="happy"      onclick="alsPickEmotion('happy','😄','Happy')">😄<span>Happy</span></button>
+        <button class="als-emotion-btn" data-emotion="okay"       onclick="alsPickEmotion('okay','🙂','Okay')">🙂<span>Okay</span></button>
+        <button class="als-emotion-btn" data-emotion="calm"       onclick="alsPickEmotion('calm','😌','Calm')">😌<span>Calm</span></button>
+        <button class="als-emotion-btn" data-emotion="tired"      onclick="alsPickEmotion('tired','😴','Tired')">😴<span>Tired</span></button>
+        <button class="als-emotion-btn" data-emotion="worried"    onclick="alsPickEmotion('worried','😟','Worried')">😟<span>Worried</span></button>
+        <button class="als-emotion-btn" data-emotion="frustrated" onclick="alsPickEmotion('frustrated','😠','Frustrated')">😠<span>Frustrated</span></button>
+        <button class="als-emotion-btn" data-emotion="sad"        onclick="alsPickEmotion('sad','😢','Sad')">😢<span>Sad</span></button>
+      </div>
+      <button id="als-emotion-cancel" onclick="alsCloseEmotionCheckin()">Not now</button>
+    </div>
+    <div id="als-emotion-step-response" class="hidden">
+      <div id="als-emotion-response-emoji">😄</div>
+      <p id="als-emotion-response-msg"></p>
+      <button id="als-emotion-done-btn" onclick="alsCloseEmotionCheckin()">Done</button>
+    </div>
+  </div>
+</div>
+
+<!-- ════ TOKEN BOARD OVERLAY ════ -->
+<div id="als-token-overlay" class="hidden" role="dialog" aria-label="Token board">
+  <div id="als-token-card">
+    <button id="als-token-settings-btn" onclick="alsToggleTokenSettings()" aria-label="Edit token board settings">⚙️</button>
+    <button id="als-token-close" onclick="alsCloseTokenBoard()" aria-label="Close token board">&times;</button>
+    <h3>🎯 Token Board</h3>
+    <p id="als-token-reward-display">Working toward: <strong id="als-token-reward-text">a fun reward!</strong></p>
+
+    <div id="als-token-settings" class="hidden">
+      <label>Tokens needed
+        <input type="number" id="als-token-goal-input" min="1" max="50" value="10">
+      </label>
+      <label>Reward
+        <input type="text" id="als-token-reward-input" placeholder="e.g. Extra story time">
+      </label>
+      <button id="als-token-settings-save" onclick="alsSaveTokenSettings()">Save</button>
+    </div>
+
+    <div id="als-token-grid"></div>
+
+    <div id="als-token-actions">
+      <button id="als-token-add-btn" onclick="alsAddToken()">⭐ Add a Token</button>
+      <button id="als-token-claim-btn" class="hidden" onclick="alsClaimTokenReward()">🎉 Claim Reward!</button>
+    </div>
+  </div>
+</div>
+
 <!-- ════ CELEBRATION BANNER ════ -->
 <div id="als-celebrate-banner" aria-live="polite"></div>
 
 <!-- ════ PRINT WATERMARK (only visible on printed pages) ════ -->
-<div id="als-print-watermark">Adaptive Learning Support<br><span style="font-size:0.5em">hello@adaptivelearningsupport.com</span></div>
+<div id="als-print-watermark">Adaptive Learning Support<br><span style="font-size:0.5em">info@adaptivelearningsupport.com</span></div>
+
+<!-- ════ PDF DOWNLOAD STATUS TOAST ════ -->
+<div id="als-pdf-download-status">📥 Preparing your worksheet…</div>
 
 <!-- ════ FLOATING BOOK-A-SESSION BUTTON ════ -->
 <div class="book-float" id="bookFloat">
@@ -7993,6 +8676,394 @@ function showGamePanel(id, btn) {
   if (id !== 'bubbles') bpStop();
   if (id !== 'mole') moleStop();
   if (id !== 'simon') simonStop();
+  if (id !== 'popsound') psStop();
+  if (id !== 'timesblitz') tbStop();
+  if (id !== 'vocabswap') vsStop();
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   LEARNING GAMES — Pop the Sound, Word Train, Times Table Blitz,
+   Fraction Match, Vocab Swap, Grammar Detective
+   (ported from the Sound-Explorer React prototype into vanilla JS)
+   ══════════════════════════════════════════════════════════════════ */
+function lgSpeak(text) {
+  try { if (typeof alsSpeakInstruction === 'function') alsSpeakInstruction(text); } catch (e) {}
+}
+function lgShow(prefix, which) {
+  ['idle', 'play', 'over'].forEach(s => {
+    const el = document.getElementById(prefix + '-' + s);
+    if (el) el.style.display = (s === which) ? '' : 'none';
+  });
+}
+
+/* ── POP THE SOUND (phonics) ── */
+const psWords = [
+  { word: 'tree', sound: 'ee' }, { word: 'boat', sound: 'oa' },
+  { word: 'seed', sound: 'ee' }, { word: 'goat', sound: 'oa' },
+  { word: 'feet', sound: 'ee' }, { word: 'soap', sound: 'oa' }
+];
+let psPlaying = false, psScore = 0, psTimeLeft = 30, psTarget = 'ee', psTimer = null;
+function psStart() {
+  psPlaying = true; psScore = 0; psTimeLeft = 30;
+  document.getElementById('ps-score').textContent = '0';
+  document.getElementById('ps-time').textContent = '30';
+  lgShow('ps', 'play');
+  clearInterval(psTimer);
+  psTimer = setInterval(() => {
+    psTimeLeft--;
+    document.getElementById('ps-time').textContent = psTimeLeft;
+    if (psTimeLeft <= 0) { psStop(); lgSpeak('Game over! Great job.'); document.getElementById('ps-finalscore').textContent = psScore; lgShow('ps', 'over'); }
+  }, 1000);
+  psNextRound();
+}
+function psStop() { psPlaying = false; clearInterval(psTimer); }
+function psNextRound() {
+  const sounds = ['ee', 'oa'];
+  psTarget = sounds[Math.floor(Math.random() * sounds.length)];
+  document.getElementById('ps-target').textContent = '/' + psTarget + '/';
+  const correctWords = psWords.filter(w => w.sound === psTarget);
+  const wrongWords = psWords.filter(w => w.sound !== psTarget);
+  const correct = correctWords[Math.floor(Math.random() * correctWords.length)].word;
+  const wrongPicks = [];
+  while (wrongPicks.length < 3) {
+    const w = wrongWords[Math.floor(Math.random() * wrongWords.length)].word;
+    if (!wrongPicks.includes(w)) wrongPicks.push(w);
+  }
+  const opts = [correct, ...wrongPicks].sort(() => Math.random() - 0.5);
+  const box = document.getElementById('ps-opts');
+  box.innerHTML = '';
+  opts.forEach(word => {
+    const b = document.createElement('button');
+    b.className = 'lg-opt'; b.textContent = word;
+    b.onclick = () => psHandleTap(word, b);
+    box.appendChild(b);
+  });
+  lgSpeak('Find the word with the ' + psTarget + ' sound');
+}
+function psHandleTap(word, el) {
+  if (!psPlaying) return;
+  const isCorrect = psWords.find(w => w.word === word)?.sound === psTarget;
+  if (isCorrect) {
+    psScore += 10; document.getElementById('ps-score').textContent = psScore;
+    el.classList.add('correct'); lgSpeak('Yes!');
+    setTimeout(psNextRound, 350);
+  } else {
+    psScore = Math.max(0, psScore - 5); document.getElementById('ps-score').textContent = psScore;
+    el.classList.add('wrong'); lgSpeak('Try again');
+    setTimeout(() => el.classList.remove('wrong'), 500);
+  }
+}
+
+/* ── WORD TRAIN (spelling) ── */
+const wtWordList = [
+  { word: 'moon', clue: 'Look up at night to see the...' },
+  { word: 'train', clue: 'Choo choo! Here comes the...' },
+  { word: 'pool', clue: 'On a hot day, we swim in the...' },
+  { word: 'rain', clue: 'Grab your umbrella, here comes the...' }
+];
+let wtRoundIdx = 0, wtScore = 0, wtAvailable = [], wtPlaced = [];
+function wtStart() {
+  wtScore = 0; wtRoundIdx = 0;
+  document.getElementById('wt-score').textContent = '0';
+  document.getElementById('wt-total').textContent = wtWordList.length;
+  lgShow('wt', 'play');
+  wtInitRound(0);
+}
+function wtStop() {}
+function wtInitRound(idx) {
+  if (idx >= wtWordList.length) {
+    lgSpeak('Choo choo! You finished the Word Train!');
+    document.getElementById('wt-finalscore').textContent = wtScore;
+    lgShow('wt', 'over');
+    return;
+  }
+  wtRoundIdx = idx;
+  document.getElementById('wt-round').textContent = idx + 1;
+  const word = wtWordList[idx].word;
+  wtAvailable = word.split('').map((c, i) => ({ char: c, id: i + '-' + Math.random() }))
+    .sort(() => Math.random() - 0.5);
+  wtPlaced = [];
+  document.getElementById('wt-cluetext').textContent = '"' + wtWordList[idx].clue + '"';
+  wtRender();
+  lgSpeak(wtWordList[idx].clue);
+}
+function wtHearClue() { lgSpeak(wtWordList[wtRoundIdx].clue); }
+function wtRender() {
+  const slots = document.getElementById('wt-slots');
+  const letters = document.getElementById('wt-letters');
+  slots.innerHTML = '';
+  if (wtPlaced.length === 0) {
+    const span = document.createElement('span');
+    span.className = 'lg-placeholder'; span.textContent = 'Tap letters to build the word...';
+    slots.appendChild(span);
+  } else {
+    wtPlaced.forEach(l => {
+      const b = document.createElement('button');
+      b.className = 'lg-letter placed'; b.textContent = l.char;
+      b.onclick = () => wtReturn(l);
+      slots.appendChild(b);
+    });
+  }
+  letters.innerHTML = '';
+  wtAvailable.forEach(l => {
+    const b = document.createElement('button');
+    b.className = 'lg-letter avail'; b.textContent = l.char;
+    b.onclick = () => wtPick(l);
+    letters.appendChild(b);
+  });
+}
+function wtPick(letter) {
+  wtAvailable = wtAvailable.filter(l => l.id !== letter.id);
+  wtPlaced = [...wtPlaced, letter];
+  wtRender();
+  const currentWord = wtWordList[wtRoundIdx].word;
+  if (wtPlaced.length === currentWord.length) {
+    if (wtPlaced.map(l => l.char).join('') === currentWord) {
+      lgSpeak('Correct! ' + currentWord);
+      wtScore += 20; document.getElementById('wt-score').textContent = wtScore;
+      setTimeout(() => wtInitRound(wtRoundIdx + 1), 1200);
+    } else {
+      lgSpeak('Oops, try again!');
+      setTimeout(() => {
+        wtAvailable = currentWord.split('').map((c, i) => ({ char: c, id: i + '-' + Math.random() })).sort(() => Math.random() - 0.5);
+        wtPlaced = [];
+        wtRender();
+      }, 900);
+    }
+  }
+}
+function wtReturn(letter) {
+  wtPlaced = wtPlaced.filter(l => l.id !== letter.id);
+  wtAvailable = [...wtAvailable, letter];
+  wtRender();
+}
+
+/* ── TIMES TABLE BLITZ (maths) ── */
+let tbPlaying = false, tbScore = 0, tbStreak = 0, tbTimeLeft = 60, tbQ = { a: 1, b: 1, ans: 1 }, tbTimer = null;
+function tbStart() {
+  tbPlaying = true; tbScore = 0; tbStreak = 0; tbTimeLeft = 60;
+  document.getElementById('tb-score').textContent = '0';
+  document.getElementById('tb-streak').textContent = '0';
+  document.getElementById('tb-time').textContent = '60';
+  lgShow('tb', 'play');
+  clearInterval(tbTimer);
+  tbTimer = setInterval(() => {
+    tbTimeLeft--;
+    document.getElementById('tb-time').textContent = tbTimeLeft;
+    if (tbTimeLeft <= 0) {
+      tbStop();
+      document.getElementById('tb-finalscore').textContent = tbScore;
+      document.getElementById('tb-finalstreak').textContent = tbStreak;
+      lgShow('tb', 'over');
+    }
+  }, 1000);
+  tbNextQuestion();
+}
+function tbStop() { tbPlaying = false; clearInterval(tbTimer); }
+function tbNextQuestion() {
+  const a = Math.floor(Math.random() * 10) + 2, b = Math.floor(Math.random() * 10) + 2;
+  const ans = a * b;
+  tbQ = { a, b, ans };
+  document.getElementById('tb-qtext').textContent = a + ' × ' + b + ' = ?';
+  const opts = [ans];
+  let guard = 0;
+  while (opts.length < 4 && guard < 30) {
+    guard++;
+    const offset = (Math.floor(Math.random() * 5) + 1) * (Math.random() > 0.5 ? 1 : -1);
+    const fake = ans + (offset * a);
+    if (fake > 0 && !opts.includes(fake)) opts.push(fake);
+  }
+  opts.sort(() => Math.random() - 0.5);
+  const box = document.getElementById('tb-opts');
+  box.innerHTML = '';
+  opts.forEach(val => {
+    const b2 = document.createElement('button');
+    b2.className = 'lg-opt'; b2.textContent = val;
+    b2.onclick = () => tbAnswer(val, b2);
+    box.appendChild(b2);
+  });
+}
+function tbAnswer(val, el) {
+  if (!tbPlaying) return;
+  if (val === tbQ.ans) {
+    tbScore += 10 + (tbStreak * 2); tbStreak++;
+    document.getElementById('tb-score').textContent = tbScore;
+    document.getElementById('tb-streak').textContent = tbStreak;
+    el.classList.add('correct');
+    setTimeout(tbNextQuestion, 300);
+  } else {
+    tbStreak = 0; tbScore = Math.max(0, tbScore - 5);
+    document.getElementById('tb-score').textContent = tbScore;
+    document.getElementById('tb-streak').textContent = tbStreak;
+    el.classList.add('wrong');
+    setTimeout(() => el.classList.remove('wrong'), 500);
+  }
+}
+
+/* ── FRACTION MATCH (maths memory game) ── */
+const fmPairs = [
+  { id: 1, val1: '1/2', val2: '0.5' }, { id: 2, val1: '1/4', val2: '0.25' },
+  { id: 3, val1: '3/4', val2: '0.75' }, { id: 4, val1: '1/10', val2: '0.1' },
+  { id: 5, val1: '1/5', val2: '0.2' }, { id: 6, val1: '1/1', val2: '1.0' }
+];
+let fmCards = [], fmFlipped = [], fmMoves = 0, fmMatches = 0, fmBusy = false;
+function fmStart() {
+  fmCards = fmPairs.flatMap(p => [
+    { id: Math.random(), val: p.val1, pairId: p.id, flipped: false, matched: false },
+    { id: Math.random(), val: p.val2, pairId: p.id, flipped: false, matched: false }
+  ]).sort(() => Math.random() - 0.5);
+  fmFlipped = []; fmMoves = 0; fmMatches = 0; fmBusy = false;
+  document.getElementById('fm-moves').textContent = '0';
+  document.getElementById('fm-matches').textContent = '0';
+  document.getElementById('fm-total').textContent = fmPairs.length;
+  lgShow('fm', 'play');
+  fmRender();
+}
+function fmRender() {
+  const grid = document.getElementById('fm-grid');
+  grid.innerHTML = '';
+  fmCards.forEach((card, i) => {
+    const cardEl = document.createElement('div');
+    cardEl.className = 'lg-card' + (card.flipped || card.matched ? ' flip' : '') + (card.matched ? ' matched' : '');
+    cardEl.innerHTML = '<div class="lg-card-inner"><div class="lg-card-face lg-card-back">?</div><div class="lg-card-face lg-card-front">' + card.val + '</div></div>';
+    cardEl.onclick = () => fmCardClick(i);
+    grid.appendChild(cardEl);
+  });
+}
+function fmCardClick(idx) {
+  if (fmBusy) return;
+  if (fmFlipped.length >= 2) return;
+  if (fmCards[idx].flipped || fmCards[idx].matched) return;
+  fmCards[idx].flipped = true;
+  fmFlipped.push(idx);
+  fmRender();
+  if (fmFlipped.length === 2) {
+    fmBusy = true;
+    fmMoves++; document.getElementById('fm-moves').textContent = fmMoves;
+    const [i1, i2] = fmFlipped;
+    if (fmCards[i1].pairId === fmCards[i2].pairId) {
+      setTimeout(() => {
+        fmCards[i1].matched = true; fmCards[i2].matched = true;
+        fmMatches++; document.getElementById('fm-matches').textContent = fmMatches;
+        fmFlipped = []; fmBusy = false; fmRender();
+        if (fmMatches === fmPairs.length) {
+          document.getElementById('fm-finalmoves').textContent = fmMoves;
+          lgShow('fm', 'over');
+        }
+      }, 500);
+    } else {
+      setTimeout(() => {
+        fmCards[i1].flipped = false; fmCards[i2].flipped = false;
+        fmFlipped = []; fmBusy = false; fmRender();
+      }, 900);
+    }
+  }
+}
+
+/* ── VOCAB SWAP (synonyms/antonyms) ── */
+const vsPairs = [
+  { word: 'Happy', match: 'Joyful', wrong: ['Sad', 'Angry', 'Tired'], type: 'Synonym' },
+  { word: 'Big', match: 'Enormous', wrong: ['Tiny', 'Small', 'Mini'], type: 'Synonym' },
+  { word: 'Fast', match: 'Slow', wrong: ['Quick', 'Rapid', 'Speedy'], type: 'Antonym' },
+  { word: 'Hot', match: 'Cold', wrong: ['Warm', 'Boiling', 'Scorching'], type: 'Antonym' },
+  { word: 'Loud', match: 'Noisy', wrong: ['Quiet', 'Silent', 'Soft'], type: 'Synonym' }
+];
+let vsPlaying = false, vsScore = 0, vsTimeLeft = 45, vsQ = vsPairs[0], vsTimer = null;
+function vsStart() {
+  vsPlaying = true; vsScore = 0; vsTimeLeft = 45;
+  document.getElementById('vs-score').textContent = '0';
+  document.getElementById('vs-time').textContent = '45';
+  lgShow('vs', 'play');
+  clearInterval(vsTimer);
+  vsTimer = setInterval(() => {
+    vsTimeLeft--;
+    document.getElementById('vs-time').textContent = Math.max(0, vsTimeLeft);
+    if (vsTimeLeft <= 0) {
+      vsStop();
+      document.getElementById('vs-finalscore').textContent = vsScore;
+      lgShow('vs', 'over');
+    }
+  }, 1000);
+  vsNextQuestion();
+}
+function vsStop() { vsPlaying = false; clearInterval(vsTimer); }
+function vsNextQuestion() {
+  vsQ = vsPairs[Math.floor(Math.random() * vsPairs.length)];
+  document.getElementById('vs-qtag').textContent = 'Find the ' + vsQ.type + ' for';
+  document.getElementById('vs-qtext').textContent = '"' + vsQ.word + '"';
+  const opts = [vsQ.match, ...vsQ.wrong.slice(0, 3)].sort(() => Math.random() - 0.5);
+  const box = document.getElementById('vs-opts');
+  box.innerHTML = '';
+  opts.forEach(val => {
+    const b = document.createElement('button');
+    b.className = 'lg-opt'; b.textContent = val;
+    b.onclick = () => vsAnswer(val, b);
+    box.appendChild(b);
+  });
+}
+function vsAnswer(val, el) {
+  if (!vsPlaying) return;
+  if (val === vsQ.match) {
+    vsScore += 15; document.getElementById('vs-score').textContent = vsScore;
+    el.classList.add('correct');
+    setTimeout(vsNextQuestion, 300);
+  } else {
+    vsTimeLeft = Math.max(0, vsTimeLeft - 5);
+    document.getElementById('vs-time').textContent = vsTimeLeft;
+    el.classList.add('wrong');
+    setTimeout(() => el.classList.remove('wrong'), 500);
+  }
+}
+
+/* ── GRAMMAR DETECTIVE (grammar/punctuation) ── */
+const gdSentences = [
+  { words: ['I', 'going', 'to', 'the', 'park', 'yesterday.'], errIdx: 1, correction: 'went' },
+  { words: ['Where', 'is', 'you', 'going?'], errIdx: 1, correction: 'are' },
+  { words: ['She', 'dont', 'like', 'apples.'], errIdx: 1, correction: "doesn't" },
+  { words: ['The', 'dog', 'wagged', "it's", 'tail.'], errIdx: 3, correction: 'its' }
+];
+let gdRoundIdx = 0, gdScore = 0;
+function gdStart() {
+  gdRoundIdx = 0; gdScore = 0;
+  document.getElementById('gd-score').textContent = '0';
+  document.getElementById('gd-total').textContent = gdSentences.length;
+  document.getElementById('gd-msg').textContent = '';
+  lgShow('gd', 'play');
+  gdRenderSentence();
+}
+function gdRenderSentence() {
+  document.getElementById('gd-round').textContent = gdRoundIdx + 1;
+  const box = document.getElementById('gd-sentence');
+  box.innerHTML = '';
+  gdSentences[gdRoundIdx].words.forEach((word, i) => {
+    const span = document.createElement('span');
+    span.className = 'lg-word'; span.textContent = word + ' ';
+    span.onclick = () => gdWordTap(i);
+    box.appendChild(span);
+  });
+}
+function gdWordTap(idx) {
+  const current = gdSentences[gdRoundIdx];
+  const msg = document.getElementById('gd-msg');
+  if (idx === current.errIdx) {
+    gdScore += 50; document.getElementById('gd-score').textContent = gdScore;
+    msg.textContent = 'Correct! It should be "' + current.correction + '"';
+    msg.className = 'lg-msg ok';
+    setTimeout(() => {
+      msg.textContent = ''; msg.className = 'lg-msg';
+      if (gdRoundIdx + 1 >= gdSentences.length) {
+        document.getElementById('gd-finalscore').textContent = gdScore;
+        lgShow('gd', 'over');
+      } else {
+        gdRoundIdx++; gdRenderSentence();
+      }
+    }, 1800);
+  } else {
+    gdScore = Math.max(0, gdScore - 10); document.getElementById('gd-score').textContent = gdScore;
+    msg.textContent = 'Not quite right. Keep looking!';
+    msg.className = 'lg-msg no';
+    setTimeout(() => { msg.textContent = ''; msg.className = 'lg-msg'; }, 1400);
+  }
 }
 
 /* ───────────────── FULL-SCREEN GAME BOARD FITTING ─────────────────
@@ -8036,15 +9107,32 @@ function fitMoleGrid() {
   fitGridToContainer(document.getElementById('moleGrid'), document.querySelector('.mole-wrap'), 1);
 }
 
+// Wraps a fit function so its actual work runs on the next animation frame
+// instead of synchronously inside the ResizeObserver callback. Fitting a
+// board changes that board's own size, which would otherwise re-trigger the
+// same observer within the same notification cycle — that self-triggering
+// loop is exactly what the (harmless, but noisy) "ResizeObserver loop
+// completed with undelivered notifications" message is warning about.
+// Deferring the resize to rAF, and skipping any frame that's already
+// pending, stops the loop from forming in the first place.
+function rafDeferredFit(fn) {
+  let pending = false;
+  return () => {
+    if (pending) return;
+    pending = true;
+    requestAnimationFrame(() => { pending = false; fn(); });
+  };
+}
+
 (function initGameBoardFitting() {
   const mmWrap = document.querySelector('.mm-wrap');
   const smWrap = document.querySelector('.sm-wrap');
   const moleWrap = document.querySelector('.mole-wrap');
 
   if (typeof ResizeObserver !== 'undefined') {
-    if (mmWrap) new ResizeObserver(fitMemoryGrid).observe(mmWrap);
-    if (smWrap) new ResizeObserver(fitSimonBoard).observe(smWrap);
-    if (moleWrap) new ResizeObserver(fitMoleGrid).observe(moleWrap);
+    if (mmWrap) new ResizeObserver(rafDeferredFit(fitMemoryGrid)).observe(mmWrap);
+    if (smWrap) new ResizeObserver(rafDeferredFit(fitSimonBoard)).observe(smWrap);
+    if (moleWrap) new ResizeObserver(rafDeferredFit(fitMoleGrid)).observe(moleWrap);
   } else {
     // Fallback for the rare browser without ResizeObserver support.
     window.addEventListener('resize', () => {
@@ -8055,6 +9143,18 @@ function fitMoleGrid() {
     });
   }
 })();
+
+// Safety net: this specific browser message is a benign notice (not a real
+// script failure) that some dev environments surface as an "Uncaught
+// Error" overlay. If it ever still slips through, swallow only this exact
+// message so it doesn't get shown to the learner as a broken page —
+// everything else still reports normally.
+window.addEventListener('error', function (e) {
+  if (e && typeof e.message === 'string' && e.message.indexOf('ResizeObserver loop') !== -1) {
+    e.stopImmediatePropagation();
+    e.preventDefault();
+  }
+});
 
 /* ───────────────── MEMORY MATCH ───────────────── */
 const MM_EMOJI_POOL = ["🐶","🐱","🐸","🦋","🌻","🍓","🚗","⚽","🎈","🌈","🐢","🦁","🍎","🎵","⭐","🐧"];
@@ -8227,49 +9327,181 @@ function bpStop() {
   clearInterval(bpTimerHandle);
 }
 
-/* ───────────────── SIMON SAYS ───────────────── */
+/* ───────────────── SIMON SAYS (listen & click) ─────────────────
+   A receptive-language / instruction-following game: the learner hears a
+   spoken direction ("Click red") and must click the matching pad(s) — no
+   colours are demonstrated first. Difficulty quietly grows from one colour,
+   to two in sequence, to three, without ever announcing a "level" out loud
+   or on screen. Each round runs for one minute; if the learner reaches 50%
+   accuracy or better a celebration popup appears at the end. */
 const SIMON_COLORS = ["red", "blue", "green", "yellow"];
 const SIMON_FREQ = { red: 220, blue: 277, green: 330, yellow: 392 };
-let simonSequence = [];
-let simonUserStep = 0;
+const SIMON_ROUND_SECONDS = 60;
+
+let simonRunning = false;
+let simonRoundEnded = false;
+let simonTimeUp = false;
+let simonTimeLeft = SIMON_ROUND_SECONDS;
+let simonTimerHandle = null;
+let simonTrialCount = 0;
+let simonCorrectCount = 0;
+let simonTarget = [];
+let simonTargetStep = 0;
 let simonAccepting = false;
-let simonPlayHandle = null;
 
 function simonStart() {
   const overlay = document.getElementById('simonStartOverlay');
   if (overlay) overlay.style.display = 'none';
   document.getElementById('simon-win-banner').classList.remove('show');
-  simonSequence = [];
-  simonUserStep = 0;
+  simonRunning = true;
+  simonRoundEnded = false;
+  simonTimeUp = false;
+  simonTimeLeft = SIMON_ROUND_SECONDS;
+  simonTrialCount = 0;
+  simonCorrectCount = 0;
   simonAccepting = false;
-  document.getElementById('sm-level').textContent = '0';
+  simonUpdateStats();
   // Create/unlock the shared audio context here, inside the button's click
   // handler, so the browser counts it as a genuine user gesture and lets it play.
-  simonGetAudioCtx();
-  simonNextRound();
+  const ctx = simonGetAudioCtx();
+  const begin = () => {
+    // A short chime cues "it's time to start" before any talking begins —
+    // a plain, consistent signal to listen up.
+    simonReadyChime();
+    simonSpeakThen('Listen carefully, then click on the colour you hear.', () => {
+      simonStartTimer();
+      simonNextTrial();
+    });
+  };
+  // Wait for the context to actually finish resuming before playing the
+  // first tone — starting one while the context is still "suspended"
+  // makes it silent, which is what caused the game to feel mute.
+  if (ctx && ctx.state === 'suspended') {
+    ctx.resume().then(begin).catch(begin);
+  } else {
+    begin();
+  }
 }
 
-function simonNextRound() {
-  simonAccepting = false;
-  simonUserStep = 0;
-  simonSequence.push(SIMON_COLORS[Math.floor(Math.random() * SIMON_COLORS.length)]);
-  document.getElementById('sm-level').textContent = String(simonSequence.length - 1);
-  simonPlaySequence();
-}
-
-function simonPlaySequence() {
-  let i = 0;
-  clearInterval(simonPlayHandle);
-  simonPlayHandle = setInterval(() => {
-    if (i > 0) simonUnlight(simonSequence[i - 1]);
-    if (i >= simonSequence.length) {
-      clearInterval(simonPlayHandle);
-      simonAccepting = true;
-      return;
+function simonStartTimer() {
+  clearInterval(simonTimerHandle);
+  simonTimerHandle = setInterval(() => {
+    simonTimeLeft--;
+    simonUpdateStats();
+    if (simonTimeLeft <= 0) {
+      clearInterval(simonTimerHandle);
+      simonTimeUp = true;
+      if (!simonAccepting) {
+        // Between trials right now — end immediately.
+        simonEndRound();
+      } else {
+        // Mid-response — give a short grace window so a click never feels
+        // cut off, then end regardless in case the learner has stepped away.
+        setTimeout(() => { if (!simonRoundEnded) simonEndRound(); }, 8000);
+      }
     }
-    simonLight(simonSequence[i]);
-    i++;
-  }, 650);
+  }, 1000);
+}
+
+function simonUpdateStats() {
+  const t = document.getElementById('sm-time');
+  const s = document.getElementById('sm-score');
+  const tot = document.getElementById('sm-total');
+  if (t) t.textContent = String(Math.max(0, simonTimeLeft));
+  if (s) s.textContent = String(simonCorrectCount);
+  if (tot) tot.textContent = String(simonTrialCount);
+}
+
+// Voice tuned to sound clear, firm, and easy to follow: a steady pace and a
+// level pitch, rather than the brighter phonics voice, so directions land
+// as calm, confident instructions instead of playful narration.
+function simonMakeUtterance(text) {
+  const u = new SpeechSynthesisUtterance(text);
+  const voice = (typeof phonicsEnsureVoice === 'function') ? phonicsEnsureVoice() : null;
+  if (voice) u.voice = voice;
+  u.lang = 'en-GB';
+  u.rate = 0.92;
+  u.pitch = 1.0;
+  u.volume = 1.0;
+  return u;
+}
+
+function simonSpeakThen(text, callback) {
+  try {
+    if (!window.speechSynthesis) { callback(); return; }
+    window.speechSynthesis.cancel();
+    const u = simonMakeUtterance(text);
+    let done = false;
+    const finish = () => { if (!done) { done = true; callback(); } };
+    u.onend = finish;
+    u.onerror = finish;
+    window.speechSynthesis.speak(u);
+    // Safety net: some browsers can silently fail to fire onend/onerror —
+    // never let a missing voice permanently stall the game.
+    setTimeout(finish, 4000);
+  } catch (e) { callback(); }
+}
+
+// A short two-note chime (not a colour tone) that means "get ready, listen
+// now" — a consistent auditory cue that an instruction is coming.
+function simonReadyChime() {
+  try {
+    const ctx = simonGetAudioCtx();
+    if (!ctx) return;
+    [523.25, 659.25].forEach((freq, i) => {
+      const start = ctx.currentTime + i * 0.16;
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = 'sine';
+      osc.frequency.value = freq;
+      osc.connect(gain); gain.connect(ctx.destination);
+      gain.gain.setValueAtTime(0.0001, start);
+      gain.gain.exponentialRampToValueAtTime(0.2, start + 0.02);
+      gain.gain.exponentialRampToValueAtTime(0.0001, start + 0.22);
+      osc.start(start); osc.stop(start + 0.24);
+      osc.onended = () => { osc.disconnect(); gain.disconnect(); };
+    });
+  } catch (e) { /* Web Audio unavailable — spoken instruction still plays */ }
+}
+
+// Difficulty quietly steps up from a single colour, to two in sequence, to
+// three, as trials go by — never announced to the learner.
+function simonPickTierLength() {
+  if (simonTrialCount < 3) return 1;
+  if (simonTrialCount < 7) return 2;
+  return 3;
+}
+
+function simonRandomColor(exclude) {
+  let c;
+  do { c = SIMON_COLORS[Math.floor(Math.random() * SIMON_COLORS.length)]; }
+  while (exclude && c === exclude);
+  return c;
+}
+
+function simonNextTrial() {
+  if (simonTimeUp) { simonEndRound(); return; }
+  simonAccepting = false;
+  const len = simonPickTierLength();
+  simonTarget = [];
+  let last = null;
+  for (let i = 0; i < len; i++) {
+    const c = simonRandomColor(last);
+    simonTarget.push(c);
+    last = c;
+  }
+  simonTargetStep = 0;
+
+  const instruction = simonTarget.length === 1
+    ? `Click ${simonTarget[0]}.`
+    : 'Click ' + simonTarget.map((c, i) => i === simonTarget.length - 1 ? 'then ' + c : c).join(', ') + '.';
+
+  simonReadyChime();
+  setTimeout(() => {
+    simonSpeakThen(instruction, () => {
+      simonAccepting = true;
+    });
+  }, 350);
 }
 
 function simonLight(color) {
@@ -8316,29 +9548,82 @@ function simonBeep(freq) {
 }
 
 function simonPadClick(color) {
-  if (!simonAccepting) return;
+  if (!simonRunning || !simonAccepting) {
+    // Not our turn yet — give a quick visual pulse so a tap never feels ignored
+    const pad = document.querySelector('.simon-pad[data-color="' + color + '"]');
+    if (pad) {
+      pad.style.opacity = '0.85';
+      setTimeout(() => { pad.style.opacity = ''; }, 120);
+    }
+    return;
+  }
   simonLight(color);
   setTimeout(() => simonUnlight(color), 250);
-  if (color === simonSequence[simonUserStep]) {
-    simonUserStep++;
-    if (simonUserStep === simonSequence.length) {
+
+  if (color === simonTarget[simonTargetStep]) {
+    simonTargetStep++;
+    if (simonTargetStep === simonTarget.length) {
+      // Whole instruction completed correctly.
       simonAccepting = false;
-      document.getElementById('sm-level').textContent = String(simonSequence.length);
-      setTimeout(simonNextRound, 900);
+      simonTrialCount++;
+      simonCorrectCount++;
+      simonUpdateStats();
+      setTimeout(simonNextTrial, 900);
     }
   } else {
+    // Wrong colour — the instruction was missed. No buzzer or scolding
+    // tone, just tally it and move calmly on to the next one.
     simonAccepting = false;
-    const levelReached = simonSequence.length - 1;
-    document.getElementById('simon-win-text').textContent = `You reached level ${levelReached}!`;
-    document.getElementById('simon-win-banner').classList.add('show');
-    gamesSay(`Great memory! You reached level ${levelReached}!`);
-    requestAnimationFrame(fitSimonBoard);
+    simonTrialCount++;
+    simonUpdateStats();
+    setTimeout(simonNextTrial, 900);
   }
 }
 
-function simonStop() {
-  clearInterval(simonPlayHandle);
+function simonEndRound() {
+  if (simonRoundEnded) return;
+  simonRoundEnded = true;
+  simonRunning = false;
   simonAccepting = false;
+  clearInterval(simonTimerHandle);
+  simonTimeLeft = 0;
+  simonUpdateStats();
+
+  const accuracy = simonTrialCount > 0 ? Math.round((simonCorrectCount / simonTrialCount) * 100) : 0;
+  const titleEl = document.getElementById('simon-win-title');
+  const textEl = document.getElementById('simon-win-text');
+  const starsEl = document.getElementById('simon-win-stars');
+  if (starsEl) starsEl.innerHTML = '';
+
+  if (accuracy >= 50) {
+    // Pop-out star celebration for reaching 50% accuracy or better.
+    if (titleEl) titleEl.textContent = '🎉 Great job!';
+    if (textEl) textEl.textContent = `You got ${simonCorrectCount} out of ${simonTrialCount} right — that's ${accuracy}%!`;
+    if (starsEl) {
+      for (let i = 0; i < 5; i++) {
+        const s = document.createElement('span');
+        s.className = 'star-sticker';
+        s.textContent = '⭐';
+        s.style.animationDelay = (i * 0.12) + 's';
+        starsEl.appendChild(s);
+      }
+    }
+    gamesSay('Great job! You did really well!');
+  } else {
+    if (titleEl) titleEl.textContent = '👍 Nice try!';
+    if (textEl) textEl.textContent = `You got ${simonCorrectCount} out of ${simonTrialCount} right. Let's keep practising!`;
+    gamesSay("Nice try! Let's keep practising!");
+  }
+  document.getElementById('simon-win-banner').classList.add('show');
+  requestAnimationFrame(fitSimonBoard);
+}
+
+function simonStop() {
+  simonRunning = false;
+  simonAccepting = false;
+  simonTimeUp = true;
+  simonRoundEnded = true;
+  clearInterval(simonTimerHandle);
   document.querySelectorAll('.simon-pad').forEach(p => p.classList.remove('lit'));
 }
 
