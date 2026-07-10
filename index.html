@@ -5456,6 +5456,15 @@ function buildDV() {
 const _users = JSON.parse(localStorage.getItem('als_users') || '[]');
 let _currentUser = JSON.parse(localStorage.getItem('als_session') || 'null');
 
+// Namespaces every progress/preference storage key to whichever account is
+// currently logged in, so two learners sharing the same device never see or
+// overwrite each other's points, scores, badges, streaks, or mood history.
+// Falls back to a shared "guest" bucket only if nobody is logged in yet.
+function alsKey(base) {
+  const id = (_currentUser && _currentUser.email) ? _currentUser.email.trim().toLowerCase() : 'guest';
+  return 'als_u__' + id + '__' + base;
+}
+
 function saveUsers() { try { localStorage.setItem('als_users', JSON.stringify(_users)); } catch(e){} }
 function saveSession(u) { try { localStorage.setItem('als_session', JSON.stringify(u)); } catch(e){} }
 function clearSession() { try { localStorage.removeItem('als_session'); } catch(e){} }
@@ -5549,6 +5558,8 @@ function doGateSignup() {
   saveUsers();
   _currentUser = { email, phone };
   saveSession(_currentUser);
+  if (typeof alsLoadState === 'function') alsLoadState();
+  if (typeof alsRenderProgressReport === 'function') alsRenderProgressReport();
 
   // Send sign-up details to info@adaptivelearningsupport.com via Formspree
   fetch('https://formspree.io/f/mpqgrwld', {
@@ -5575,6 +5586,8 @@ function doGateLogin() {
   if (!user) { gateShowErr('g-li-error','Email or password is incorrect. Please try again.'); return; }
   _currentUser = { email: user.email, phone: user.phone };
   saveSession(_currentUser);
+  if (typeof alsLoadState === 'function') alsLoadState();
+  if (typeof alsRenderProgressReport === 'function') alsRenderProgressReport();
   unlockApp();
 }
 
@@ -5591,6 +5604,7 @@ function unlockApp() {
 function doLogout() {
   _currentUser = null;
   clearSession();
+  if (typeof alsLoadState === 'function') alsLoadState();
   // Show the gate again, hide the app
   document.getElementById('auth-gate').style.display = 'flex';
   document.getElementById('mainTabs').style.display = 'none';
@@ -6647,7 +6661,7 @@ function recordTaskScore(taskId, correct, total) {
   if (isNewTask && typeof alsAddPoints === 'function') {
     alsAddPoints(correct * 10);
   }
-  try { localStorage.setItem('als_task_scores', JSON.stringify(TASK_SCORES)); } catch(e) {}
+  try { localStorage.setItem(alsKey('als_task_scores'), JSON.stringify(TASK_SCORES)); } catch(e) {}
 }
 
 function certToast(msg) {
@@ -6798,13 +6812,14 @@ let alsPoints = 0;
 let alsCertificates = [];
 
 function alsLoadState() {
-  try { alsPoints = parseInt(localStorage.getItem('als_points') || '0', 10) || 0; } catch(e) { alsPoints = 0; }
-  try { alsCertificates = JSON.parse(localStorage.getItem('als_certificates') || '[]'); } catch(e) { alsCertificates = []; }
-  try { alsBadges = JSON.parse(localStorage.getItem('als_badges') || '[]'); } catch(e) { alsBadges = []; }
+  try { alsPoints = parseInt(localStorage.getItem(alsKey('als_points')) || '0', 10) || 0; } catch(e) { alsPoints = 0; }
+  try { alsCertificates = JSON.parse(localStorage.getItem(alsKey('als_certificates')) || '[]'); } catch(e) { alsCertificates = []; }
+  try { alsBadges = JSON.parse(localStorage.getItem(alsKey('als_badges')) || '[]'); } catch(e) { alsBadges = []; }
   alsLoadEmotionLog();
   alsLoadTokenBoard();
   try {
-    const saved = JSON.parse(localStorage.getItem('als_task_scores') || '{}');
+    const saved = JSON.parse(localStorage.getItem(alsKey('als_task_scores')) || '{}');
+    Object.keys(TASK_SCORES).forEach(k => delete TASK_SCORES[k]);
     Object.assign(TASK_SCORES, saved);
   } catch(e) {}
   alsRenderPoints();
@@ -6814,19 +6829,19 @@ function alsLoadState() {
   alsUpdateStreak();
 
   try {
-    const calm = localStorage.getItem('als_calm_mode') === '1';
+    const calm = localStorage.getItem(alsKey('als_calm_mode')) === '1';
     document.body.classList.toggle('calm-mode', calm);
     const calmToggle = document.getElementById('als-calm-toggle');
     if (calmToggle) calmToggle.checked = calm;
   } catch(e) {}
   try {
-    const dys = localStorage.getItem('als_dyslexia_mode') === '1';
+    const dys = localStorage.getItem(alsKey('als_dyslexia_mode')) === '1';
     document.body.classList.toggle('dyslexia-mode', dys);
     const dysToggle = document.getElementById('als-dyslexia-toggle');
     if (dysToggle) dysToggle.checked = dys;
   } catch(e) {}
   try {
-    alsFocusMode = localStorage.getItem('als_focus_mode') === '1';
+    alsFocusMode = localStorage.getItem(alsKey('als_focus_mode')) === '1';
     const focusToggle = document.getElementById('als-focus-toggle');
     if (focusToggle) focusToggle.checked = alsFocusMode;
   } catch(e) { alsFocusMode = false; }
@@ -6842,7 +6857,7 @@ function alsRenderPoints() {
 function alsAddPoints(n) {
   if (!n || n <= 0) return;
   alsPoints += n;
-  try { localStorage.setItem('als_points', String(alsPoints)); } catch(e) {}
+  try { localStorage.setItem(alsKey('als_points'), String(alsPoints)); } catch(e) {}
   alsRenderPoints();
   alsRenderLevel();
   alsCheckBadges();
@@ -6857,12 +6872,12 @@ function alsTogglePanel(forceState) {
 
 function alsToggleCalmMode(on) {
   document.body.classList.toggle('calm-mode', !!on);
-  try { localStorage.setItem('als_calm_mode', on ? '1' : '0'); } catch(e) {}
+  try { localStorage.setItem(alsKey('als_calm_mode'), on ? '1' : '0'); } catch(e) {}
 }
 
 function alsToggleDyslexiaMode(on) {
   document.body.classList.toggle('dyslexia-mode', !!on);
-  try { localStorage.setItem('als_dyslexia_mode', on ? '1' : '0'); } catch(e) {}
+  try { localStorage.setItem(alsKey('als_dyslexia_mode'), on ? '1' : '0'); } catch(e) {}
 }
 
 // Certificate gallery
@@ -6873,7 +6888,7 @@ function alsRenderCertBadge() {
 
 function alsSaveCertificate(cert) {
   alsCertificates.push(cert);
-  try { localStorage.setItem('als_certificates', JSON.stringify(alsCertificates)); } catch(e) {}
+  try { localStorage.setItem(alsKey('als_certificates'), JSON.stringify(alsCertificates)); } catch(e) {}
   alsRenderCertBadge();
   alsCheckBadges();
 }
@@ -6947,7 +6962,7 @@ const ALS_EMOTION_RESPONSES = {
 };
 
 function alsLoadEmotionLog() {
-  try { alsEmotionLog = JSON.parse(localStorage.getItem('als_emotion_log') || '[]'); } catch(e) { alsEmotionLog = []; }
+  try { alsEmotionLog = JSON.parse(localStorage.getItem(alsKey('als_emotion_log')) || '[]'); } catch(e) { alsEmotionLog = []; }
 }
 
 function alsOpenEmotionCheckin() {
@@ -6965,7 +6980,7 @@ function alsPickEmotion(id, emoji, label) {
   alsEmotionLog.push({ emotion: id, label, date: new Date().toISOString() });
   // Keep the log from growing forever — most recent 200 check-ins is plenty for a progress report
   if (alsEmotionLog.length > 200) alsEmotionLog = alsEmotionLog.slice(-200);
-  try { localStorage.setItem('als_emotion_log', JSON.stringify(alsEmotionLog)); } catch(e) {}
+  try { localStorage.setItem(alsKey('als_emotion_log'), JSON.stringify(alsEmotionLog)); } catch(e) {}
 
   const responses = ALS_EMOTION_RESPONSES[id] || ["Thanks for sharing how you feel."];
   const msg = responses[Math.floor(Math.random() * responses.length)];
@@ -6986,9 +7001,9 @@ let alsTokenCount = 0;
 let alsTokenReward = 'a fun reward!';
 
 function alsLoadTokenBoard() {
-  try { alsTokenGoal = parseInt(localStorage.getItem('als_token_goal') || '10', 10) || 10; } catch(e) { alsTokenGoal = 10; }
-  try { alsTokenCount = parseInt(localStorage.getItem('als_token_count') || '0', 10) || 0; } catch(e) { alsTokenCount = 0; }
-  try { alsTokenReward = localStorage.getItem('als_token_reward') || 'a fun reward!'; } catch(e) { alsTokenReward = 'a fun reward!'; }
+  try { alsTokenGoal = parseInt(localStorage.getItem(alsKey('als_token_goal')) || '10', 10) || 10; } catch(e) { alsTokenGoal = 10; }
+  try { alsTokenCount = parseInt(localStorage.getItem(alsKey('als_token_count')) || '0', 10) || 0; } catch(e) { alsTokenCount = 0; }
+  try { alsTokenReward = localStorage.getItem(alsKey('als_token_reward')) || 'a fun reward!'; } catch(e) { alsTokenReward = 'a fun reward!'; }
 }
 
 function alsOpenTokenBoard() {
@@ -7023,9 +7038,9 @@ function alsSaveTokenSettings() {
   // If the goal shrank below the current count, cap the count so the board doesn't show overflow
   if (alsTokenCount > alsTokenGoal) alsTokenCount = alsTokenGoal;
   try {
-    localStorage.setItem('als_token_goal', String(alsTokenGoal));
-    localStorage.setItem('als_token_reward', alsTokenReward);
-    localStorage.setItem('als_token_count', String(alsTokenCount));
+    localStorage.setItem(alsKey('als_token_goal'), String(alsTokenGoal));
+    localStorage.setItem(alsKey('als_token_reward'), alsTokenReward);
+    localStorage.setItem(alsKey('als_token_count'), String(alsTokenCount));
   } catch(e) {}
   document.getElementById('als-token-settings').classList.add('hidden');
   alsRenderTokenBoard();
@@ -7051,7 +7066,7 @@ function alsRenderTokenBoard() {
 function alsAddToken() {
   if (alsTokenCount >= alsTokenGoal) return;
   alsTokenCount++;
-  try { localStorage.setItem('als_token_count', String(alsTokenCount)); } catch(e) {}
+  try { localStorage.setItem(alsKey('als_token_count'), String(alsTokenCount)); } catch(e) {}
   alsRenderTokenBoard();
   if (alsTokenCount >= alsTokenGoal) {
     if (typeof alsConfetti === 'function') alsConfetti();
@@ -7063,7 +7078,7 @@ function alsClaimTokenReward() {
   if (typeof alsConfetti === 'function') alsConfetti();
   if (typeof alsCelebrate === 'function') alsCelebrate('🎉 Reward claimed! Great work!');
   alsTokenCount = 0;
-  try { localStorage.setItem('als_token_count', '0'); } catch(e) {}
+  try { localStorage.setItem(alsKey('als_token_count'), '0'); } catch(e) {}
   alsRenderTokenBoard();
 }
 
@@ -7078,6 +7093,70 @@ function alsCategoryLabel(taskId) {
   if (['wordclass','tenses','activepas','svo','phrases','clauses','sentences'].includes(taskId)) return 'English Worksheets';
   if (taskId.startsWith('ws-')) return 'Worksheets';
   return 'Other Activities';
+}
+
+// Draws a simple accuracy-over-time line chart as inline SVG — no chart
+// library needed, so it works the same way whether this file is opened
+// straight from disk or hosted. Each point is one completed activity,
+// oldest to newest, giving a clear at-a-glance trend for overall performance.
+function alsRenderProgressChart() {
+  const el = document.getElementById('als-progress-chart');
+  if (!el) return;
+
+  const entries = Object.entries(TASK_SCORES)
+    .map(([taskId, s]) => ({
+      taskId,
+      pct: s.total ? Math.round((s.correct / s.total) * 100) : 0,
+      date: s.date ? new Date(s.date) : null
+    }))
+    .filter(e => e.date && !isNaN(e.date))
+    .sort((a, b) => a.date - b.date);
+
+  // Need at least two points for a trend line to mean anything — the
+  // summary cards above already cover the single-activity case.
+  if (entries.length < 2) { el.innerHTML = ''; return; }
+
+  const W = 640, H = 200, padL = 34, padR = 14, padT = 16, padB = 10;
+  const plotW = W - padL - padR, plotH = H - padT - padB;
+  const n = entries.length;
+  const xFor = i => padL + (i / (n - 1)) * plotW;
+  const yFor = pct => padT + plotH - (pct / 100) * plotH;
+  const overallPct = Math.round(entries.reduce((sum, e) => sum + e.pct, 0) / n);
+
+  const linePoints = entries.map((e, i) => xFor(i) + ',' + yFor(e.pct)).join(' ');
+  const areaPoints = linePoints + ' ' + xFor(n - 1) + ',' + (padT + plotH) + ' ' + xFor(0) + ',' + (padT + plotH);
+
+  const gridLines = [0, 25, 50, 75, 100].map(pct => {
+    const y = yFor(pct);
+    return '<line x1="' + padL + '" y1="' + y + '" x2="' + (W - padR) + '" y2="' + y + '" stroke="var(--border)" stroke-width="1" />' +
+      '<text x="' + (padL - 6) + '" y="' + (y + 4) + '" text-anchor="end" font-size="10" fill="var(--muted)" font-family="Nunito, sans-serif">' + pct + '%</text>';
+  }).join('');
+
+  const dots = entries.map((e, i) => {
+    const x = xFor(i), y = yFor(e.pct);
+    const dateStr = e.date.toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
+    const label = alsCategoryLabel(e.taskId) + ' — ' + e.pct + '% (' + dateStr + ')';
+    const dotColor = e.pct >= 70 ? 'var(--correct)' : e.pct >= 50 ? 'var(--gold)' : 'var(--wrong)';
+    return '<circle cx="' + x + '" cy="' + y + '" r="4" fill="' + dotColor + '" stroke="#fff" stroke-width="1.5"><title>' + label + '</title></circle>';
+  }).join('');
+
+  const avgY = yFor(overallPct);
+
+  el.innerHTML =
+    '<div style="font-family:\'Baloo 2\',sans-serif;font-weight:800;font-size:0.95rem;color:var(--indigo);margin-bottom:8px">📈 Accuracy Over Time — Overall Performance</div>' +
+    '<div style="background:var(--card);border:2px solid var(--border);border-radius:14px;padding:10px 6px">' +
+      '<svg viewBox="0 0 ' + W + ' ' + H + '" style="width:100%;height:auto;display:block" role="img" aria-label="Line chart of accuracy percentage across completed activities, oldest to newest">' +
+        gridLines +
+        '<polygon points="' + areaPoints + '" fill="var(--teal)" opacity="0.12" />' +
+        '<line x1="' + padL + '" y1="' + avgY + '" x2="' + (W - padR) + '" y2="' + avgY + '" stroke="var(--indigo)" stroke-width="1.5" stroke-dasharray="5,4" />' +
+        '<polyline points="' + linePoints + '" fill="none" stroke="var(--teal)" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round" />' +
+        dots +
+      '</svg>' +
+      '<div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:6px;padding:4px 10px 0;font-size:0.72rem;color:var(--muted);font-weight:700">' +
+        '<span>Each dot is one completed activity, oldest to newest — hover a dot for details</span>' +
+        '<span style="color:var(--indigo)">┄ average: ' + overallPct + '%</span>' +
+      '</div>' +
+    '</div>';
 }
 
 function alsRenderProgressReport() {
@@ -7102,6 +7181,7 @@ function alsRenderProgressReport() {
     statCard('Certificates', alsCertificates.length);
 
   alsRenderMoodHistory();
+  if (typeof alsRenderProgressChart === 'function') alsRenderProgressChart();
 
   if (!totalTasks) {
     tableEl.innerHTML = '<p style="color:var(--muted);text-align:center;padding:1rem 0">No activities completed yet. Once your child checks their answers on any worksheet, their progress will appear here.</p>';
@@ -7159,13 +7239,13 @@ function alsRenderMoodHistory() {
 function alsResetProgress() {
   if (!confirm('This will clear all recorded progress, points, certificates, badges, and mood check-ins on this device. This cannot be undone. Continue?')) return;
   try {
-    localStorage.removeItem('als_task_scores');
-    localStorage.removeItem('als_points');
-    localStorage.removeItem('als_certificates');
-    localStorage.removeItem('als_badges');
-    localStorage.removeItem('als_streak');
-    localStorage.removeItem('als_last_active_date');
-    localStorage.removeItem('als_emotion_log');
+    localStorage.removeItem(alsKey('als_task_scores'));
+    localStorage.removeItem(alsKey('als_points'));
+    localStorage.removeItem(alsKey('als_certificates'));
+    localStorage.removeItem(alsKey('als_badges'));
+    localStorage.removeItem(alsKey('als_streak'));
+    localStorage.removeItem(alsKey('als_last_active_date'));
+    localStorage.removeItem(alsKey('als_emotion_log'));
   } catch(e) {}
   Object.keys(TASK_SCORES).forEach(k => delete TASK_SCORES[k]);
   alsCertificates = [];
@@ -7210,14 +7290,14 @@ let alsStreak = 0;
 function alsUpdateStreak() {
   const today = new Date().toISOString().slice(0, 10);
   let last = null;
-  try { last = localStorage.getItem('als_last_active_date'); } catch(e) {}
-  try { alsStreak = parseInt(localStorage.getItem('als_streak') || '0', 10) || 0; } catch(e) { alsStreak = 0; }
+  try { last = localStorage.getItem(alsKey('als_last_active_date')); } catch(e) {}
+  try { alsStreak = parseInt(localStorage.getItem(alsKey('als_streak')) || '0', 10) || 0; } catch(e) { alsStreak = 0; }
   if (last !== today) {
     const yesterday = new Date(Date.now() - 86400000).toISOString().slice(0, 10);
     alsStreak = (last === yesterday) ? alsStreak + 1 : 1;
     try {
-      localStorage.setItem('als_last_active_date', today);
-      localStorage.setItem('als_streak', String(alsStreak));
+      localStorage.setItem(alsKey('als_last_active_date'), today);
+      localStorage.setItem(alsKey('als_streak'), String(alsStreak));
     } catch(e) {}
   }
   alsRenderStreak();
@@ -7276,7 +7356,7 @@ function alsCheckBadges() {
     }
   });
   if (newlyEarned.length) {
-    try { localStorage.setItem('als_badges', JSON.stringify(alsBadges)); } catch(e) {}
+    try { localStorage.setItem(alsKey('als_badges'), JSON.stringify(alsBadges)); } catch(e) {}
     alsConfetti();
     alsCelebrate('🎖️ New badge: ' + newlyEarned[0].name + '!');
   }
@@ -7375,7 +7455,7 @@ function alsFocusNav(id, dir) {
 
 function alsToggleFocusMode(on) {
   alsFocusMode = !!on;
-  try { localStorage.setItem('als_focus_mode', on ? '1' : '0'); } catch(e) {}
+  try { localStorage.setItem(alsKey('als_focus_mode'), on ? '1' : '0'); } catch(e) {}
   alsFocusRegisteredIds.forEach(id => alsFocusRefresh(id));
 }
 
@@ -8370,6 +8450,7 @@ buildChecklist();
   </div>
   <div class="card" style="max-width:720px;margin:1rem auto;padding:1.4rem">
     <div id="als-progress-summary" style="display:flex;gap:14px;flex-wrap:wrap;margin-bottom:1.2rem"></div>
+    <div id="als-progress-chart" style="margin-bottom:1.2rem"></div>
     <div id="als-progress-table"></div>
     <div id="als-mood-history" style="margin-top:1.2rem"></div>
     <div style="margin-top:1.2rem;display:flex;gap:10px;flex-wrap:wrap">
